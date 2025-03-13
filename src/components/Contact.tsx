@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 const Contact = () => {
   const form = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
-    name: '',
+    from_name: '',
     email: '',
     message: ''
   });
@@ -27,13 +27,13 @@ const Contact = () => {
         'service_spphf7e', 
         'template_98ura1p',
         form.current!,
-        'cA3tWqrDKXpZSpT7s' 
+        'cA3tWqrDKXpZSpT7s'
       );
 
       if (result.text === 'OK') {
         toast.success('Message sent successfully!');
         setFormData({
-          name: '',
+          from_name: '',
           email: '',
           message: ''
         });
@@ -132,14 +132,14 @@ const Contact = () => {
           <div className="md:col-span-2">
             <form ref={form} onSubmit={handleSubmit} className="space-y-8">
               <div>
-                <label htmlFor="name" className="block text-xl font-medium mb-2">
+                <label htmlFor="from_name" className="block text-xl font-medium mb-2">
                   Your Name
                 </label>
                 <input 
                   type="text" 
-                  id="name" 
-                  name="name" 
-                  value={formData.name}
+                  id="from_name" 
+                  name="from_name"  // ✅ Matches EmailJS template
+                  value={formData.from_name}
                   onChange={handleChange}
                   required
                   className="w-full px-0 py-4 bg-transparent border-b-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors"
@@ -153,7 +153,7 @@ const Contact = () => {
                 <input 
                   type="email" 
                   id="email" 
-                  name="email" 
+                  name="email"  // ✅ Matches EmailJS template
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -167,7 +167,7 @@ const Contact = () => {
                 </label>
                 <textarea 
                   id="message" 
-                  name="message" 
+                  name="message"  // ✅ Matches EmailJS template
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
