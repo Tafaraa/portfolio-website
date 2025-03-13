@@ -17,7 +17,7 @@ const Projects = () => {
       ],
       github: 'https://github.com/Tafaraa/fake-news-detector',
       demo: 'https://fakenewsdetectorx.netlify.app',
-      status: 'Live',
+      status: 'In Development',
     
     }
     ,
