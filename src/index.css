@@ -8,7 +8,13 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  cursor: none !important; /* Force hide default cursor */
+}
+
+/* Only apply cursor: none on desktop */
+@media (min-width: 768px) {
+  body {
+    cursor: none !important;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -66,17 +72,19 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: difference;
 }
 
-/* Hover effects */
-a:hover ~ .custom-cursor,
-button:hover ~ .custom-cursor {
-  transform: scale(1.5) !important;
-  background-color: #0ea5e9;
-  mix-blend-mode: normal;
-}
+/* Hover effects - only apply on desktop */
+@media (min-width: 768px) {
+  a:hover ~ .custom-cursor,
+  button:hover ~ .custom-cursor {
+    transform: scale(1.5) !important;
+    background-color: #0ea5e9;
+    mix-blend-mode: normal;
+  }
 
-/* Ensure all interactive elements inherit the custom cursor */
-a, button, input, textarea {
-  cursor: none !important;
+  /* Ensure all interactive elements inherit the custom cursor */
+  a, button, input, textarea {
+    cursor: none !important;
+  }
 }
 
 /* Mapbox custom styles */
@@ -126,4 +134,14 @@ a, button, input, textarea {
     transform: translateY(0);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
+}
+
+/* Card flip animations */
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
