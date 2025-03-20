@@ -35,8 +35,6 @@ const Projects = () => {
       description: 'Advanced predictive analytics system using ensemble learning methods. Achieved 94% accuracy in trend forecasting. Automated model retraining pipeline and real-time prediction API. Reduced processing time by 60% through optimization.',
       image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1774&q=80',
       tags: ['Python', 'TensorFlow', 'Scikit-learn', 'Docker', 'CI/CD', 'AWS'],
-      github: 'https://github.com/Tafaraa',
-      demo: 'https://ml-model-demo.example.com',
       status: 'In Development'
     },
     {
@@ -44,8 +42,6 @@ const Projects = () => {
       description: 'Enterprise-grade NLP solution for automated text analysis. Implements custom transformers for sentiment analysis and named entity recognition. Processes 1M+ documents daily with 95% accuracy. Reduced manual review time by 80%.',
       image: 'https://images.unsplash.com/photo-1555952494-efd681c7e3f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
       tags: ['Python', 'NLTK', 'SpaCy', 'FastAPI', 'Docker', 'Azure'],
-      github: 'https://github.com/Tafaraa',
-      demo: 'https://nlp-tool-demo.example.com',
       status: 'Beta'
     }
   ];

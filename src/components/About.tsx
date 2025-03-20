@@ -1,4 +1,5 @@
 import React from 'react';
+import { FileDown } from 'lucide-react';
 
 const About = () => {
   return (
@@ -30,9 +31,11 @@ const About = () => {
             
             <div className="pt-8">
               <a 
-                href="#" 
-                className="inline-block border border-primary-50 px-8 py-4 text-primary-50 hover:bg-primary-50 hover:text-primary-900 transition-colors"
+                href="/resume.pdf" 
+                download="Tafara_Mutsvedu_Resume.pdf"
+                className="inline-flex items-center gap-2 border border-primary-50 px-8 py-4 text-primary-50 hover:bg-primary-50 hover:text-primary-900 transition-colors"
               >
+                <FileDown size={20} />
                 Download CV
               </a>
             </div>
