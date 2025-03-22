@@ -10,9 +10,16 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Only apply cursor: none on desktop */
+/* Only apply cursor: none on main portfolio pages */
 @media (min-width: 768px) {
-  body {
+  .main-portfolio {
+    cursor: none !important;
+  }
+  
+  .main-portfolio a,
+  .main-portfolio button,
+  .main-portfolio input,
+  .main-portfolio textarea {
     cursor: none !important;
   }
 }
@@ -72,18 +79,13 @@ h1, h2, h3, h4, h5, h6 {
   mix-blend-mode: difference;
 }
 
-/* Hover effects - only apply on desktop */
+/* Hover effects - only apply on main portfolio */
 @media (min-width: 768px) {
-  a:hover ~ .custom-cursor,
-  button:hover ~ .custom-cursor {
+  .main-portfolio a:hover ~ .custom-cursor,
+  .main-portfolio button:hover ~ .custom-cursor {
     transform: scale(1.5) !important;
     background-color: #0ea5e9;
     mix-blend-mode: normal;
-  }
-
-  /* Ensure all interactive elements inherit the custom cursor */
-  a, button, input, textarea {
-    cursor: none !important;
   }
 }
 

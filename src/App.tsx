@@ -68,7 +68,7 @@ const MainLayout = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 font-sans section-${currentSection}`}>
+    <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 font-sans section-${currentSection} main-portfolio`}>
       <Header />
       <main>
         <Hero />
