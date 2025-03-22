@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -7,40 +8,14 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Support from './components/Support';
 import Footer from './components/Footer';
+import LocationLanding from './components/LocationLanding';
 import { ArrowUp } from 'lucide-react';
 
-function App() {
+const MainLayout = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
   const [dotPosition, setDotPosition] = useState({ x: -100, y: -100 });
   const [currentSection, setCurrentSection] = useState('');
   const [showScrollButton, setShowScrollButton] = useState(false);
-
-  useEffect(() => {
-    // Update page title based on current section
-    const titles = {
-      '': 'Tafara Mutsvedu | Software Developer & Data Scientist',
-      'projects': 'Projects | Tafara Mutsvedu Portfolio',
-      'about': 'About | Tafara Mutsvedu Portfolio',
-      'skills': 'Skills | Tafara Mutsvedu Portfolio',
-      'contact': 'Contact | Tafara Mutsvedu Portfolio',
-      'support': 'Support | Tafara Mutsvedu Portfolio'
-    };
-    document.title = titles[currentSection as keyof typeof titles];
-
-    // Update meta description based on current section
-    const descriptions = {
-      '': 'Experienced Software Developer and Data Scientist specializing in machine learning, web development, and data analysis.',
-      'projects': 'View my portfolio of software development and data science projects, including web applications and machine learning solutions.',
-      'about': 'Learn about my journey as a Software Developer and Data Scientist, my education, and professional experience.',
-      'skills': 'Explore my technical skills in software development, data science, and machine learning technologies.',
-      'contact': 'Get in touch with me for collaboration, opportunities, or questions about my work.',
-      'support': 'Support my work through various platforms and enjoy an interactive memory game.'
-    };
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', descriptions[currentSection as keyof typeof descriptions]);
-    }
-  }, [currentSection]);
 
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
@@ -69,14 +44,12 @@ function App() {
       updateCurrentSection();
     };
 
-    // Initialize cursor position off-screen
     setCursorPosition({ x: -100, y: -100 });
     setDotPosition({ x: -100, y: -100 });
 
     window.addEventListener('mousemove', updateCursorPosition);
     window.addEventListener('scroll', handleScroll);
 
-    // Show cursor only when mouse moves
     const showCursor = () => {
       const cursor = document.querySelector('.custom-cursor');
       const dot = document.querySelector('.cursor-dot');
@@ -94,13 +67,6 @@ function App() {
     };
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
   return (
     <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 font-sans section-${currentSection}`}>
       <Header />
@@ -114,7 +80,6 @@ function App() {
       </main>
       <Footer />
       
-      {/* Custom cursor elements - hidden on mobile */}
       <div
         className="custom-cursor opacity-0 transition-opacity duration-300 hidden md:block"
         style={{
@@ -128,9 +93,8 @@ function App() {
         }}
       />
 
-      {/* Scroll to top button */}
       <button
-        onClick={scrollToTop}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className={`fixed bottom-6 right-6 bg-stone-900/60 backdrop-blur-sm text-stone-50 p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-500 ${
           showScrollButton ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
         }`}
@@ -139,6 +103,26 @@ function App() {
         <ArrowUp size={24} />
       </button>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLayout />} />
+        <Route path="/best-software-developer-:location" element={<LocationLanding />} />
+        <Route path="/software-developer-:location" element={<LocationLanding />} />
+        <Route path="/remote-software-developer" element={<LocationLanding />} />
+        <Route path="/hire-remote-fullstack-developer" element={<LocationLanding />} />
+        <Route path="/remote-react-developer-usa" element={<LocationLanding />} />
+        <Route path="/remote-developer-south-africa" element={<LocationLanding />} />
+        <Route path="/remote-data-scientist-south-africa" element={<LocationLanding />} />
+        <Route path="/react-developer-south-africa" element={<LocationLanding />} />
+        <Route path="/fullstack-developer-south-africa" element={<LocationLanding />} />
+        <Route path="/data-scientist-south-africa" element={<LocationLanding />} />
+      </Routes>
+    </Router>
   );
 }
 
