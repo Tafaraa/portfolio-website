@@ -7,10 +7,11 @@ const LocationLanding = () => {
   const { location } = useParams();
   const { pathname } = useLocation();
 
-  // Extract the location from the pathname for "best-software-developer-" routes
+  // Extract the location from the pathname
   const bestDevLocation = pathname.match(/best-software-developer-([^/]+)/)?.[1];
   const regularDevLocation = pathname.match(/software-developer-([^/]+)/)?.[1];
-  const currentLocation = bestDevLocation || regularDevLocation || location;
+  const remoteLocation = pathname.replace('/', ''); // For exact remote route matches
+  const currentLocation = bestDevLocation || regularDevLocation || remoteLocation || location;
 
   const pageData = {
     // Location-specific pages
@@ -104,13 +105,13 @@ const LocationLanding = () => {
     },
   };
 
-  const currentPageData = pageData[currentLocation as keyof typeof pageData] || {
-    title: 'Software Developer',
-    subtitle: 'Professional Development Services',
-    description: 'Expert software developer specializing in modern web applications and data solutions.',
-    location: 'Global',
-  };
+  // If we don't have data for this location/route, redirect to home
+  if (!pageData[currentLocation as keyof typeof pageData]) {
+    window.location.href = '/';
+    return null;
+  }
 
+  const currentPageData = pageData[currentLocation as keyof typeof pageData];
   const canonicalUrl = `https://mutsvedutafara.com${pathname}`;
 
   return (

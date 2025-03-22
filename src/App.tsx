@@ -123,6 +123,7 @@ function App() {
           <Route path="/react-developer-south-africa" element={<LocationLanding />} />
           <Route path="/fullstack-developer-south-africa" element={<LocationLanding />} />
           <Route path="/data-scientist-south-africa" element={<LocationLanding />} />
+          <Route path="*" element={<MainLayout />} />
         </Routes>
       </Router>
     </HelmetProvider>
