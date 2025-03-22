@@ -6,42 +6,36 @@ const LocationLanding = () => {
   const { location } = useParams();
   const { pathname } = useLocation();
 
+  // Extract the location from the pathname for "best-software-developer-" routes
+  const bestDevLocation = pathname.match(/best-software-developer-([^/]+)/)?.[1];
+  const regularDevLocation = pathname.match(/software-developer-([^/]+)/)?.[1];
+  const currentLocation = bestDevLocation || regularDevLocation || location;
+
   const pageData = {
     // Location-specific pages
     'midrand': {
       title: 'Best Software Developer in Midrand',
       subtitle: 'Full-Stack Development & Data Science Solutions',
       description: 'Looking for a skilled software developer in Midrand? With expertise in React, Python, and Machine Learning, I deliver cutting-edge solutions for businesses in the heart of Gauteng.',
+      location: 'Midrand, Gauteng',
     },
     'johannesburg': {
       title: 'Best Software Developer in Johannesburg',
       subtitle: 'Modern Web Applications & Data Solutions',
       description: 'Johannesburg-based software developer specializing in creating powerful web applications and data-driven solutions. Expert in React, Python, and Machine Learning.',
+      location: 'Johannesburg, Gauteng',
     },
     'zimbabwe': {
       title: 'Best Software Developer in Zimbabwe',
       subtitle: 'Professional Software Solutions',
       description: 'Experienced software developer with roots in Zimbabwe, offering world-class development services. Specializing in web applications, data science, and machine learning solutions.',
+      location: 'Zimbabwe',
     },
     'gauteng': {
       title: 'Professional Software Developer in Gauteng',
       subtitle: 'Enterprise Software Solutions',
       description: 'Gauteng-based software developer delivering high-quality software solutions. Expert in full-stack development, data science, and enterprise applications.',
-    },
-    'uk': {
-      title: 'Software Developer Available for UK Projects',
-      subtitle: 'Remote Development Services',
-      description: 'Experienced software developer available for UK-based projects. Offering remote development services with expertise in modern web technologies and data science.',
-    },
-    'usa': {
-      title: 'Software Developer for USA Companies',
-      subtitle: 'Remote Development Solutions',
-      description: 'Professional software developer available for US-based companies. Providing remote development services with expertise in React, Python, and machine learning.',
-    },
-    'canada': {
-      title: 'Software Developer for Canadian Projects',
-      subtitle: 'Remote Development Services',
-      description: 'Skilled software developer available for Canadian projects. Offering remote development services with expertise in modern web technologies and data science.',
+      location: 'Gauteng, South Africa',
     },
     // Remote positions
     'remote-software-developer': {
@@ -61,42 +55,52 @@ const LocationLanding = () => {
       subtitle: 'React Development Services',
       description: 'Specialized React developer available for US-based companies. Extensive experience in building modern, responsive React applications with best practices.',
       remote: true,
+      location: 'Available for US Companies',
     },
     'remote-developer-south-africa': {
       title: 'Remote Developer in South Africa',
       subtitle: 'Professional Development Services',
       description: 'South Africa-based remote developer offering professional software development services. Expert in modern web technologies and data-driven solutions.',
       remote: true,
+      location: 'South Africa',
     },
     'remote-data-scientist-south-africa': {
       title: 'Remote Data Scientist in South Africa',
       subtitle: 'Data Science & Analytics Solutions',
       description: 'Professional data scientist based in South Africa, available for remote work. Specialized in machine learning, data analysis, and predictive modeling.',
       remote: true,
+      location: 'South Africa',
     },
     'react-developer-south-africa': {
       title: 'React Developer in South Africa',
       subtitle: 'Modern React Development',
       description: 'Expert React developer based in South Africa. Specialized in building modern, responsive, and scalable React applications.',
+      location: 'South Africa',
     },
     'fullstack-developer-south-africa': {
       title: 'Full-Stack Developer in South Africa',
       subtitle: 'Complete Development Solutions',
       description: 'Experienced full-stack developer in South Africa offering end-to-end development services. Expert in both front-end and back-end technologies.',
+      location: 'South Africa',
     },
     'data-scientist-south-africa': {
       title: 'Data Scientist in South Africa',
       subtitle: 'Data Science & ML Solutions',
       description: 'Professional data scientist in South Africa specializing in machine learning, data analysis, and predictive modeling. Turning data into actionable insights.',
+      location: 'South Africa',
     },
   };
 
-  // Extract the page key from the pathname
-  const pageKey = pathname.split('/').pop() || '';
-  const data = pageData[pageKey as keyof typeof pageData] || pageData['remote-software-developer'];
+  // Get the page data based on the current location
+  const data = pageData[currentLocation as keyof typeof pageData] || {
+    title: 'Software Developer',
+    subtitle: 'Professional Development Services',
+    description: 'Expert software developer specializing in modern web technologies and data science solutions.',
+    location: 'South Africa',
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-900 to-stone-800 text-stone-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-stone-900 to-stone-800 text-stone-50">
       <div className="container mx-auto px-6 py-16 max-w-4xl">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">{data.title}</h1>
         <h2 className="text-2xl md:text-3xl text-stone-300 mb-8">{data.subtitle}</h2>
@@ -138,8 +142,15 @@ const LocationLanding = () => {
               </ul>
             </div>
           )}
+
+          {data.location && (
+            <div className="bg-stone-700/50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-3">Location</h3>
+              <p className="text-stone-300">{data.location}</p>
+            </div>
+          )}
           
-          <div className="flex justify-center">
+          <div className="flex justify-center pt-8">
             <Link 
               to="/"
               className="inline-flex items-center gap-2 bg-stone-50 text-stone-900 px-8 py-4 rounded-lg font-medium hover:bg-stone-200 transition-colors"
