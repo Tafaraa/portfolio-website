@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MapPin, Code, Database, Brain } from 'lucide-react';
 
 const LocationLanding = () => {
   const { location } = useParams();
@@ -101,62 +101,90 @@ const LocationLanding = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-900 to-stone-800 text-stone-50">
-      <div className="container mx-auto px-6 py-16 max-w-4xl">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">{data.title}</h1>
-        <h2 className="text-2xl md:text-3xl text-stone-300 mb-8">{data.subtitle}</h2>
-        <p className="text-lg md:text-xl text-stone-400 mb-12 leading-relaxed">
-          {data.description}
-        </p>
-        
-        <div className="space-y-8">
-          <div className="flex flex-wrap gap-4">
-            <div className="bg-stone-700/50 p-6 rounded-lg flex-1 min-w-[250px]">
-              <h3 className="text-xl font-semibold mb-3">Technical Expertise</h3>
-              <ul className="space-y-2 text-stone-300">
-                <li>✓ Full-Stack Development</li>
-                <li>✓ React & Modern JavaScript</li>
-                <li>✓ Python & Data Science</li>
-                <li>✓ Machine Learning Solutions</li>
+      <div className="container mx-auto px-6 py-24 max-w-5xl">
+        <div className="space-y-16">
+          {/* Header Section */}
+          <div className="space-y-8">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">{data.title}</h1>
+            <h2 className="text-2xl md:text-3xl text-stone-300 font-light">{data.subtitle}</h2>
+            <p className="text-lg md:text-xl text-stone-400 leading-relaxed max-w-3xl">
+              {data.description}
+            </p>
+          </div>
+
+          {/* Services Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-stone-800/50 backdrop-blur-sm p-8 rounded-2xl border border-stone-700/50">
+              <Code className="w-8 h-8 mb-6 text-blue-400" />
+              <h3 className="text-xl font-semibold mb-4">Software Development</h3>
+              <ul className="space-y-3 text-stone-300">
+                <li>• Modern Web Applications</li>
+                <li>• Full-Stack Development</li>
+                <li>• React & TypeScript</li>
+                <li>• API Development</li>
               </ul>
             </div>
-            
-            <div className="bg-stone-700/50 p-6 rounded-lg flex-1 min-w-[250px]">
-              <h3 className="text-xl font-semibold mb-3">Services</h3>
-              <ul className="space-y-2 text-stone-300">
-                <li>✓ Custom Web Applications</li>
-                <li>✓ Data Analysis & Visualization</li>
-                <li>✓ AI/ML Implementation</li>
-                <li>✓ Technical Consultation</li>
+
+            <div className="bg-stone-800/50 backdrop-blur-sm p-8 rounded-2xl border border-stone-700/50">
+              <Database className="w-8 h-8 mb-6 text-emerald-400" />
+              <h3 className="text-xl font-semibold mb-4">Data Engineering</h3>
+              <ul className="space-y-3 text-stone-300">
+                <li>• Data Pipeline Design</li>
+                <li>• Database Architecture</li>
+                <li>• ETL Processes</li>
+                <li>• Data Warehousing</li>
+              </ul>
+            </div>
+
+            <div className="bg-stone-800/50 backdrop-blur-sm p-8 rounded-2xl border border-stone-700/50">
+              <Brain className="w-8 h-8 mb-6 text-purple-400" />
+              <h3 className="text-xl font-semibold mb-4">Machine Learning</h3>
+              <ul className="space-y-3 text-stone-300">
+                <li>• Predictive Analytics</li>
+                <li>• Natural Language Processing</li>
+                <li>• Computer Vision</li>
+                <li>• Model Deployment</li>
               </ul>
             </div>
           </div>
 
-          {data.remote && (
-            <div className="bg-stone-700/50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-3">Remote Work Capabilities</h3>
-              <ul className="space-y-2 text-stone-300">
-                <li>✓ Flexible Communication</li>
-                <li>✓ Global Time Zone Adaptation</li>
-                <li>✓ Virtual Collaboration Tools</li>
-                <li>✓ Regular Progress Updates</li>
-              </ul>
-            </div>
-          )}
+          {/* Location & Remote Work Info */}
+          <div className="space-y-8">
+            {data.location && (
+              <div className="bg-stone-800/50 backdrop-blur-sm p-8 rounded-2xl border border-stone-700/50">
+                <div className="flex items-center gap-3 mb-6">
+                  <MapPin className="w-6 h-6 text-stone-300" />
+                  <h3 className="text-xl font-semibold">Location</h3>
+                </div>
+                <p className="text-stone-300 text-lg">{data.location}</p>
+              </div>
+            )}
 
-          {data.location && (
-            <div className="bg-stone-700/50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-3">Location</h3>
-              <p className="text-stone-300">{data.location}</p>
-            </div>
-          )}
-          
+            {data.remote && (
+              <div className="bg-stone-800/50 backdrop-blur-sm p-8 rounded-2xl border border-stone-700/50">
+                <h3 className="text-xl font-semibold mb-6">Remote Work Capabilities</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <ul className="space-y-3 text-stone-300">
+                    <li>• Global Time Zone Coverage</li>
+                    <li>• Virtual Collaboration Tools</li>
+                  </ul>
+                  <ul className="space-y-3 text-stone-300">
+                    <li>• Regular Progress Updates</li>
+                    <li>• Clear Communication</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* CTA Section */}
           <div className="flex justify-center pt-8">
             <Link 
               to="/"
-              className="inline-flex items-center gap-2 bg-stone-50 text-stone-900 px-8 py-4 rounded-lg font-medium hover:bg-stone-200 transition-colors"
+              className="group relative inline-flex items-center gap-2 bg-stone-50 text-stone-900 px-8 py-4 rounded-xl font-medium hover:bg-stone-200 transition-all duration-300"
             >
               View Full Portfolio
-              <ArrowRight size={20} />
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
