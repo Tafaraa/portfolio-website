@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -108,21 +109,23 @@ const MainLayout = () => {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<MainLayout />} />
-        <Route path="/best-software-developer-:location" element={<LocationLanding />} />
-        <Route path="/software-developer-:location" element={<LocationLanding />} />
-        <Route path="/remote-software-developer" element={<LocationLanding />} />
-        <Route path="/hire-remote-fullstack-developer" element={<LocationLanding />} />
-        <Route path="/remote-react-developer-usa" element={<LocationLanding />} />
-        <Route path="/remote-developer-south-africa" element={<LocationLanding />} />
-        <Route path="/remote-data-scientist-south-africa" element={<LocationLanding />} />
-        <Route path="/react-developer-south-africa" element={<LocationLanding />} />
-        <Route path="/fullstack-developer-south-africa" element={<LocationLanding />} />
-        <Route path="/data-scientist-south-africa" element={<LocationLanding />} />
-      </Routes>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainLayout />} />
+          <Route path="/best-software-developer-:location" element={<LocationLanding />} />
+          <Route path="/software-developer-:location" element={<LocationLanding />} />
+          <Route path="/remote-software-developer" element={<LocationLanding />} />
+          <Route path="/hire-remote-fullstack-developer" element={<LocationLanding />} />
+          <Route path="/remote-react-developer-usa" element={<LocationLanding />} />
+          <Route path="/remote-developer-south-africa" element={<LocationLanding />} />
+          <Route path="/remote-data-scientist-south-africa" element={<LocationLanding />} />
+          <Route path="/react-developer-south-africa" element={<LocationLanding />} />
+          <Route path="/fullstack-developer-south-africa" element={<LocationLanding />} />
+          <Route path="/data-scientist-south-africa" element={<LocationLanding />} />
+        </Routes>
+      </Router>
+    </HelmetProvider>
   );
 }
 
