@@ -10,7 +10,7 @@ interface SEOProps {
 
 const SEO = ({ title, description, canonical, keywords, ogImage }: SEOProps) => {
   const siteUrl = 'https://mutsvedutafara.com';
-  const defaultImage = `${siteUrl}/og-image.jpg`;
+  const defaultImage = `${siteUrl}/og-image.webp`;
 
   return (
     <Helmet>

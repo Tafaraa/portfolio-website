@@ -14,9 +14,11 @@ A modern, high-performance portfolio website showcasing my skills and experience
 - **SEO Optimized**: Structured data, meta tags, and semantic HTML for excellent search engine visibility
 - **Responsive Design**: Seamless experience across all devices and screen sizes
 - **Interactive UI**: Smooth animations and transitions for an engaging user experience
+- **Enhanced Project Showcase**: Immersive project carousel with improved navigation and optimized color scheme
 - **Location Integration**: Interactive map showing my location using Mapbox
 - **Contact Form**: Easy-to-use contact form with validation
 - **PWA Support**: Progressive Web App capabilities for offline access
+- **Dark/Light Mode**: Seamless theme switching with optimized contrast and readability
 
 ## 🛠️ Tech Stack
 
@@ -49,12 +51,14 @@ This website implements several performance optimizations to achieve a perfect L
 
 1. **Code Splitting**: Separates vendor code from application code
 2. **Lazy Loading**: Components and images load only when needed
-3. **Font Optimization**: Preconnect to font sources and optimized loading
+3. **Font Optimization**: Variable fonts with font-display: swap for faster text rendering
 4. **Image Optimization**: Properly sized and compressed images with modern formats
-5. **Minification**: All JavaScript and CSS is minified for production
-6. **Tree Shaking**: Removes unused code from the final bundle
-7. **Caching Strategy**: Proper cache headers for optimal resource caching
-8. **Preloading**: Critical resources are preloaded for faster rendering
+5. **Enhanced Project Showcase**: Optimized carousel with efficient DOM updates, improved color contrast, and smooth transitions
+6. **Minification**: All JavaScript and CSS is minified for production
+7. **Tree Shaking**: Removes unused code from the final bundle
+8. **Caching Strategy**: Proper cache headers for optimal resource caching
+9. **Preloading**: Critical resources are preloaded for faster rendering
+10. **Reduced Motion**: Respects user preferences for reduced motion
 
 ## ♿ Accessibility Features
 
@@ -91,7 +95,7 @@ The website implements best practices for search engine optimization:
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/portfolio-website.git
+   git clone https://github.com/myusername/portfolio-website.git
    cd portfolio-website
    ```
 
@@ -104,7 +108,6 @@ The website implements best practices for search engine optimization:
 
 3. Create a `.env` file in the root directory with the following variables:
    ```
-   REACT_APP_MAPBOX_TOKEN=your_mapbox_token
    REACT_APP_EMAILJS_SERVICE_ID=your_emailjs_service_id
    REACT_APP_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
    REACT_APP_EMAILJS_USER_ID=your_emailjs_user_id

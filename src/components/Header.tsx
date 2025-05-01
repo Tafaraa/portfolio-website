@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import AnimatedElement from './AnimatedElement';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import Education from './Education';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
+  const [isEducationOpen, setIsEducationOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,6 +85,7 @@ const Header = () => {
   const navLinks = [
     { name: 'Work', href: '#projects' },
     { name: 'About', href: '#about' },
+    { name: 'Education', onClick: () => setIsEducationOpen(true) },
     { name: 'Support', href: '#support' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -102,12 +105,21 @@ const Header = () => {
             <nav className="flex items-center space-x-8">
               {navLinks.map((link, index) => (
                 <AnimatedElement key={link.name} animation="fade" delay={0.4 + index * 0.1}>
-                  <a 
-                    href={link.href}
-                    className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.href ? (
+                    <a 
+                      href={link.href}
+                      className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <button
+                      onClick={link.onClick}
+                      className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                    >
+                      {link.name}
+                    </button>
+                  )}
                 </AnimatedElement>
               ))}
             </nav>
@@ -119,7 +131,7 @@ const Header = () => {
             <button 
               className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" 
               onClick={toggleMenu}
-              aria-expanded={isMenuOpen ? 'true' : 'false'}
+              aria-expanded={isMenuOpen ? "true" : "false"}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
@@ -143,20 +155,35 @@ const Header = () => {
               </button>
             </div>
             <nav className="flex flex-col space-y-6">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name}
-                  href={link.href}
-                  className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
+              {navLinks.map((link) => 
+                link.href ? (
+                  <a 
+                    key={link.name}
+                    href={link.href}
+                    className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <button
+                    key={link.name}
+                    onClick={() => {
+                      link.onClick?.();
+                      setIsMenuOpen(false);
+                    }}
+                    className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                  >
+                    {link.name}
+                  </button>
+                )
+              )}
             </nav>
           </div>
         </div>
       )}
+
+      <Education isOpen={isEducationOpen} onClose={() => setIsEducationOpen(false)} />
     </>
   );
 };

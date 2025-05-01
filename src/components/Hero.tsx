@@ -36,7 +36,7 @@ const Hero = () => {
             <AnimatedElement animation="fade" delay={0.5}>
               <div className="w-full md:w-3/4 aspect-video bg-stone-300 dark:bg-dark-surface overflow-hidden mb-8 shadow-md">
                 <img 
-                  src="/images/profile.jpeg" 
+                  src="/images/profile.webp" 
                   alt="Tafara Mutsvedu" 
                   className="w-full h-full object-cover"
                 />

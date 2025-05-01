@@ -1,12 +1,24 @@
-import React from 'react';
-import { ArrowUpRight, ExternalLink, Github } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUpRight, ExternalLink, Github, ArrowRight, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+type Project = {
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  github: string;
+  demo: string;
+  color?: string;
+  status?: string;
+};
 
 const Projects = () => {
-  const projects = [
+  const projects: Project[] = [
     {
       title: 'AI-Powered Fake News Detector',
       description: 'A sophisticated web application that leverages machine learning and natural language processing to detect misinformation in news articles. Features real-time analysis, user authentication and collaborative voting system.',
-      image: '/images/fakenews.png',
+      image: '/images/fakenews.webp',
       tags: [
         'React',
         'TypeScript',
@@ -15,125 +27,164 @@ const Projects = () => {
         'Tailwind CSS',
         'Machine Learning'
       ],
-      github: 'https://github.com/Tafaraa/fake-news-detector',
-      demo: 'https://fakenewsdetectorx.netlify.app',
-      status: 'In Development',
-    
-    }
-    ,
+      github: 'https://github.com/Tafaraa/',
+      demo: 'https://fakenewsdetector.vercel.app/',
+      color: 'from-blue-500/20 to-purple-500/20'
+    },
     {
       title: 'E-Commerce Platform',
       description: 'Full-stack e-commerce solution with microservices architecture. Features include real-time patient management, secure payment processing and advanced analytics dashboard. Handles 100+ daily active users with 99.9% uptime.',
-      image: '/images/rma.png',
+      image: '/images/rma.webp',
       tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Stripe'],
       github: 'https://github.com/Tafaraa',
       demo: 'http://revivalmedicalaesthetics.com/',
-      status: 'Live'
-    },
-    {
-      title: 'Machine Learning Model',
-      description: 'Advanced predictive analytics system using ensemble learning methods. Achieved 94% accuracy in trend forecasting. Automated model retraining pipeline and real-time prediction API. Reduced processing time by 60% through optimization.',
-      image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1774&q=80',
-      tags: ['Python', 'TensorFlow', 'Scikit-learn', 'Docker', 'CI/CD', 'AWS'],
-      status: 'In Development'
-    },
-    {
-      title: 'Natural Language Processing Tool',
-      description: 'Enterprise-grade NLP solution for automated text analysis. Implements custom transformers for sentiment analysis and named entity recognition. Processes 1M+ documents daily with 95% accuracy. Reduced manual review time by 80%.',
-      image: 'https://images.unsplash.com/photo-1555952494-efd681c7e3f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
-      tags: ['Python', 'NLTK', 'SpaCy', 'FastAPI', 'Docker', 'Azure'],
-      status: 'Beta'
+      color: 'from-emerald-500/20 to-teal-500/20'
     }
   ];
 
-  return (
-    <section id="projects" className="py-20 md:py-32 bg-primary-900 text-primary-50">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-          <div className="md:col-span-1">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">PROJECTS</h2>
-          </div>
-          
-          <div className="md:col-span-2">
-            <p className="text-xl leading-relaxed text-primary-100">
-              A showcase of my technical expertise through real-world applications in software development and data science. Each project demonstrates my commitment to clean code, scalable architecture, and impactful solutions.
-            </p>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {projects.map((project, index) => (
-            <div key={index} className="group bg-primary-800/50 p-6 rounded-lg">
-              <div className="aspect-video overflow-hidden mb-6 rounded-lg relative group">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute top-4 right-4 bg-primary-900/90 px-3 py-1 rounded-full text-sm font-medium">
-                  {project.status}
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-medium">{project.title}</h3>
-                <div className="flex space-x-4">
-                  <a 
-                    href={project.github} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-primary-50 hover:text-primary-200 transition-colors"
-                    title="View Source Code"
-                  >
-                    <Github size={20} />
-                  </a>
-                  <a 
-                    href={project.demo} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-primary-50 hover:text-primary-200 transition-colors"
-                    title="Live Demo"
-                  >
-                    <ExternalLink size={20} />
-                  </a>
-                </div>
-              </div>
-              
-              <p className="text-primary-200 mb-6 line-clamp-3">{project.description}</p>
-              
-              <div className="flex flex-wrap gap-3 mb-6">
-                {project.tags.map((tag, tagIndex) => (
-                  <span 
-                    key={tagIndex}
-                    className="px-3 py-1 bg-primary-700/50 rounded-full text-primary-100 text-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+  const [activeProject, setActiveProject] = useState(0);
 
-              <div className="flex space-x-4">
-                <a 
-                  href={project.github} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-primary-50 hover:text-primary-200 transition-colors"
-                >
-                  <span>View Source</span>
-                  <ArrowUpRight size={16} />
-                </a>
-                <a 
-                  href={project.demo} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-primary-50 hover:text-primary-200 transition-colors"
-                >
-                  <span>Take A Look</span>
-                  <ArrowUpRight size={16} />
-                </a>
+  const nextProject = () => {
+    setActiveProject((prev) => (prev + 1) % projects.length);
+  };
+
+  const prevProject = () => {
+    setActiveProject((prev) => (prev - 1 + projects.length) % projects.length);
+  };
+
+
+
+  return (
+    <section id="projects" className="relative py-20 md:py-32 overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-50 to-white dark:from-dark-surface dark:to-dark-card opacity-80" />
+
+      <div className="container relative mx-auto px-4">
+        <motion.h2 
+          className="text-4xl md:text-5xl font-bold mb-16 text-stone-900 dark:text-white text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          FEATURED WORK
+        </motion.h2>
+
+        <div className="relative max-w-6xl mx-auto">
+
+          
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeProject}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="relative z-10"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${projects[activeProject].color} blur-3xl opacity-20 dark:opacity-10`} />
+              
+              <div className="relative bg-white/90 dark:bg-gray-900/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-stone-100 dark:border-gray-800">
+                <div className="md:grid md:grid-cols-2 gap-0">
+                  <div className="relative h-full overflow-hidden">
+                    <motion.img
+                      src={projects[activeProject].image}
+                      alt={projects[activeProject].title}
+                      className="w-full h-full object-cover object-center transition-transform duration-500"
+                      initial={{ scale: 1.2 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  <div className="p-8 md:p-12">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-2xl font-bold text-stone-900 dark:text-white">
+                          {projects[activeProject].title}
+                        </h3>
+                        <div className="flex space-x-1">
+                          <a
+                            href={projects[activeProject].github}
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-2 text-stone-600 hover:text-stone-900 dark:text-gray-300 dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-dark-border/50 rounded-full"
+                            title="View Source"
+                          >
+                            <Github size={20} />
+                          </a>
+                          <a
+                            href={projects[activeProject].demo}
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-2 text-stone-600 hover:text-stone-900 dark:text-gray-300 dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-dark-border/50 rounded-full"
+                            title="Take a Look"
+                          >
+                            <ExternalLink size={20} />
+                          </a>
+                        </div>
+                      </div>
+
+                      <p className="text-lg text-stone-600 dark:text-gray-300 mb-8">
+                        {projects[activeProject].description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-8">
+                        {projects[activeProject].tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-4 py-1.5 text-sm font-medium text-stone-700 dark:text-white bg-stone-100 dark:bg-dark-surface/80 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex justify-between items-center pt-4 border-t border-stone-200 dark:border-gray-700">
+                        <button
+                          onClick={prevProject}
+                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-stone-700 hover:text-stone-900 dark:text-white transition-all shadow-sm hover:shadow"
+                          aria-label="Previous project"
+                        >
+                          <ArrowLeft size={20} />
+                          <span className="font-medium">Previous</span>
+                        </button>
+                        <button
+                          onClick={nextProject}
+                          className="flex items-center gap-2 px-4 py-2 rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-stone-700 hover:text-stone-900 dark:text-white transition-all shadow-sm hover:shadow"
+                          aria-label="Next project"
+                        >
+                          <span className="font-medium">Next</span>
+                          <ArrowRight size={20} />
+                        </button>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+
               </div>
-            </div>
-          ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Project indicators */}
+          <div className="flex justify-center mt-8 space-x-3">
+            {projects.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveProject(index)}
+                className={`h-3 rounded-full transition-all duration-300 ${
+                  index === activeProject 
+                    ? 'bg-stone-800 dark:bg-white w-10 shadow-md' 
+                    : 'bg-stone-300 dark:bg-gray-600 w-3 hover:bg-stone-400 dark:hover:bg-gray-500'
+                }`}
+                aria-label={`Go to project ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
         
         <div className="mt-16 text-center">

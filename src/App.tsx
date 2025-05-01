@@ -11,6 +11,7 @@ import { ArrowUp } from 'lucide-react';
 
 // Lazy load non-critical components
 const About = lazy(() => import('./components/About'));
+const Education = lazy(() => import('./components/Education'));
 const Skills = lazy(() => import('./components/Skills'));
 const Projects = lazy(() => import('./components/Projects'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -87,9 +88,16 @@ const MainLayout = () => {
       <Header />
       <main>
         <Hero />
-        <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+        <Suspense fallback={<div className="py-20 md:py-32"><LoadingSpinner /></div>}>
           <About />
+        </Suspense>
+        <Suspense fallback={<div className="py-20 md:py-32"><LoadingSpinner /></div>}>
+          <Education isOpen={false} onClose={() => {}} />
+        </Suspense>
+        <Suspense fallback={<div className="py-20 md:py-32"><LoadingSpinner /></div>}>
           <Skills />
+        </Suspense>
+        <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
           <Projects />
           <Support />
           <Contact />
