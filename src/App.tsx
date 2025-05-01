@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Support from './components/Support';
 import Footer from './components/Footer';
-import LocationLanding from './components/LocationLanding';
+import LoadingSpinner from './components/LoadingSpinner';
+import ErrorBoundary from './components/ErrorBoundary';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { ArrowUp } from 'lucide-react';
 
+// Lazy load non-critical components
+const About = lazy(() => import('./components/About'));
+const Skills = lazy(() => import('./components/Skills'));
+const Projects = lazy(() => import('./components/Projects'));
+const Contact = lazy(() => import('./components/Contact'));
+const Support = lazy(() => import('./components/Support'));
+const LocationLanding = lazy(() => import('./components/LocationLanding'));
+
 const MainLayout = () => {
-  const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
-  const [dotPosition, setDotPosition] = useState({ x: -100, y: -100 });
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState('');
   const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
       requestAnimationFrame(() => {
-        setCursorPosition({ x: e.clientX, y: e.clientY });
-        setDotPosition({ x: e.clientX, y: e.clientY });
+        if (cursorRef.current) {
+          cursorRef.current.style.transform = `translate3d(${e.clientX - 10}px, ${e.clientY - 10}px, 0)`;
+        }
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${e.clientX - 2}px, ${e.clientY - 2}px, 0)`;
+        }
       });
     };
 
@@ -45,8 +54,13 @@ const MainLayout = () => {
       updateCurrentSection();
     };
 
-    setCursorPosition({ x: -100, y: -100 });
-    setDotPosition({ x: -100, y: -100 });
+    // Initialize cursor position off-screen
+    if (cursorRef.current) {
+      cursorRef.current.style.transform = `translate3d(-100px, -100px, 0)`;
+    }
+    if (dotRef.current) {
+      dotRef.current.style.transform = `translate3d(-100px, -100px, 0)`;
+    }
 
     window.addEventListener('mousemove', updateCursorPosition);
     window.addEventListener('scroll', handleScroll);
@@ -69,39 +83,38 @@ const MainLayout = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 font-sans section-${currentSection} main-portfolio`}>
+    <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 dark:from-dark-bg dark:to-dark-surface text-stone-900 dark:text-dark-text font-sans section-${currentSection} main-portfolio`}>
       <Header />
       <main>
         <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Support />
-        <Contact />
+        <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+          <About />
+          <Skills />
+          <Projects />
+          <Support />
+          <Contact />
+        </Suspense>
       </main>
       <Footer />
       
       <div
+        ref={cursorRef}
         className="custom-cursor opacity-0 transition-opacity duration-300 hidden md:block"
-        style={{
-          transform: `translate3d(${cursorPosition.x - 10}px, ${cursorPosition.y - 10}px, 0)`,
-        }}
       />
       <div
+        ref={dotRef}
         className="cursor-dot opacity-0 transition-opacity duration-300 hidden md:block"
-        style={{
-          transform: `translate3d(${dotPosition.x - 2}px, ${dotPosition.y - 2}px, 0)`,
-        }}
       />
 
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className={`fixed bottom-6 right-6 bg-stone-900/60 backdrop-blur-sm text-stone-50 p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-500 ${
+        className={`fixed bottom-6 right-6 bg-stone-900/60 dark:bg-dark-surface/80 backdrop-blur-sm text-stone-50 dark:text-dark-text p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-stone-900 dark:hover:bg-dark-border focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent ${
           showScrollButton ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
         }`}
         aria-label="Scroll to top"
+        title="Scroll to top"
       >
-        <ArrowUp size={24} />
+        <ArrowUp size={24} aria-hidden="true" />
       </button>
     </div>
   );
@@ -109,24 +122,68 @@ const MainLayout = () => {
 
 function App() {
   return (
-    <HelmetProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainLayout />} />
-          <Route path="/best-software-developer-:location" element={<LocationLanding />} />
-          <Route path="/software-developer-:location" element={<LocationLanding />} />
-          <Route path="/remote-software-developer" element={<LocationLanding />} />
-          <Route path="/hire-remote-fullstack-developer" element={<LocationLanding />} />
-          <Route path="/remote-react-developer-usa" element={<LocationLanding />} />
-          <Route path="/remote-developer-south-africa" element={<LocationLanding />} />
-          <Route path="/remote-data-scientist-south-africa" element={<LocationLanding />} />
-          <Route path="/react-developer-south-africa" element={<LocationLanding />} />
-          <Route path="/fullstack-developer-south-africa" element={<LocationLanding />} />
-          <Route path="/data-scientist-south-africa" element={<LocationLanding />} />
+    <ErrorBoundary>
+      <ThemeProvider>
+        <HelmetProvider>
+          <Router>
+          <Routes>
+            <Route path="/" element={<MainLayout />} />
+          <Route path="/best-software-developer-:location" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/software-developer-:location" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/remote-software-developer" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/hire-remote-fullstack-developer" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/remote-react-developer-usa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/remote-developer-south-africa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/remote-data-scientist-south-africa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/react-developer-south-africa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/fullstack-developer-south-africa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/data-scientist-south-africa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
           <Route path="*" element={<MainLayout />} />
         </Routes>
-      </Router>
-    </HelmetProvider>
+          </Router>
+        </HelmetProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

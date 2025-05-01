@@ -1,4 +1,5 @@
-import React from 'react';
+// No React import needed with modern JSX transform
+import AnimatedElement from './AnimatedElement';
 
 const Skills = () => {
   const technicalSkills = [
@@ -32,27 +33,30 @@ const Skills = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="md:col-span-1">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tighter text-stone-900">SKILLS</h2>
+            <AnimatedElement animation="slide-in" delay={0.2}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tighter text-stone-900 dark:text-dark-text">SKILLS</h2>
+            </AnimatedElement>
           </div>
           
           <div className="md:col-span-2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
-                <h3 className="text-2xl font-medium mb-8 text-stone-900">Technical Proficiency</h3>
+                <AnimatedElement animation="fade" delay={0.3}>
+                  <h3 className="text-2xl font-medium mb-8 text-stone-900 dark:text-dark-text">Technical Proficiency</h3>
+                </AnimatedElement>
                 
                 <div className="space-y-8">
                   {technicalSkills.map((skill) => (
                     <div key={skill.name} className="group">
                       <div className="flex justify-between mb-2">
-                        <span className="font-medium text-stone-900">{skill.name}</span>
-                        <span className="text-stone-600">{skill.level}%</span>
+                        <span className="font-medium text-stone-900 dark:text-dark-text">{skill.name}</span>
+                        <span className="text-stone-600 dark:text-dark-muted">{skill.level}%</span>
                       </div>
-                      <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-stone-200 dark:bg-dark-border h-2 rounded-full overflow-hidden">
                         <div 
-                          className="bg-stone-900 h-full rounded-full relative group-hover:bg-stone-800 transition-all duration-300"
-                          style={{ width: `${skill.level}%` }}
+                          className={`bg-stone-900 dark:bg-dark-accent h-full rounded-full relative group-hover:bg-stone-800 dark:group-hover:bg-dark-accent/80 transition-all duration-300 w-[${skill.level}%]`}
                         >
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-stone-700 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-stone-700 dark:bg-dark-text rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                       </div>
                     </div>
@@ -61,13 +65,15 @@ const Skills = () => {
               </div>
               
               <div>
-                <h3 className="text-2xl font-medium mb-8 text-stone-900">Additional Skills</h3>
+                <AnimatedElement animation="fade" delay={0.4}>
+                  <h3 className="text-2xl font-medium mb-8 text-stone-900 dark:text-dark-text">Additional Skills</h3>
+                </AnimatedElement>
                 
                 <div className="flex flex-wrap gap-3">
                   {otherSkills.map((skill) => (
                     <span 
                       key={skill}
-                      className="px-4 py-2 border border-stone-900 text-stone-900 rounded-lg font-medium hover:bg-stone-900 hover:text-stone-50 transition-colors cursor-default"
+                      className="px-4 py-2 border border-stone-900 dark:border-dark-text text-stone-900 dark:text-dark-text rounded-lg font-medium hover:bg-stone-900 dark:hover:bg-dark-border hover:text-stone-50 dark:hover:text-dark-text transition-colors cursor-default"
                     >
                       {skill}
                     </span>
@@ -75,17 +81,21 @@ const Skills = () => {
                 </div>
                 
                 <div className="mt-12">
-                  <h3 className="text-2xl font-medium mb-8 text-stone-900">Education</h3>
+                  <AnimatedElement animation="fade" delay={0.5}>
+                    <h3 className="text-2xl font-medium mb-8 text-stone-900 dark:text-dark-text">Education</h3>
+                  </AnimatedElement>
                   
-                  <div className="border-l-2 border-stone-900 pl-6">
-                    <h4 className="text-xl font-medium text-stone-900">Computer Science Graduate & Data Science student</h4>
-                    <p className="text-stone-600 mb-2">Eduvos</p>
-                    <p className="mb-2 text-stone-800">BSc. Graduate pursuing Honors</p>
-                    <p className="text-stone-700">
-                      Completed my degree with a focus on software development and currently a data science student, 
-                      pursuing honors.
-                    </p>
-                  </div>
+                  <AnimatedElement animation="slide-in" delay={0.6}>
+                    <div className="border-l-2 border-stone-900 dark:border-dark-accent pl-6">
+                      <h4 className="text-xl font-medium text-stone-900 dark:text-dark-text">Computer Science Graduate & Data Science student</h4>
+                      <p className="text-stone-600 dark:text-dark-muted mb-2">Eduvos</p>
+                      <p className="mb-2 text-stone-800 dark:text-dark-text">BSc. Graduate pursuing Honors</p>
+                      <p className="text-stone-700 dark:text-dark-muted">
+                        Completed my degree with a focus on software development and currently a data science student, 
+                        pursuing honors.
+                      </p>
+                    </div>
+                  </AnimatedElement>
                 </div>
               </div>
             </div>

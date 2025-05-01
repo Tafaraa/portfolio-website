@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="IBmdPGgIuIK3QnPzvC7Tb9gjz_BacuX64AR8jZzqI18" />
     <meta name="msvalidate.01" content="92167B806D00DB6C07EEFE9B6FE7F2C0" />
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Standard favicon -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -51,10 +51,38 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://mutsvedutafara.com/">
 
-    <!-- Fonts -->
+    <!-- Variable fonts with font-display: swap for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Inter variable font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- Poppins variable font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&display=swap" rel="stylesheet">
+    </noscript>
+    
+    <!-- Font loading optimization -->
+    <style>
+      /* Font optimization with font-display: swap */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      
+      @font-face {
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
     
 <!-- Structured Data / JSON-LD -->
 <script type="application/ld+json">
@@ -179,13 +207,22 @@
     </script>
 
     <!-- Additional Meta Tags -->
-    <meta name="theme-color" content="#ffffff">
+    <!-- Theme color for browser UI (with Firefox compatibility) -->  
+    <meta name="color-scheme" content="light dark">
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1a1a">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="application-name" content="Tafara Mutsvedu Portfolio">
     <meta name="apple-mobile-web-app-title" content="Tafara Mutsvedu">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="format-detection" content="telephone=no">
+    
+    <!-- Performance optimizations -->
+    <link rel="preload" as="image" href="/profile.jpeg" importance="high">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://api.mapbox.com https://events.mapbox.com; connect-src 'self' https://api.mapbox.com https://events.mapbox.com https://api.emailjs.com; frame-src 'self';">
+    <meta name="referrer" content="no-referrer-when-downgrade">
   </head>
   <body>
     <div id="root"></div>

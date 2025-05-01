@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class', // Enable dark mode with class strategy
   theme: {
     extend: {
       fontFamily: {
@@ -33,6 +34,15 @@ export default {
           700: '#44403c',
           800: '#292524',
           900: '#1c1917',
+        },
+        // Dark mode colors
+        dark: {
+          bg: '#121212',
+          surface: '#1e1e1e',
+          border: '#2a2a2a',
+          text: '#e0e0e0',
+          muted: '#a0a0a0',
+          accent: '#0ea5e9',
         },
         // Accent colors
         accent: {
