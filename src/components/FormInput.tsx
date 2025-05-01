@@ -82,7 +82,7 @@ const FormInput: React.FC<FormInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={inputClasses}
-          aria-invalid={Boolean(error)}
+          aria-invalid={error ? 'true' : 'false'}
           aria-describedby={error ? `${id}-error` : undefined}
         />
       ) : (
@@ -93,14 +93,14 @@ const FormInput: React.FC<FormInputProps> = ({
           value={value}
           onChange={onChange}
           required={required}
-          autoComplete={autoComplete || (type === 'email' ? 'email' : type === 'tel' ? 'tel' : type === 'name' ? 'name' : 'off')}
+          autoComplete={autoComplete || (type === 'email' ? 'email' : type === 'tel' ? 'tel' : type === 'text' ? 'off' : 'off')}
           pattern={pattern}
           minLength={minLength}
           maxLength={maxLength}
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={inputClasses}
-          aria-invalid={Boolean(error)}
+          aria-invalid={error ? 'true' : 'false'}
           aria-describedby={error ? `${id}-error` : undefined}
         />
       )}

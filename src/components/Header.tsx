@@ -10,7 +10,6 @@ const Header = () => {
   const [displayText, setDisplayText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const [showMap, setShowMap] = useState(false);
-  const [showEducation, setShowEducation] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,8 +78,6 @@ const Header = () => {
     };
   }, []);
 
-  // No need for complex map initialization with SimpleMap component
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -116,17 +113,6 @@ const Header = () => {
               </button>
             </AnimatedElement>
             
-            <AnimatedElement animation="fade" delay={0.3}>
-              <button
-                className="group flex items-center text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
-                onClick={() => setShowEducation(true)}
-                aria-label="View education details"
-              >
-                <GraduationCap className="w-4 h-4 mr-2 group-hover:text-stone-600 dark:group-hover:text-dark-accent" aria-hidden="true" />
-                <span>Education</span>
-              </button>
-            </AnimatedElement>
-            
             <nav className="flex items-center space-x-8">
               {navLinks.map((link, index) => (
                 <AnimatedElement key={link.name} animation="fade" delay={0.4 + index * 0.1}>
@@ -147,7 +133,7 @@ const Header = () => {
             <button 
               className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" 
               onClick={toggleMenu}
-              aria-expanded={Boolean(isMenuOpen)}
+              aria-expanded={isMenuOpen ? 'true' : 'false'}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
@@ -162,9 +148,8 @@ const Header = () => {
           <div className="container mx-auto px-6 py-8">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold dark:text-dark-text">Menu</h2>
-              
               <button 
-                className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" 
+                className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                 onClick={toggleMenu}
                 aria-label="Close menu"
               >
@@ -174,22 +159,18 @@ const Header = () => {
             <nav className="flex flex-col space-y-6">
               <button
                 className="group flex items-start text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
-                onClick={() => {
-                  setShowMap(true);
-                  setIsMenuOpen(false);
-                }}
+                onClick={() => setShowMap(true)}
                 aria-label="View location on map"
               >
                 <MapPin className="w-4 h-4 mt-1 mr-2 group-hover:text-stone-600 dark:group-hover:text-dark-accent" aria-hidden="true" />
                 <span>Based in Midrand <br />
                 South Africa</span>
               </button>
-              
               {navLinks.map((link) => (
                 <a 
                   key={link.name}
                   href={link.href}
-                  className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors py-2"
+                  className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.name}
@@ -200,34 +181,30 @@ const Header = () => {
         </div>
       )}
 
-      {/* Map Modal */}
+      {/* Map Dialog */}
       {showMap && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 dark:bg-black/80">
-          <div className="bg-white dark:bg-dark-surface rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b dark:border-dark-border">
-              <h3 className="text-xl font-semibold dark:text-dark-text">My Location</h3>
+        <div className="fixed inset-0 z-50 bg-white dark:bg-dark-surface overflow-y-auto">
+          <div className="container mx-auto px-6 py-8">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold dark:text-dark-text">Location</h2>
               <button 
+                className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                 onClick={() => setShowMap(false)}
-                className="text-stone-500 hover:text-stone-900 dark:text-dark-muted dark:hover:text-dark-text transition-colors"
                 aria-label="Close map"
               >
                 <X size={24} aria-hidden="true" />
               </button>
             </div>
-            
-            <div className="w-full h-96 relative overflow-hidden">
+            <div className="w-full h-96 relative overflow-hidden rounded-lg">
               <SimpleMap 
-                center={[28.1325, -25.9981]} 
-                zoom={12} 
-                title="Location Information" 
-                description="Midrand, Gauteng, South Africa" 
-                className="w-full h-full" 
+                title="Midrand"
+                description="Midrand, Gauteng, South Africa"
+                className="w-full h-full"
               />
             </div>
-            
-            <div className="p-4 border-t dark:border-dark-border">
-              <p className="text-stone-600 dark:text-dark-muted">
-                <MapPin className="inline-block mr-2" size={16} aria-hidden="true" />
+            <div className="mt-6 text-center">
+              <p className="text-stone-600 dark:text-dark-muted text-lg">
+                <MapPin className="inline-block mr-2" size={20} aria-hidden="true" />
                 Midrand, Gauteng, South Africa
               </p>
             </div>
