@@ -15,7 +15,6 @@ A modern, high-performance portfolio website showcasing my skills and experience
 - **Responsive Design**: Seamless experience across all devices and screen sizes
 - **Interactive UI**: Smooth animations and transitions for an engaging user experience
 - **Enhanced Project Showcase**: Immersive project carousel with improved navigation and optimized color scheme
-- **Location Integration**: Interactive map showing my location using Mapbox
 - **Contact Form**: Easy-to-use contact form with validation
 - **PWA Support**: Progressive Web App capabilities for offline access
 - **Dark/Light Mode**: Seamless theme switching with optimized contrast and readability
