@@ -68,10 +68,10 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="w-[95%] sm:w-[90%] md:w-[85%] max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-dark-surface rounded-lg shadow-xl pointer-events-auto p-4 sm:p-6 md:p-8"
+              className="w-[95%] sm:w-[90%] md:w-[85%] max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-xl pointer-events-auto p-4 sm:p-6 md:p-8"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold tracking-tighter text-stone-900 dark:text-dark-text">
+                <h2 className="text-3xl font-bold tracking-tighter text-stone-900 dark:text-white">
                   EDUCATION
                 </h2>
                 <button
@@ -79,7 +79,7 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                   className="p-2 hover:bg-stone-100 dark:hover:bg-dark-border rounded-full transition-colors"
                   aria-label="Close modal"
                 >
-                  <X className="w-6 h-6 text-stone-600 dark:text-dark-muted" />
+                  <X className="w-6 h-6 text-stone-600 dark:text-gray-300" />
                 </button>
               </div>
 
@@ -91,25 +91,25 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <div className="bg-stone-50 dark:bg-dark-border/20 rounded-lg p-8">
+                    <div className="bg-stone-50 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 md:p-8">
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
-                          <div className="p-3 bg-stone-100 dark:bg-dark-border rounded-full">
-                            <GraduationCap className="w-6 h-6 text-stone-900 dark:text-dark-text" />
+                          <div className="p-3 bg-stone-100 dark:bg-gray-700 rounded-full">
+                            <GraduationCap className="w-6 h-6 text-stone-900 dark:text-white" />
                           </div>
                         </div>
                         <div className="flex-grow">
                           <div className="flex justify-between items-start">
                             <div>
-                              <h3 className="text-xl font-semibold mb-2 text-stone-900 dark:text-dark-text">
+                              <h3 className="text-xl font-semibold mb-2 text-stone-900 dark:text-white">
                                 {item.degree}
                                 {item.current && (
-                                  <span className="ml-2 px-2 py-1 text-xs font-medium bg-primary-500/10 text-primary-500 dark:bg-primary-400/10 dark:text-primary-400 rounded">
+                                  <span className="ml-2 px-2 py-1 text-xs font-medium bg-primary-500/10 text-primary-500 dark:bg-primary-400/20 dark:text-primary-300 rounded">
                                     Current
                                   </span>
                                 )}
                               </h3>
-                              <p className="text-stone-600 dark:text-dark-muted mb-4">
+                              <p className="text-stone-600 dark:text-gray-300 mb-4">
                                 {item.institution} • {item.year}
                               </p>
                             </div>
@@ -124,14 +124,14 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                               </a>
                             )}
                           </div>
-                          <p className="text-stone-700 dark:text-dark-text mb-6">
+                          <p className="text-stone-700 dark:text-gray-200 mb-6">
                             {item.description}
                           </p>
                           <div className="space-y-3">
                             {item.achievements.map((achievement, i) => (
                               <div key={i} className="flex items-center gap-2">
-                                <Award className="w-4 h-4 text-stone-600 dark:text-dark-muted" />
-                                <span className="text-stone-700 dark:text-dark-text">
+                                <Award className="w-4 h-4 text-stone-600 dark:text-gray-300" />
+                                <span className="text-stone-700 dark:text-gray-200">
                                   {achievement}
                                 </span>
                               </div>

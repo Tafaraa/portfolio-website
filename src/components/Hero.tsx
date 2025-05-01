@@ -29,8 +29,8 @@ const Hero = () => {
           <div className="order-2 md:order-1">
             <AnimatedElement animation="slide-in" delay={0.2}>
               <h1 className="text-6xl md:text-8xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider">
-                S<span className="inline-block w-[1.05em] text-center">{oSymbol}</span>FTWARE<br />
-                DEVEL<span className="inline-block w-[1.05em] text-center">{oSymbol}</span>PER
+                S{oSymbol}FTWARE<br />
+                DEVEL{oSymbol}PER
               </h1>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.5}>
@@ -47,7 +47,7 @@ const Hero = () => {
           <div className="order-1 md:order-2">
             <AnimatedElement animation="slide-in" delay={0.3}>
               <h1 className="text-6xl md:text-8xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider">
-                D<span className="inline-block w-[1.05em] text-center">{aSymbol}</span>T<span className="inline-block w-[1.05em] text-center">{aSymbol}</span><br />
+                D{aSymbol}T{aSymbol}<br />
                 SCIENTIST
               </h1>
             </AnimatedElement>

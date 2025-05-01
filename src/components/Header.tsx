@@ -127,7 +127,8 @@ const Header = () => {
               <ThemeToggle />
             </AnimatedElement>  
           </nav>
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-4">
+            <ThemeToggle />
             <button 
               className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" 
               onClick={toggleMenu}
@@ -160,7 +161,7 @@ const Header = () => {
                   <a 
                     key={link.name}
                     href={link.href}
-                    className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -172,7 +173,7 @@ const Header = () => {
                       link.onClick?.();
                       setIsMenuOpen(false);
                     }}
-                    className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30"
                   >
                     {link.name}
                   </button>
