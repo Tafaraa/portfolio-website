@@ -136,7 +136,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [React](https://reactjs.org/)
 - [Vite](https://vitejs.dev/)
 - [TailwindCSS](https://tailwindcss.com/)
-- [Mapbox GL](https://www.mapbox.com/)
 - [Lucide Icons](https://lucide.dev/)
 - [EmailJS](https://www.emailjs.com/)
 - [Framer Motion](https://www.framer.com/motion/)

@@ -82,7 +82,7 @@ const FormInput: React.FC<FormInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={inputClasses}
-          aria-invalid={error ? 'true' : 'false'}
+          aria-invalid={error ? true : false}
           aria-describedby={error ? `${id}-error` : undefined}
         />
       ) : (
@@ -100,7 +100,7 @@ const FormInput: React.FC<FormInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={inputClasses}
-          aria-invalid={error ? 'true' : 'false'}
+          aria-invalid={error ? true : false}
           aria-describedby={error ? `${id}-error` : undefined}
         />
       )}
