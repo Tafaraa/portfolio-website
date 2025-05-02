@@ -207,11 +207,48 @@
     </script>
 
     <!-- Additional Meta Tags -->
-    <!-- Theme color for browser UI -->
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)">
-    <!-- Firefox theme color support -->
-    <meta name="color-scheme" content="light dark">
+    <!-- Theme color for browsers - single value for Firefox/Opera compatibility -->
+    <meta name="theme-color" content="#f8fafc" />
+    <!-- Color scheme preference for all browsers -->
+    <meta name="color-scheme" content="light dark" />
+    <!-- Firefox and Opera specific theme color -->
+    <meta name="msapplication-navbutton-color" content="#f8fafc" />
+    
+    <!-- JavaScript to update theme colors for all browsers including Firefox and Opera -->
+    <script>
+      (function() {
+        // Set initial theme colors based on user preference
+        const darkModePreferred = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const lightColor = '#f8fafc';
+        const darkColor = '#0f172a';
+        const themeColor = darkModePreferred ? darkColor : lightColor;
+        
+        // Update all theme color meta tags
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+        document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', themeColor);
+        
+        // Update theme colors when preference changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+          const newColor = e.matches ? darkColor : lightColor;
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', newColor);
+          document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', newColor);
+        });
+        
+        // Also update colors when theme toggle is clicked
+        document.addEventListener('DOMContentLoaded', () => {
+          const themeToggle = document.getElementById('theme-toggle');
+          if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+              const isDark = document.documentElement.classList.contains('dark');
+              const newColor = isDark ? darkColor : lightColor;
+              document.querySelector('meta[name="theme-color"]').setAttribute('content', newColor);
+              document.querySelector('meta[name="msapplication-navbutton-color"]').setAttribute('content', newColor);
+            });
+          }
+        });
+      })();
+    </script>
+    <!-- Firefox and other browsers theme color support already handled above -->
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="application-name" content="Tafara Mutsvedu Portfolio">
     <meta name="apple-mobile-web-app-title" content="Tafara Mutsvedu">

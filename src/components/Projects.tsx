@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowUpRight, ExternalLink, Github, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OptimizedImage from './OptimizedImage';
 
 type Project = {
   title: string;
@@ -86,14 +87,21 @@ const Projects = () => {
               <div className="relative bg-white/90 dark:bg-gray-900/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-stone-100 dark:border-gray-800">
                 <div className="md:grid md:grid-cols-2 gap-0">
                   <div className="relative h-full overflow-hidden">
-                    <motion.img
-                      src={projects[activeProject].image}
-                      alt={projects[activeProject].title}
-                      className="w-full h-full object-cover object-center transition-transform duration-500"
+                    <motion.div
                       initial={{ scale: 1.2 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.5 }}
-                    />
+                      className="w-full h-full"
+                    >
+                      <OptimizedImage
+                        src={projects[activeProject].image}
+                        alt={projects[activeProject].title}
+                        className="w-full h-full transition-transform duration-500"
+                        objectFit="cover"
+                        width={600}
+                        height={400}
+                      />
+                    </motion.div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
 

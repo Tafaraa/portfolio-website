@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowDown } from 'lucide-react';
 import AnimatedElement from './AnimatedElement';
+import OptimizedImage from './OptimizedImage';
 
 const Hero = () => {
   const [oSymbol, setOSymbol] = useState("O");
@@ -35,10 +36,12 @@ const Hero = () => {
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.5}>
               <div className="w-full md:w-3/4 aspect-video bg-stone-300 dark:bg-dark-surface overflow-hidden mb-8 shadow-md">
-                <img 
+                <OptimizedImage 
                   src="/images/profile.webp" 
                   alt="Tafara Mutsvedu" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full"
+                  objectFit="cover"
+                  priority={true} /* LCP image, load with priority */
                 />
               </div>
             </AnimatedElement>
