@@ -47,11 +47,14 @@ const Contact = () => {
       // Add a small delay to prevent rate limiting and show loading state
       await new Promise(resolve => setTimeout(resolve, 500));
       
+      // Initialize EmailJS with your user ID
+      emailjs.init(import.meta.env.VITE_EMAILJS_USER_ID || '');
+      
       const result = await emailjs.sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID || '', 
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+        import.meta.env.VITE_EMAILJS_SERVICE_ID, 
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         form.current!,
-        import.meta.env.VITE_EMAILJS_USER_ID || ''
+        import.meta.env.VITE_EMAILJS_USER_ID
       );
 
       if (result.text === 'OK') {

@@ -29,7 +29,7 @@ const Projects = () => {
         'Machine Learning'
       ],
       github: 'https://github.com/Tafaraa/',
-      demo: 'https://fakenewsdetector.vercel.app/',
+      demo: 'https://fakenewsdetectorx.netlify.app/',
       color: 'from-blue-500/20 to-purple-500/20'
     },
     {
