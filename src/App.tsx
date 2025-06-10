@@ -1,22 +1,22 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Footer from './components/Footer';
-import LoadingSpinner from './components/LoadingSpinner';
-import ErrorBoundary from './components/ErrorBoundary';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import LoadingSpinner from './components/ui/LoadingSpinner';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ArrowUp } from 'lucide-react';
 
 // Lazy load non-critical components
-const About = lazy(() => import('./components/About'));
-const Education = lazy(() => import('./components/Education'));
-const Skills = lazy(() => import('./components/Skills'));
-const Projects = lazy(() => import('./components/Projects'));
-const Contact = lazy(() => import('./components/Contact'));
-const Support = lazy(() => import('./components/Support'));
-const LocationLanding = lazy(() => import('./components/LocationLanding'));
+const About = lazy(() => import('./pages/about'));
+const Education = lazy(() => import('./pages/education'));
+const Skills = lazy(() => import('./pages/skills'));
+const Projects = lazy(() => import('./pages/projects'));
+const Contact = lazy(() => import('./pages/contact'));
+const Support = lazy(() => import('./pages/support'));
+const LocationLanding = lazy(() => import('./pages/locationLanding'));
+const Hero = lazy(() => import('./pages/home'));
 
 const MainLayout = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -133,7 +133,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <HelmetProvider>
-          <Router>
+          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             <Route path="/" element={<MainLayout />} />
           <Route path="/best-software-developer-:location" element={

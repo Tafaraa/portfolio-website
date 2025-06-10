@@ -12,21 +12,18 @@ const About = () => {
           
           <div className="md:col-span-2 space-y-8">
             <p className="text-xl leading-relaxed text-primary-100">
-              I'm a passionate Software Developer and Data Scientist with a strong foundation in both fields. 
-              As an early graduate, I've focused on building a diverse skill set that allows me to create 
-              innovative solutions at the intersection of software development and data science.
+            I’m a software engineer and data scientist with a genuine passion for building purposeful tech. 
+            From intuitive web apps to data-driven insights, I thrive at the intersection of creativity and logic—where ideas come alive through code.
             </p>
             
             <p className="text-xl leading-relaxed text-primary-100">
-              My journey in technology began with a curiosity about how software systems work and evolved into 
-              a deep interest in extracting meaningful insights from data. I enjoy tackling complex problems and 
-              transforming raw data into actionable intelligence.
+            My journey began with a curiosity for how tech shapes the world and evolved into a mission to build tools that solve real-world challenges. 
+            Whether launching projects as an entrepreneur or collaborating with others, I’m energized by turning ideas into solutions that make life better.
             </p>
             
             <p className="text-xl leading-relaxed text-primary-100">
-              I'm constantly learning and expanding my knowledge in emerging technologies and methodologies. 
-              My goal is to contribute to projects that make a positive impact through innovative software 
-              solutions and data-driven decision making.
+            I’m always learning, improving, and pushing the boundaries of what’s possible with software and data. 
+            I aim to be part of teams and initiatives that drive positive change—locally and globally—through smart, scalable tech.
             </p>
             
             <div className="pt-8">

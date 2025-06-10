@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowDown } from 'lucide-react';
-import AnimatedElement from './AnimatedElement';
-import OptimizedImage from './OptimizedImage';
+import AnimatedElement from '../../components/ui/AnimatedElement';
+import OptimizedImage from '../../components/ui/OptimizedImage';
 
 const Hero = () => {
   const [oSymbol, setOSymbol] = useState("O");

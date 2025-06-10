@@ -1,5 +1,5 @@
 // No React import needed with modern JSX transform
-import AnimatedElement from './AnimatedElement';
+import AnimatedElement from '../../components/ui/AnimatedElement';
 
 const Skills = () => {
   const technicalSkills = [

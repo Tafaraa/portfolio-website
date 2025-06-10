@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ArrowUpRight, ExternalLink, Github, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import OptimizedImage from './OptimizedImage';
+import OptimizedImage from '../../components/ui/OptimizedImage';
 
 type Project = {
   title: string;
@@ -16,6 +16,25 @@ type Project = {
 
 const Projects = () => {
   const projects: Project[] = [
+
+    {
+      title: 'E-Commerce Platform',
+      description: 'Full-stack e-commerce solution with microservices architecture. Features include real-time patient management, secure payment processing and advanced analytics dashboard. Handles 100+ daily active users with 99.9% uptime.',
+      image: '/images/rma.webp',
+      tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Stripe'],
+      github: 'https://github.com/Tafaraa',
+      demo: 'http://revivalmedicalaesthetics.com/',
+      color: 'from-emerald-500/20 to-teal-500/20'
+    },
+    {
+      title: 'AI-Powered Developer Skill Analyzer – SkillLens',
+      description: 'A smart web application designed to evaluate GitHub repositories and identify developer skill levels, tech stack diversity, and growth trends. Built with a modular backend and a sleek, responsive frontend, SkillLens provides real-time analysis, skill benchmarking, and personalized improvement suggestions. Future updates include automated job matching, collaborative comparisons, and AI-driven learning path recommendations.',
+      image: '/images/SkillLens.webp',
+      tags: ['React', 'TypeScript', 'FastAPI', 'Vercel', 'Stripe','Tailwind CSS','Data Visualization'],
+      github: 'https://github.com/Tafaraa',
+      demo: 'https://skill-lens.vercel.app/',
+      color: 'from-emerald-500/20 to-teal-500/20'
+    },
     {
       title: 'AI-Powered Fake News Detector',
       description: 'A sophisticated web application that leverages machine learning and natural language processing to detect misinformation in news articles. Features real-time analysis, user authentication and collaborative voting system.',
@@ -31,16 +50,8 @@ const Projects = () => {
       github: 'https://github.com/Tafaraa/',
       demo: 'https://fakenewsdetectorx.netlify.app/',
       color: 'from-blue-500/20 to-purple-500/20'
-    },
-    {
-      title: 'E-Commerce Platform',
-      description: 'Full-stack e-commerce solution with microservices architecture. Features include real-time patient management, secure payment processing and advanced analytics dashboard. Handles 100+ daily active users with 99.9% uptime.',
-      image: '/images/rma.webp',
-      tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Stripe'],
-      github: 'https://github.com/Tafaraa',
-      demo: 'http://revivalmedicalaesthetics.com/',
-      color: 'from-emerald-500/20 to-teal-500/20'
     }
+    
   ];
 
   const [activeProject, setActiveProject] = useState(0);
@@ -85,21 +96,20 @@ const Projects = () => {
               <div className={`absolute inset-0 bg-gradient-to-br ${projects[activeProject].color} blur-3xl opacity-20 dark:opacity-10`} />
               
               <div className="relative bg-white/90 dark:bg-gray-900/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-stone-100 dark:border-gray-800">
-                <div className="md:grid md:grid-cols-2 gap-0">
-                  <div className="relative h-full overflow-hidden">
+                <div className="md:grid md:grid-cols-2 gap-8">
+                  <div className="relative aspect-[4/3] md:aspect-auto md:h-full overflow-hidden">
                     <motion.div
                       initial={{ scale: 1.2 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.5 }}
-                      className="w-full h-full"
+                      className="w-full h-full flex items-center justify-center"
                     >
                       <OptimizedImage
                         src={projects[activeProject].image}
                         alt={projects[activeProject].title}
-                        className="w-full h-full transition-transform duration-500"
-                        objectFit="cover"
-                        width={600}
-                        height={400}
+                        className="max-w-full max-h-full object-contain"
+                        objectFit="contain"
+                        priority
                       />
                     </motion.div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -111,7 +121,7 @@ const Projects = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center justify-between mb-6">
                         <h3 className="text-2xl font-bold text-stone-900 dark:text-white">
                           {projects[activeProject].title}
                         </h3>
@@ -137,7 +147,7 @@ const Projects = () => {
                         </div>
                       </div>
 
-                      <p className="text-lg text-stone-600 dark:text-gray-300 mb-8">
+                      <p className="text-lg text-stone-600 dark:text-gray-300 mb-6">
                         {projects[activeProject].description}
                       </p>
 
@@ -200,7 +210,7 @@ const Projects = () => {
             href="https://github.com/Tafaraa" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 border border-primary-50 px-8 py-4 text-primary-50 hover:bg-primary-50 hover:text-primary-900 transition-colors"
+            className="inline-flex items-center space-x-2 px-8 py-4 border border-stone-900 text-stone-900 hover:bg-stone-900 hover:text-white dark:border-dark-text dark:text-dark-text dark:hover:bg-dark-text dark:hover:text-dark-surface transition-colors whitespace-nowrap md:w-auto min-w-0"
           >
             <span>View More on GitHub</span>
             <ArrowUpRight size={16} />

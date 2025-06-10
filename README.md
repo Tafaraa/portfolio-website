@@ -40,15 +40,19 @@ portfolio-website/
 ├── public/             # Static assets
 ├── src/                # Source code
 │   ├── components/     # React components
-│   │   ├── *.tsx         # Component files
-│   │   └── *.module.css  # Component-specific CSS modules
+│   │   ├── common/       # General purpose, widely used components
+│   │   ├── layout/       # Components for app layout (Header, Footer)
+│   │   └── ui/           # Reusable UI elements (buttons, inputs, images)
+│   ├── contexts/       # React Contexts for global state management
 │   ├── hooks/          # Custom React hooks
-│   ├── utils/          # Utility functions
-│   │   ├── lazyLoad.ts    # Component lazy loading utility
-│   │   ├── performance.ts # Performance optimization utilities
-│   │   └── imageOptimization.ts # Image optimization utilities
-│   ├── App.tsx         # Main application component
-│   └── main.tsx        # Application entry point
+│   ├── pages/          # Page-level components, usually mapped to routes
+│   │   ├── home/         # Homepage specific components
+│   │   └── */            # Other individual page directories (e.g., about, contact)
+│   ├── services/       # API integrations, data fetching, external services
+│   ├── types/          # TypeScript type definitions and interfaces
+│   ├── utils/          # Utility functions (lazy loading, performance, helpers)
+│   ├── App.tsx         # Main application component and routing setup
+│   └── main.tsx        # Application entry point (React DOM rendering)
 ├── index.html          # HTML template with optimized meta tags
 ├── vite.config.ts      # Enhanced Vite configuration with optimizations
 └── tailwind.config.js  # TailwindCSS configuration
@@ -134,10 +138,12 @@ The website is optimized for all modern browsers with special attention to cross
 
 3. Create a `.env` file in the root directory with the following variables:
    ```
-   REACT_APP_EMAILJS_SERVICE_ID=your_emailjs_service_id
-   REACT_APP_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
-   REACT_APP_EMAILJS_USER_ID=your_emailjs_user_id
+   VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
+   VITE_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
+   VITE_EMAILJS_USER_ID=your_emailjs_user_id
    ```
+
+**Important Note**: This `.env` file should **never** be committed to your public Git repository. It is already included in `.gitignore` to prevent accidental exposure of sensitive keys.
 
 4. Start the development server
    ```bash

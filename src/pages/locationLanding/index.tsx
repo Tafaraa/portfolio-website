@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowRight, MapPin, Code, Database, Brain } from 'lucide-react';
-import SEO from './SEO';
+import SEO from '../../components/ui/SEO';
+import { PageDataEntry } from '../../types';
 
 const LocationLanding = () => {
   const { location } = useParams();
@@ -11,9 +12,9 @@ const LocationLanding = () => {
   const bestDevLocation = pathname.match(/best-software-developer-([^/]+)/)?.[1];
   const regularDevLocation = pathname.match(/software-developer-([^/]+)/)?.[1];
   const remoteLocation = pathname.replace('/', ''); // For exact remote route matches
-  const currentLocation = bestDevLocation || regularDevLocation || remoteLocation || location;
+  const currentLocation = bestDevLocation || regularDevLocation || remoteLocation || location || '';
 
-  const pageData = {
+  const pageData: { [key: string]: PageDataEntry } = {
     // Location-specific pages
     'midrand': {
       title: 'Best Software Developer in Midrand',
@@ -111,7 +112,7 @@ const LocationLanding = () => {
     return null;
   }
 
-  const currentPageData = pageData[currentLocation as keyof typeof pageData];
+  const currentPageData = pageData[currentLocation];
   const canonicalUrl = `https://mutsvedutafara.com${pathname}`;
 
   return (

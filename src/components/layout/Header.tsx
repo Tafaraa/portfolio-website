@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import AnimatedElement from './AnimatedElement';
+import AnimatedElement from '../ui/AnimatedElement';
 import { Menu, X } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
-import Education from './Education';
+import ThemeToggle from '../ui/ThemeToggle';
+import Education from '../../pages/education';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -95,7 +95,7 @@ const Header = () => {
       <header className={`py-4 sticky top-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-white dark:bg-dark-surface shadow-md' : 'bg-transparent'}`}>
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <AnimatedElement animation="fade" delay={0.1}>
-            <a href="#home" className="flex items-center text-xl font-medium" aria-label="Go to home section">
+            <a href="#home" className="flex items-center text-xl font-medium focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" aria-label="Go to home section">
               <span className="dark:text-dark-text">{displayText}</span>
               <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity ml-1 dark:text-dark-text`} aria-hidden="true">|</span>
             </a>
@@ -108,14 +108,14 @@ const Header = () => {
                   {link.href ? (
                     <a 
                       href={link.href}
-                      className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                      className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     >
                       {link.name}
                     </a>
                   ) : (
                     <button
                       onClick={link.onClick}
-                      className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
+                      className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     >
                       {link.name}
                     </button>
@@ -161,7 +161,7 @@ const Header = () => {
                   <a 
                     key={link.name}
                     href={link.href}
-                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30"
+                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -173,7 +173,7 @@ const Header = () => {
                       link.onClick?.();
                       setIsMenuOpen(false);
                     }}
-                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30"
+                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                   >
                     {link.name}
                   </button>

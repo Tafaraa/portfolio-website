@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { isMobileDevice } from '../utils/performance';
+import { isMobileDevice } from '../../utils/performance';
 import styles from './OptimizedImage.module.css';
 
 interface OptimizedImageProps {
@@ -122,7 +122,7 @@ const OptimizedImage = ({
           onLoad={handleLoad}
           loading={priority ? 'eager' : 'lazy'}
           decoding={priority ? 'sync' : 'async'}
-          fetchPriority={priority ? 'high' : 'auto'}
+          {...{ fetchpriority: priority ? 'high' : 'auto' } as any}
           className={`${styles.image} ${isLoaded ? styles.loaded : styles.loading} ${
             objectFit === 'cover' ? styles.objectCover :
             objectFit === 'contain' ? styles.objectContain :

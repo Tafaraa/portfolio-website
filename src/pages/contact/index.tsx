@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Phone, Mail, MapPin, Github, Linkedin, MessageCircle, Check, AlertCircle, Loader } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import toast, { Toaster } from 'react-hot-toast';
-import FormInput from './FormInput';
+import FormInput from '../../components/ui/FormInput';
 
 const Contact = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -14,6 +14,21 @@ const Contact = () => {
   
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formValid, setFormValid] = useState(false);
+  
+  // Initialize EmailJS when component mounts
+  useEffect(() => {
+    const userID = import.meta.env.VITE_EMAILJS_USER_ID;
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+
+    if (!userID || !serviceID || !templateID) {
+      console.error('EmailJS environment variables are not properly configured');
+      toast.error('Contact form is not properly configured. Please try again later.');
+      return;
+    }
+
+    emailjs.init(userID);
+  }, []);
   
   // Validate form whenever formData changes
   useEffect(() => {
@@ -40,6 +55,15 @@ const Contact = () => {
       toast.error('Please fix the errors in the form before submitting.');
       return;
     }
+
+    const userID = import.meta.env.VITE_EMAILJS_USER_ID;
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+
+    if (!userID || !serviceID || !templateID) {
+      toast.error('Contact form is not properly configured. Please try again later.');
+      return;
+    }
     
     setFormState('submitting');
     
@@ -47,14 +71,11 @@ const Contact = () => {
       // Add a small delay to prevent rate limiting and show loading state
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Initialize EmailJS with your user ID
-      emailjs.init(import.meta.env.VITE_EMAILJS_USER_ID || '');
-      
       const result = await emailjs.sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID, 
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        serviceID,
+        templateID,
         form.current!,
-        import.meta.env.VITE_EMAILJS_USER_ID
+        userID
       );
 
       if (result.text === 'OK') {
@@ -103,7 +124,7 @@ const Contact = () => {
                 </h3>
                 <a 
                   href="mailto:mutsvedu.work@gmail.com" 
-                  className="text-stone-600 hover:text-stone-900 transition-colors"
+                  className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                   aria-label="Email me at mutsvedu.work@gmail.com"
                 >
                   mutsvedu.work@gmail.com
@@ -118,7 +139,7 @@ const Contact = () => {
                 <div className="flex items-center gap-4">
                   <a 
                     href="tel:+27606249151" 
-                    className="text-stone-600 hover:text-stone-900 transition-colors"
+                    className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     aria-label="Call me at +27 60 624 9151"
                   >
                     +27 60 624 9151
@@ -127,7 +148,7 @@ const Contact = () => {
                     href={whatsappLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-green-600 hover:text-green-700 transition-colors"
+                    className="text-green-600 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                     aria-label="Contact me on WhatsApp"
                   >
                     <MessageCircle size={20} aria-hidden="true" />
@@ -152,7 +173,7 @@ const Contact = () => {
                     href="https://github.com/Tafaraa" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-stone-600 hover:text-stone-900 transition-colors"
+                    className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     title="GitHub"
                     aria-label="Visit my GitHub profile"
                   >
@@ -162,7 +183,7 @@ const Contact = () => {
                     href="https://www.linkedin.com/in/tafara-mutsvedu-93825621b" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-stone-600 hover:text-stone-900 transition-colors"
+                    className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     title="LinkedIn"
                     aria-label="Visit my LinkedIn profile"
                   >
