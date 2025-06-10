@@ -6,6 +6,8 @@
 ![SEO Score](https://img.shields.io/badge/SEO-100-brightgreen)
 
 A modern, high-performance portfolio website showcasing my skills and experience as a Software Developer and Data Scientist based in South Africa.
+Visit my website: [mt.](https://mutsvedutafara.com)
+
 
 ## 🚀 Features
 
