@@ -21,6 +21,8 @@ Visit my website: [mt.](https://mutsvedutafara.com)
 - **PWA Support**: Progressive Web App capabilities for offline access
 - **Dark/Light Mode**: Seamless theme switching with optimized contrast and readability
 
+**Note on Functionality**: Some features, such as the contact form and certain integrations, require private API keys and configurations that are not included in this public repository for security and intellectual property reasons. To access the full functionality or for detailed setup instructions, please contact me directly at [your_email@example.com] or through my website at [https://mutsvedutafara.com/contact].
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: React, TypeScript, TailwindCSS
