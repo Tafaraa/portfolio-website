@@ -23,7 +23,6 @@ const Contact = () => {
 
     if (!userID || !serviceID || !templateID) {
       console.error('EmailJS environment variables are not properly configured');
-      toast.error('Contact form is not properly configured. Please try again later.');
       return;
     }
 

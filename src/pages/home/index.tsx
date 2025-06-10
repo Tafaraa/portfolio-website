@@ -29,7 +29,7 @@ const Hero = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <AnimatedElement animation="slide-in" delay={0.2}>
-              <h1 className="text-6xl md:text-8xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider">
+              <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider">
                 S{oSymbol}FTWARE<br />
                 DEVEL{oSymbol}PER
               </h1>
@@ -49,7 +49,7 @@ const Hero = () => {
           
           <div className="order-1 md:order-2">
             <AnimatedElement animation="slide-in" delay={0.3}>
-              <h1 className="text-6xl md:text-8xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider">
+              <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider">
                 D{aSymbol}T{aSymbol}<br />
                 SCIENTIST
               </h1>
