@@ -2,7 +2,30 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://tafaramutsvedu.netlify.app/sitemap.xml
-Disallow: /private/
+# Sitemap locations
 Sitemap: https://mutsvedutafara.com/sitemap.xml
+Sitemap: https://mutsvedutafara.com/sitemap-index.xml
+
+# Disallow private areas
+Disallow: /private/
+Disallow: /admin/
+Disallow: /api/
+
+# Allow all search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /

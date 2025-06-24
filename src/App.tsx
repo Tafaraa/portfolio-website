@@ -5,6 +5,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import ErrorBoundary from './components/ui/ErrorBoundary';
+import SEO from './components/ui/SEO';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ArrowUp } from 'lucide-react';
 
@@ -85,6 +86,13 @@ const MainLayout = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 dark:from-dark-bg dark:to-dark-surface text-stone-900 dark:text-dark-text font-sans section-${currentSection} main-portfolio`}>
+      <SEO 
+        title="Tafara Mutsvedu | Software Developer, Data Scientist & AI Engineer in South Africa"
+        description="Expert Software Developer, Data Scientist, and AI Engineer in Midrand, South Africa. Specializing in React, Python, Machine Learning, Data Engineering, and Full-Stack Development. Offering website creation services, AI-powered applications, and data engineering solutions. Available for permanent and freelance opportunities."
+        keywords="Tafara Mutsvedu, software developer south africa, data scientist midrand, AI engineer, data engineer, react developer johannesburg, python developer south africa, machine learning expert, full stack developer gauteng, hire developer south africa, software development midrand, data science consultant, web development johannesburg, website creation services, AI-powered applications, freelance developer, permanent developer jobs, Tafara, Mutsvedu, developer portfolio, South African developer, remote developer, React developer, Python developer, data scientist, machine learning engineer, artificial intelligence developer, data engineering services, SkillLens, revivalmedicalaesthetics.com, dollarnation.co.za, fakenewsdetectorx.netlify.app"
+        canonical="/"
+        tags={["software development", "data science", "machine learning", "AI engineering", "data engineering", "website creation services", "React", "Python", "South Africa", "Midrand", "Johannesburg", "freelance", "permanent jobs", "AI applications", "e-commerce development"]}
+      />
       <Header />
       <main>
         <Hero />
@@ -182,6 +190,36 @@ function App() {
             </Suspense>
           } />
           <Route path="/data-scientist-south-africa" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/ai-engineer" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/data-engineer" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/website-creation-services" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/freelance-developer" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/hire-ai-engineer" element={
+            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+              <LocationLanding />
+            </Suspense>
+          } />
+          <Route path="/hire-data-engineer" element={
             <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
               <LocationLanding />
             </Suspense>

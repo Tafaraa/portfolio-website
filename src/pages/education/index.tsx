@@ -118,8 +118,10 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                                 href={item.certificateLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
+                                title="View Certificate"
                               >
+                                <Award className="w-4 h-4" />
                                 View Certificate
                               </a>
                             )}

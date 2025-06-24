@@ -104,6 +104,42 @@ const LocationLanding = () => {
       location: 'South Africa',
       keywords: 'data scientist south africa, data scientist, south africa data scientist, south africa data analyst',
     },
+    'ai-engineer': {
+      title: 'AI Engineer | Artificial Intelligence Solutions',
+      subtitle: 'AI-Powered Applications & Machine Learning',
+      description: 'Expert AI Engineer specializing in artificial intelligence, machine learning, and AI-powered applications. Experience with TensorFlow.js, natural language processing, and computer vision.',
+      keywords: 'ai engineer, artificial intelligence engineer, machine learning engineer, AI developer, TensorFlow.js developer, AI solutions, artificial intelligence solutions',
+    },
+    'data-engineer': {
+      title: 'Data Engineer | Data Pipeline & Analytics Solutions',
+      subtitle: 'Data Engineering & Infrastructure',
+      description: 'Professional Data Engineer specializing in data pipeline design, ETL processes, data warehousing, and analytics infrastructure. Building scalable data solutions.',
+      keywords: 'data engineer, data pipeline engineer, ETL developer, data warehousing, analytics engineer, data infrastructure, big data engineer',
+    },
+    'website-creation-services': {
+      title: 'Website Creation Services | Custom Web Development',
+      subtitle: 'Professional Website Development',
+      description: 'Professional website creation services including custom web applications, e-commerce platforms, and business websites. Full-stack development with modern technologies.',
+      keywords: 'website creation services, web development services, custom website development, e-commerce development, business website development, web application development',
+    },
+    'freelance-developer': {
+      title: 'Freelance Developer | Available for Projects',
+      subtitle: 'Flexible Development Services',
+      description: 'Experienced freelance developer available for projects worldwide. Specializing in software development, data science, AI engineering, and website creation services.',
+      keywords: 'freelance developer, freelance software developer, freelance data scientist, freelance AI engineer, contract developer, remote developer, project-based developer',
+    },
+    'hire-ai-engineer': {
+      title: 'Hire AI Engineer | Artificial Intelligence Expertise',
+      subtitle: 'AI Development Services',
+      description: 'Looking to hire an AI Engineer? Expert in machine learning, natural language processing, computer vision, and AI-powered applications. Available for permanent and contract positions.',
+      keywords: 'hire ai engineer, hire artificial intelligence engineer, hire machine learning engineer, AI engineer for hire, artificial intelligence consultant, AI development services',
+    },
+    'hire-data-engineer': {
+      title: 'Hire Data Engineer | Data Infrastructure Expert',
+      subtitle: 'Data Engineering Services',
+      description: 'Looking to hire a Data Engineer? Expert in data pipeline design, ETL processes, data warehousing, and analytics infrastructure. Available for permanent and contract positions.',
+      keywords: 'hire data engineer, hire data pipeline engineer, hire ETL developer, data engineering consultant, data infrastructure expert, big data engineer for hire',
+    },
   };
 
   // If we don't have data for this location/route, redirect to home

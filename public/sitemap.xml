@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tafaramutsvedu.netlify.app/</loc>
-    <lastmod>2025-05-01</lastmod>
+    <loc>https://mutsvedutafara.com/</loc>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  
+  <!-- Main sections -->
+  <url>
+    <loc>https://mutsvedutafara.com/#about</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/#projects</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/#skills</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/#contact</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/#education</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   
   <!-- Location-specific developer pages -->
   <url>
     <loc>https://mutsvedutafara.com/best-software-developer-midrand</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/best-software-developer-johannesburg</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/best-software-developer-zimbabwe</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/software-developer-gauteng</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -36,19 +68,19 @@
   <!-- International developer pages -->
   <url>
     <loc>https://mutsvedutafara.com/software-developer-uk</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/software-developer-usa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/software-developer-canada</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -56,31 +88,31 @@
   <!-- Remote developer pages -->
   <url>
     <loc>https://mutsvedutafara.com/remote-software-developer</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/hire-remote-fullstack-developer</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/remote-react-developer-usa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/remote-developer-south-africa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/remote-data-scientist-south-africa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -88,46 +120,96 @@
   <!-- Specialized role pages -->
   <url>
     <loc>https://mutsvedutafara.com/react-developer-south-africa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/fullstack-developer-south-africa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mutsvedutafara.com/data-scientist-south-africa</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- Main sections -->
+  <!-- Additional location pages for better coverage -->
   <url>
-    <loc>https://mutsvedutafara.com/#about</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <loc>https://mutsvedutafara.com/software-developer-pretoria</loc>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/#projects</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <loc>https://mutsvedutafara.com/software-developer-cape-town</loc>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/#skills</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <loc>https://mutsvedutafara.com/software-developer-durban</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Technology-specific pages -->
+  <url>
+    <loc>https://mutsvedutafara.com/react-developer</loc>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/#contact</loc>
-    <lastmod>2024-03-22T00:00:00.000Z</lastmod>
+    <loc>https://mutsvedutafara.com/python-developer</loc>
+    <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/machine-learning-engineer</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/ai-engineer</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/data-engineer</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/website-creation-services</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/freelance-developer</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/hire-ai-engineer</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mutsvedutafara.com/hire-data-engineer</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

@@ -21,16 +21,25 @@ const Projects = () => {
       title: 'E-Commerce Platform',
       description: 'Full-stack e-commerce solution with microservices architecture. Features include real-time patient management, secure payment processing and advanced analytics dashboard. Handles 100+ daily active users with 99.9% uptime.',
       image: '/images/rma.webp',
-      tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Stripe'],
+      tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Payfast'],
       github: 'https://github.com/Tafaraa',
       demo: 'http://revivalmedicalaesthetics.com/',
+      color: 'from-emerald-500/20 to-teal-500/20'
+    },
+    {
+      title: 'DollarNation Record Label Web App',
+      description: 'A comprehensive web application for DollarNation Record Label featuring artist profiles, music services showcase, event management with booking system, and merchandise store. Built with modern React and TypeScript, the platform provides a complete digital presence for the record label with responsive design and seamless user experience.',
+      image: '/images/dollarnation.webp',
+      tags: ['React', 'TypeScript', 'Tailwind CSS', 'HTML', 'JavaScript'],
+      github: 'https://github.com/Tafaraa',
+      demo: 'http://dollarnation.co.za/',
       color: 'from-emerald-500/20 to-teal-500/20'
     },
     {
       title: 'AI-Powered Developer Skill Analyzer – SkillLens',
       description: 'A smart web application designed to evaluate GitHub repositories and identify developer skill levels, tech stack diversity, and growth trends. Built with a modular backend and a sleek, responsive frontend, SkillLens provides real-time analysis, skill benchmarking, and personalized improvement suggestions. Future updates include automated job matching, collaborative comparisons, and AI-driven learning path recommendations.',
       image: '/images/SkillLens.webp',
-      tags: ['React', 'TypeScript', 'FastAPI', 'Vercel', 'Stripe','Tailwind CSS','Data Visualization'],
+      tags: ['React', 'TypeScript', 'FastAPI', 'Vercel','Tailwind CSS','Data Visualization'],
       github: 'https://github.com/Tafaraa',
       demo: 'https://skill-lens.vercel.app/',
       color: 'from-emerald-500/20 to-teal-500/20'
