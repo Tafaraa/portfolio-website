@@ -28,7 +28,7 @@ const Projects = () => {
     },
     {
       title: 'DollarNation Record Label Web App',
-      description: 'A comprehensive web application for DollarNation Record Label featuring artist profiles, music services showcase, event management with booking system, and merchandise store. Built with modern React and TypeScript, the platform provides a complete digital presence for the record label with responsive design and seamless user experience.',
+      description: 'A comprehensive web application for DollarNation Record Label featuring artist work, music services showcase, event management with booking system, and merchandise store. Built with modern React and TypeScript, the platform provides a complete digital presence for the record label with responsive design and seamless user experience.',
       image: '/images/dollarnation.webp',
       tags: ['React', 'TypeScript', 'Tailwind CSS', 'HTML', 'JavaScript'],
       github: 'https://github.com/Tafaraa',
