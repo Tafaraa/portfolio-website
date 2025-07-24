@@ -5,23 +5,28 @@ import OptimizedImage from '../../components/ui/OptimizedImage';
 
 const Hero = () => {
   const [oSymbol, setOSymbol] = useState("O");
+  const [eSymbol, setESymbol] = useState("E");
   const [aSymbol, setASymbol] = useState("A");
   
   useEffect(() => {
-    const oSymbols = ["O", "0", "○", "◎"];
-    const aSymbols = ["A", "△", "∆", "▲"];
+    const symbols = {
+      o: ["O", "0", "Q", "Ø"],
+      e: ["E", "Ξ", "Σ", "Ε"],
+      a: ["A", "Λ", "Δ", "Α"]
+    };
+    
     let symbolIndex = 0;
     
     const interval = setInterval(() => {
-      symbolIndex = (symbolIndex + 1) % oSymbols.length;
-      setOSymbol(oSymbols[symbolIndex]);
-      setASymbol(aSymbols[symbolIndex]);
+      symbolIndex = (symbolIndex + 1) % symbols.o.length;
+      setOSymbol(symbols.o[symbolIndex]);
+      setESymbol(symbols.e[symbolIndex]);
+      setASymbol(symbols.a[symbolIndex]);
     }, 2000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Using CSS classes instead of inline styles
 
   return (
     <section id="home" className="pt-32 pb-20 md:pt-40 md:pb-32 min-h-screen flex flex-col justify-between">
@@ -30,8 +35,8 @@ const Hero = () => {
           <div className="order-2 md:order-1">
             <AnimatedElement animation="slide-in" delay={0.2}>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider overflow-hidden whitespace-nowrap">
-                S{oSymbol}FTWARE<br />
-                DEVEL{oSymbol}PER
+                S<span className="font-mono">{oSymbol}</span>FTWARE<br />
+                <span className="font-mono">{eSymbol}</span>NGIN<span className="font-mono">{eSymbol}</span><span className="font-mono">{eSymbol}</span>R
               </h1>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.5}>
@@ -50,7 +55,7 @@ const Hero = () => {
           <div className="order-1 md:order-2">
             <AnimatedElement animation="slide-in" delay={0.3}>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider overflow-hidden whitespace-nowrap">
-                D{aSymbol}T{aSymbol}<br />
+                D<span className="font-mono">{aSymbol}</span>T<span className="font-mono">{aSymbol}</span><br />
                 SCIENTIST
               </h1>
             </AnimatedElement>

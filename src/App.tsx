@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense, ReactNode } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/layout/Header';
@@ -136,96 +136,65 @@ const MainLayout = () => {
   );
 };
 
+// Reusable loading component for lazy-loaded routes
+const LazyLoadingFallback = () => (
+  <div className="min-h-screen flex flex-col items-center justify-center">
+    <LoadingSpinner size="lg" className="mb-4" />
+    <p className="text-stone-600">Loading content...</p>
+  </div>
+);
+
+// Wrapper for lazy-loaded components
+const LazyRoute = ({ children }: { children: ReactNode }) => (
+  <Suspense fallback={<LazyLoadingFallback />}>
+    {children}
+  </Suspense>
+);
+
 function App() {
+  // Landing page routes
+  const landingRoutes = [
+    "/best-software-developer-:location",
+    "/software-developer-:location",
+    "/remote-software-developer",
+    "/hire-remote-fullstack-developer",
+    "/remote-react-developer-usa",
+    "/remote-developer-south-africa",
+    "/remote-data-scientist-south-africa",
+    "/react-developer-south-africa",
+    "/fullstack-developer-south-africa",
+    "/data-scientist-south-africa",
+    "/ai-engineer",
+    "/data-engineer",
+    "/website-creation-services",
+    "/freelance-developer",
+    "/hire-ai-engineer",
+    "/hire-data-engineer"
+  ];
+
   return (
     <ErrorBoundary>
       <ThemeProvider>
         <HelmetProvider>
           <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <Routes>
-            <Route path="/" element={<MainLayout />} />
-          <Route path="/best-software-developer-:location" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/software-developer-:location" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/remote-software-developer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/hire-remote-fullstack-developer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/remote-react-developer-usa" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/remote-developer-south-africa" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/remote-data-scientist-south-africa" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/react-developer-south-africa" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/fullstack-developer-south-africa" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/data-scientist-south-africa" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/ai-engineer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/data-engineer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/website-creation-services" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/freelance-developer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/hire-ai-engineer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="/hire-data-engineer" element={
-            <Suspense fallback={<div className="min-h-screen flex flex-col items-center justify-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
-              <LocationLanding />
-            </Suspense>
-          } />
-          <Route path="*" element={<MainLayout />} />
-        </Routes>
+            <Routes>
+              <Route path="/" element={<MainLayout />} />
+              
+              {/* Generate landing page routes dynamically */}
+              {landingRoutes.map(path => (
+                <Route 
+                  key={path}
+                  path={path} 
+                  element={
+                    <LazyRoute>
+                      <LocationLanding />
+                    </LazyRoute>
+                  } 
+                />
+              ))}
+              
+              <Route path="*" element={<MainLayout />} />
+            </Routes>
           </Router>
         </HelmetProvider>
       </ThemeProvider>

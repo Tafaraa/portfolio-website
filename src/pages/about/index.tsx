@@ -1,4 +1,3 @@
-import React from 'react';
 import { FileDown } from 'lucide-react';
 
 const About = () => {
@@ -12,18 +11,15 @@ const About = () => {
           
           <div className="md:col-span-2 space-y-8">
             <p className="text-xl leading-relaxed text-primary-100">
-            I’m a software engineer and data scientist with a genuine passion for building purposeful tech. 
-            From intuitive web apps to data-driven insights, I thrive at the intersection of creativity and logic—where ideas come alive through code.
+            I'm a software engineer and data scientist who crafts innovative solutions to complex problems. My work spans from creating intuitive web applications to extracting valuable insights from data, blending technical expertise with creative problem-solving.
             </p>
             
             <p className="text-xl leading-relaxed text-primary-100">
-            My journey began with a curiosity for how tech shapes the world and evolved into a mission to build tools that solve real-world challenges. 
-            Whether launching projects as an entrepreneur or collaborating with others, I’m energized by turning ideas into solutions that make life better.
+            With a background rooted in computer science and a keen interest in emerging technologies, I've built a career transforming concepts into practical applications. I excel in collaborative environments and enjoy tackling challenges that require both analytical thinking and innovative approaches.
             </p>
             
             <p className="text-xl leading-relaxed text-primary-100">
-            I’m always learning, improving, and pushing the boundaries of what’s possible with software and data. 
-            I aim to be part of teams and initiatives that drive positive change—locally and globally—through smart, scalable tech.
+            Professional growth drives me to continuously expand my technical skills while delivering exceptional results. I focus on creating scalable, efficient solutions that generate real value for businesses and users alike, with a commitment to quality that shows in everything I build.
             </p>
             
             <div className="pt-8">
