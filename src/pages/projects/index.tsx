@@ -35,7 +35,7 @@ const PROJECTS: Project[] = [
   },
   {
     title: 'BabyEmporium',
-    description: 'An e-commerce storefront with an admin dashboard for managing inventory and orders. Designed for a smooth shopping experience while giving admins full operational control.',
+    description: 'An e-commerce storefront with an admin dashboard for managing inventory and orders, plus WhatsApp ordering for quick customer orders. Designed for a smooth shopping experience while giving admins full operational control.',
     image: '/images/babyemporium.webp',
     tags: ['TypeScript', 'React', 'Admin Dashboard', 'Inventory', 'Orders'],
     github: 'https://github.com/Tafaraa/baby-emporium-v1',

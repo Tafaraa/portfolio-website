@@ -1,5 +1,6 @@
 // No React import needed with modern JSX transform
 import AnimatedElement from '../../components/ui/AnimatedElement';
+import { Brain, Code2, Database, Wrench } from 'lucide-react';
 
 const Skills = () => {
   const technicalSkills = [
@@ -29,75 +30,129 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 md:py-32">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="md:col-span-1">
-            <AnimatedElement animation="slide-in" delay={0.2}>
-              <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tighter text-stone-900 dark:text-dark-text">SKILLS</h2>
+    <section id="skills" className="relative py-20 md:py-32 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-stone-50 to-white dark:from-dark-surface dark:to-dark-card" />
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-80 w-[40rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary-500/15 via-emerald-400/10 to-blue-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-28 left-0 h-80 w-80 rounded-full bg-gradient-to-tr from-purple-400/15 via-rose-400/10 to-amber-300/10 blur-3xl" />
+
+      <div className="container relative mx-auto px-6 md:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-4">
+            <AnimatedElement animation="slide-in" delay={0.15}>
+              <p className="text-sm font-medium tracking-[0.25em] text-stone-500 dark:text-dark-muted">SKILLS</p>
             </AnimatedElement>
-          </div>
-          
-          <div className="md:col-span-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div>
-                <AnimatedElement animation="fade" delay={0.3}>
-                  <h3 className="text-2xl font-medium mb-8 text-stone-900 dark:text-dark-text">Technical Proficiency</h3>
-                </AnimatedElement>
-                
-                <div className="space-y-8">
-                  {technicalSkills.map((skill) => (
-                    <div key={skill.name} className="group">
-                      <div className="flex justify-between mb-2">
-                        <span className="font-medium text-stone-900 dark:text-dark-text">{skill.name}</span>
-                        <span className="text-stone-600 dark:text-dark-muted">{skill.level}%</span>
-                      </div>
-                      <div className="w-full bg-stone-200 dark:bg-dark-border h-2 rounded-full overflow-hidden">
-                        <div 
-                          className={`bg-stone-900 dark:bg-dark-accent h-full rounded-full relative group-hover:bg-stone-800 dark:group-hover:bg-dark-accent/80 transition-all duration-300 w-[${skill.level}%]`}
-                        >
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-stone-700 dark:bg-dark-text rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+
+            <AnimatedElement animation="slide-in" delay={0.25}>
+              <h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight text-stone-900 dark:text-dark-text">
+                A toolkit built for shipping.
+              </h2>
+            </AnimatedElement>
+
+            <AnimatedElement animation="fade" delay={0.35}>
+              <p className="mt-5 text-lg text-stone-600 dark:text-dark-muted leading-relaxed">
+                Strong fundamentals across full-stack development and data science, with an emphasis on clean UX, performance, and maintainable systems.
+              </p>
+            </AnimatedElement>
+
+            <AnimatedElement animation="fade" delay={0.45}>
+              <div className="mt-8 grid grid-cols-2 gap-3">
+                <div className="rounded-2xl border border-stone-200/70 dark:border-white/10 bg-white/70 dark:bg-gray-950/40 backdrop-blur-xl p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-stone-900 dark:text-white">
+                    <Code2 className="w-4 h-4" />
+                    Engineering
+                  </div>
+                  <p className="mt-2 text-sm text-stone-600 dark:text-dark-muted">Web, APIs, systems</p>
+                </div>
+                <div className="rounded-2xl border border-stone-200/70 dark:border-white/10 bg-white/70 dark:bg-gray-950/40 backdrop-blur-xl p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-stone-900 dark:text-white">
+                    <Brain className="w-4 h-4" />
+                    Data
+                  </div>
+                  <p className="mt-2 text-sm text-stone-600 dark:text-dark-muted">ML, analytics</p>
                 </div>
               </div>
-              
-              <div>
-                <AnimatedElement animation="fade" delay={0.4}>
-                  <h3 className="text-2xl font-medium mb-8 text-stone-900 dark:text-dark-text">Additional Skills</h3>
-                </AnimatedElement>
-                
-                <div className="flex flex-wrap gap-3">
-                  {otherSkills.map((skill) => (
-                    <span 
-                      key={skill}
-                      className="px-4 py-2 border border-stone-900 dark:border-dark-text text-stone-900 dark:text-dark-text rounded-lg font-medium hover:bg-stone-900 dark:hover:bg-dark-border hover:text-stone-50 dark:hover:text-dark-text transition-colors cursor-default"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+            </AnimatedElement>
+          </div>
+
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AnimatedElement animation="fade" delay={0.25}>
+                <div className="group relative rounded-3xl overflow-hidden border border-stone-200/70 dark:border-white/10 bg-white/70 dark:bg-gray-950/40 backdrop-blur-xl p-6 sm:p-7 shadow-[0_12px_40px_rgba(0,0,0,0.06)]">
+                  <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute -inset-16 bg-gradient-to-br from-stone-200/30 via-emerald-200/10 to-blue-200/20 blur-3xl" />
+                  </div>
+                  <div className="relative">
+                    <div className="flex items-center gap-2 text-stone-900 dark:text-white">
+                      <Wrench className="w-5 h-5" />
+                      <h3 className="text-xl font-semibold">Core Proficiency</h3>
+                    </div>
+                    <p className="mt-2 text-sm text-stone-600 dark:text-dark-muted">
+                      Depth where it matters most.
+                    </p>
+
+                    <div className="mt-6 space-y-6">
+                      {technicalSkills.map((skill) => (
+                        <div key={skill.name} className="group/skill">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-sm font-medium text-stone-900 dark:text-white">
+                              {skill.name}
+                            </span>
+                            <span className="text-xs font-medium text-stone-500 dark:text-dark-muted">
+                              {skill.level}%
+                            </span>
+                          </div>
+                          <div className="mt-2 h-2 rounded-full bg-stone-200/80 dark:bg-dark-border overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-stone-900 via-stone-800 to-stone-700 dark:from-dark-accent dark:via-dark-accent/90 dark:to-dark-accent/70 transition-[width] duration-700 ease-out"
+                              style={{ width: `${skill.level}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="mt-12">
-                  <AnimatedElement animation="fade" delay={0.5}>
-                    <h3 className="text-2xl font-medium mb-8 text-stone-900 dark:text-dark-text">Education</h3>
-                  </AnimatedElement>
-                  
-                  <AnimatedElement animation="slide-in" delay={0.6}>
-                    <div className="border-l-2 border-stone-900 dark:border-dark-accent pl-6">
-                      <h4 className="text-xl font-medium text-stone-900 dark:text-dark-text">Computer Science Graduate & Data Science student</h4>
-                      <p className="text-stone-600 dark:text-dark-muted mb-2">Eduvos</p>
-                      <p className="mb-2 text-stone-800 dark:text-dark-text">BSc. Graduate pursuing Honors</p>
-                      <p className="text-stone-700 dark:text-dark-muted">
-                        Completed my degree with a focus on software development and currently a data science student, 
+              </AnimatedElement>
+
+              <AnimatedElement animation="fade" delay={0.32}>
+                <div className="rounded-3xl overflow-hidden border border-stone-200/70 dark:border-white/10 bg-white/70 dark:bg-gray-950/40 backdrop-blur-xl p-6 sm:p-7 shadow-[0_12px_40px_rgba(0,0,0,0.06)]">
+                  <div className="flex items-center gap-2 text-stone-900 dark:text-white">
+                    <Database className="w-5 h-5" />
+                    <h3 className="text-xl font-semibold">Additional Skills</h3>
+                  </div>
+                  <p className="mt-2 text-sm text-stone-600 dark:text-dark-muted">
+                    Tools, frameworks, and platforms I use regularly.
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {otherSkills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-2 rounded-full text-sm font-medium border border-stone-200/70 dark:border-white/10 bg-white/60 dark:bg-dark-surface/40 text-stone-800 dark:text-dark-text hover:bg-white/90 dark:hover:bg-dark-surface/60 transition-colors cursor-default"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 rounded-2xl border border-stone-200/70 dark:border-white/10 bg-gradient-to-br from-stone-50/70 via-white/40 to-white/10 dark:from-dark-surface/50 dark:via-gray-950/30 dark:to-gray-950/10 p-5">
+                    <h4 className="text-base font-semibold text-stone-900 dark:text-white">
+                      Education
+                    </h4>
+                    <p className="mt-2 text-sm text-stone-600 dark:text-dark-muted">
+                      Computer Science Graduate & Data Science student
+                    </p>
+                    <div className="mt-3 text-sm text-stone-700 dark:text-dark-text">
+                      <p className="font-medium">Eduvos</p>
+                      <p className="mt-1">BSc. Graduate pursuing Honors</p>
+                      <p className="mt-2 text-stone-600 dark:text-dark-muted">
+                        Completed my degree with a focus on software development and currently a data science student,
                         pursuing honors.
                       </p>
                     </div>
-                  </AnimatedElement>
+                  </div>
                 </div>
-              </div>
+              </AnimatedElement>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ui/ErrorBoundary';
 import SEO from './components/ui/SEO';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ArrowUp } from 'lucide-react';
+import JulieChatWidget from './components/ui/JulieChatWidget';
 
 // Lazy load non-critical components
 const About = lazy(() => import('./pages/about'));
@@ -102,7 +103,7 @@ const MainLayout = () => {
         <Suspense fallback={<div className="py-20 md:py-32"><LoadingSpinner /></div>}>
           <Education isOpen={false} onClose={() => {}} />
         </Suspense>
-        <Suspense fallback={<div className="py-20 md:py-32"><LoadingSpinner /></div>}>
+        <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
           <Skills />
         </Suspense>
         <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
@@ -132,6 +133,8 @@ const MainLayout = () => {
       >
         <ArrowUp size={24} aria-hidden="true" />
       </button>
+
+      <JulieChatWidget />
     </div>
   );
 };
