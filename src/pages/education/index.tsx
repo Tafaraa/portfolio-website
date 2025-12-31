@@ -61,17 +61,17 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="w-[95%] sm:w-[90%] md:w-[85%] max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-xl pointer-events-auto p-4 sm:p-6 md:p-8"
+              className="w-full sm:w-[90%] md:w-[85%] max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-xl pointer-events-auto p-4 sm:p-6 md:p-8"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold tracking-tighter text-stone-900 dark:text-white">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter text-stone-900 dark:text-white">
                   EDUCATION
                 </h2>
                 <button
@@ -94,17 +94,17 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                     <div className="bg-stone-50 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 md:p-8">
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
-                          <div className="p-3 bg-stone-100 dark:bg-gray-700 rounded-full">
-                            <GraduationCap className="w-6 h-6 text-stone-900 dark:text-white" />
+                          <div className="p-2 sm:p-3 bg-stone-100 dark:bg-gray-700 rounded-full">
+                            <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-stone-900 dark:text-white" />
                           </div>
                         </div>
                         <div className="flex-grow">
-                          <div className="flex justify-between items-start">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                             <div>
-                              <h3 className="text-xl font-semibold mb-2 text-stone-900 dark:text-white">
-                                {item.degree}
+                              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-stone-900 dark:text-white flex flex-wrap items-center gap-2">
+                                <span>{item.degree}</span>
                                 {item.current && (
-                                  <span className="ml-2 px-2 py-1 text-xs font-medium bg-primary-500/10 text-primary-500 dark:bg-primary-400/20 dark:text-primary-300 rounded">
+                                  <span className="px-2 py-1 text-xs font-medium bg-primary-500/10 text-primary-500 dark:bg-primary-400/20 dark:text-primary-300 rounded whitespace-nowrap">
                                     Current
                                   </span>
                                 )}
@@ -118,7 +118,7 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                                 href={item.certificateLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
+                                className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm whitespace-nowrap"
                                 title="View Certificate"
                               >
                                 <Award className="w-4 h-4" />
