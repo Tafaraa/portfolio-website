@@ -89,10 +89,60 @@ const MainLayout = () => {
     <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 dark:from-dark-bg dark:to-dark-surface text-stone-900 dark:text-dark-text font-sans section-${currentSection} main-portfolio`}>
       <SEO 
         title="Tafara Mutsvedu | Software Developer, Data Scientist & AI Engineer in South Africa"
-        description="Expert Software Developer, Data Scientist, and AI Engineer in Midrand, South Africa. Specializing in React, Python, Machine Learning, Data Engineering, and Full-Stack Development. Offering website creation services, AI-powered applications, and data engineering solutions. Available for permanent and freelance opportunities."
+        description="Tafara Mutsvedu builds fast websites, admin dashboards, e-commerce stores, AI prototypes, and data tools for businesses in South Africa and remote teams worldwide."
         keywords="Tafara Mutsvedu, software developer south africa, data scientist midrand, AI engineer, data engineer, react developer johannesburg, python developer south africa, machine learning expert, full stack developer gauteng, hire developer south africa, software development midrand, data science consultant, web development johannesburg, website creation services, AI-powered applications, freelance developer, permanent developer jobs, Tafara, Mutsvedu, developer portfolio, South African developer, remote developer, React developer, Python developer, data scientist, machine learning engineer, artificial intelligence developer, data engineering services, SkillLens, revivalmedicalaesthetics.com, dollarnation.co.za, fakenewsdetectorx.netlify.app"
         canonical="/"
         tags={["software development", "data science", "machine learning", "AI engineering", "data engineering", "website creation services", "React", "Python", "South Africa", "Midrand", "Johannesburg", "freelance", "permanent jobs", "AI applications", "e-commerce development"]}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: 'Tafara Mutsvedu',
+            url: 'https://mutsvedutafara.com',
+            image: 'https://mutsvedutafara.com/images/profile.webp',
+            jobTitle: ['Software Developer', 'Data Scientist', 'AI Engineer'],
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Midrand',
+              addressRegion: 'Gauteng',
+              addressCountry: 'ZA'
+            },
+            sameAs: [
+              'https://github.com/Tafaraa',
+              'https://www.linkedin.com/in/tafara-mutsvedu-93825621b'
+            ],
+            knowsAbout: [
+              'React',
+              'TypeScript',
+              'Python',
+              'Data Science',
+              'Machine Learning',
+              'E-commerce Development',
+              'Dashboard Development'
+            ]
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'ProfessionalService',
+            name: 'Tafara Mutsvedu Software Development',
+            url: 'https://mutsvedutafara.com',
+            areaServed: ['South Africa', 'Zimbabwe', 'Remote'],
+            serviceType: [
+              'Website development',
+              'Full-stack web application development',
+              'E-commerce development',
+              'Dashboard development',
+              'AI and data tool development'
+            ]
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Tafara Mutsvedu Portfolio',
+            url: 'https://mutsvedutafara.com',
+            description: 'Portfolio for Tafara Mutsvedu, a software developer, data scientist, and AI engineer.'
+          }
+        ]}
       />
       <Header />
       <main>
@@ -172,7 +222,10 @@ function App() {
     "/website-creation-services",
     "/freelance-developer",
     "/hire-ai-engineer",
-    "/hire-data-engineer"
+    "/hire-data-engineer",
+    "/react-developer",
+    "/python-developer",
+    "/machine-learning-engineer"
   ];
 
   return (

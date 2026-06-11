@@ -68,22 +68,22 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="w-full sm:w-[90%] md:w-[85%] max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-xl pointer-events-auto p-4 sm:p-6 md:p-8"
+              className="w-full sm:w-[90%] md:w-[85%] max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-xl pointer-events-auto p-3 sm:p-6 md:p-8"
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter text-stone-900 dark:text-white">
+              <div className="flex justify-between items-center mb-3 sm:mb-6">
+                <h2 className="text-xl sm:text-3xl font-bold tracking-tighter text-stone-900 dark:text-white">
                   EDUCATION
                 </h2>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-stone-100 dark:hover:bg-dark-border rounded-full transition-colors"
+                  className="p-1.5 sm:p-2 hover:bg-stone-100 dark:hover:bg-dark-border rounded-full transition-colors"
                   aria-label="Close modal"
                 >
-                  <X className="w-6 h-6 text-stone-600 dark:text-gray-300" />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6 text-stone-600 dark:text-gray-300" />
                 </button>
               </div>
 
-              <div className="space-y-6">
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-1 sm:gap-6">
                 {education.map((item, index) => (
                   <motion.div
                     key={index}
@@ -91,25 +91,25 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <div className="bg-stone-50 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 md:p-8">
-                      <div className="flex items-start gap-4">
+                    <div className="h-full bg-stone-50 dark:bg-gray-800/50 rounded-lg p-2.5 sm:p-6 md:p-8">
+                      <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-4">
                         <div className="flex-shrink-0">
-                          <div className="p-2 sm:p-3 bg-stone-100 dark:bg-gray-700 rounded-full">
-                            <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-stone-900 dark:text-white" />
+                          <div className="p-1.5 sm:p-3 bg-stone-100 dark:bg-gray-700 rounded-full">
+                            <GraduationCap className="w-4 h-4 sm:w-6 sm:h-6 text-stone-900 dark:text-white" />
                           </div>
                         </div>
                         <div className="flex-grow">
-                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4">
                             <div>
-                              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-stone-900 dark:text-white flex flex-wrap items-center gap-2">
-                                <span>{item.degree}</span>
+                              <h3 className="text-[11px] leading-tight sm:text-xl font-semibold mb-1 sm:mb-2 text-stone-900 dark:text-white flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                <span className="line-clamp-2">{item.degree}</span>
                                 {item.current && (
-                                  <span className="px-2 py-1 text-xs font-medium bg-primary-500/10 text-primary-500 dark:bg-primary-400/20 dark:text-primary-300 rounded whitespace-nowrap">
+                                  <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-xs font-medium bg-primary-500/10 text-primary-500 dark:bg-primary-400/20 dark:text-primary-300 rounded whitespace-nowrap">
                                     Current
                                   </span>
                                 )}
                               </h3>
-                              <p className="text-stone-600 dark:text-gray-300 mb-4">
+                              <p className="text-[10px] sm:text-base leading-snug text-stone-600 dark:text-gray-300 mb-2 sm:mb-4">
                                 {item.institution} • {item.year}
                               </p>
                             </div>
@@ -118,22 +118,22 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
                                 href={item.certificateLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm whitespace-nowrap"
+                                className="inline-flex w-full sm:w-auto justify-center items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-[10px] sm:text-sm whitespace-nowrap"
                                 title="View Certificate"
                               >
-                                <Award className="w-4 h-4" />
-                                View Certificate
+                                <Award className="w-3 h-3 sm:w-4 sm:h-4" />
+                                Certificate
                               </a>
                             )}
                           </div>
-                          <p className="text-stone-700 dark:text-gray-200 mb-6">
+                          <p className="hidden sm:block text-stone-700 dark:text-gray-200 mb-6">
                             {item.description}
                           </p>
-                          <div className="space-y-3">
-                            {item.achievements.map((achievement, i) => (
-                              <div key={i} className="flex items-center gap-2">
-                                <Award className="w-4 h-4 text-stone-600 dark:text-gray-300" />
-                                <span className="text-stone-700 dark:text-gray-200">
+                          <div className="space-y-1 sm:space-y-3">
+                            {item.achievements.slice(0, 2).map((achievement, i) => (
+                              <div key={i} className="flex items-start gap-1.5 sm:gap-2">
+                                <Award className="mt-0.5 w-3 h-3 sm:w-4 sm:h-4 shrink-0 text-stone-600 dark:text-gray-300" />
+                                <span className="text-[10px] leading-tight sm:text-base text-stone-700 dark:text-gray-200 line-clamp-2">
                                   {achievement}
                                 </span>
                               </div>

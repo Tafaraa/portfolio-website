@@ -13,6 +13,7 @@ interface SEOProps {
   modifiedTime?: string;
   section?: string;
   tags?: string[];
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const SEO = ({ 
@@ -27,12 +28,26 @@ const SEO = ({
   publishedTime,
   modifiedTime,
   section,
-  tags = []
+  tags = [],
+  structuredData
 }: SEOProps) => {
   const siteUrl = 'https://mutsvedutafara.com';
   const defaultImage = `${siteUrl}/og.webp`;
-  const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
-  const fullOgImage = ogImage ? `${siteUrl}${ogImage}` : defaultImage;
+  const fullCanonical = canonical
+    ? canonical.startsWith('http')
+      ? canonical
+      : `${siteUrl}${canonical.startsWith('/') ? canonical : `/${canonical}`}`
+    : siteUrl;
+  const fullOgImage = ogImage
+    ? ogImage.startsWith('http')
+      ? ogImage
+      : `${siteUrl}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`
+    : defaultImage;
+  const jsonLd = structuredData
+    ? Array.isArray(structuredData)
+      ? structuredData
+      : [structuredData]
+    : [];
 
   return (
     <Helmet>
@@ -42,9 +57,14 @@ const SEO = ({
       {keywords && <meta name="keywords" content={keywords} />}
       <meta name="author" content={author} />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta name="application-name" content="Tafara Mutsvedu Portfolio" />
+      <meta name="creator" content={author} />
+      <meta name="publisher" content={author} />
       
       {/* Canonical URL */}
       <link rel="canonical" href={fullCanonical} />
+      <link rel="alternate" hrefLang="en-ZA" href={fullCanonical} />
+      <link rel="alternate" hrefLang="x-default" href={siteUrl} />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType} />
@@ -72,6 +92,8 @@ const SEO = ({
       <meta name="twitter:image" content={fullOgImage} />
       <meta name="twitter:creator" content="@tafaramutsvedu" />
       <meta name="twitter:site" content="@tafaramutsvedu" />
+      <meta name="twitter:label1" content="Services" />
+      <meta name="twitter:data1" content="Web development, dashboards, AI and data tools" />
       
       {/* Additional Meta Tags */}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -87,11 +109,17 @@ const SEO = ({
       {/* Security Headers */}
       <meta http-equiv="X-Content-Type-Options" content="nosniff" />
       <meta http-equiv="X-Frame-Options" content="DENY" />
-      <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+      <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
       
       {/* Performance */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+      {jsonLd.map((item, index) => (
+        <script key={index} type="application/ld+json">
+          {JSON.stringify(item)}
+        </script>
+      ))}
     </Helmet>
   );
 };

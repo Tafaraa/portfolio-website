@@ -140,24 +140,86 @@ const LocationLanding = () => {
       description: 'Looking to hire a Data Engineer? Expert in data pipeline design, ETL processes, data warehousing, and analytics infrastructure. Available for permanent and contract positions.',
       keywords: 'hire data engineer, hire data pipeline engineer, hire ETL developer, data engineering consultant, data infrastructure expert, big data engineer for hire',
     },
+    'react-developer': {
+      title: 'React Developer | Modern Front-End Development',
+      subtitle: 'React & TypeScript Development',
+      description: 'React developer building fast, responsive, and polished front-end experiences for business websites, dashboards, portals, and web applications.',
+      keywords: 'react developer, react development services, typescript developer, frontend developer, react web applications',
+    },
+    'python-developer': {
+      title: 'Python Developer | APIs, Automation & Data Tools',
+      subtitle: 'Python Development Services',
+      description: 'Python developer available for APIs, automation, data processing, analytics workflows, machine learning prototypes, and backend services.',
+      keywords: 'python developer, python api developer, python automation, data tools developer, backend python developer',
+    },
+    'machine-learning-engineer': {
+      title: 'Machine Learning Engineer | AI & Data Products',
+      subtitle: 'Machine Learning & AI Development',
+      description: 'Machine learning engineer building practical AI and data products, including model prototypes, analytics tools, NLP features, and intelligent web applications.',
+      keywords: 'machine learning engineer, AI developer, machine learning developer, NLP developer, data science engineer',
+    },
   };
 
-  // If we don't have data for this location/route, redirect to home
-  if (!pageData[currentLocation as keyof typeof pageData]) {
-    window.location.href = '/';
-    return null;
-  }
+  const formatLocation = (slug: string) =>
+    slug
+      .split('-')
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
 
-  const currentPageData = pageData[currentLocation];
-  const canonicalUrl = `https://mutsvedutafara.com${pathname}`;
+  const fallbackPageData: PageDataEntry = {
+    title: `Software Developer in ${formatLocation(currentLocation)}`,
+    subtitle: 'Full-Stack Development & Data Solutions',
+    description: `Software developer available for projects in ${formatLocation(currentLocation)} and remote teams. I build websites, dashboards, e-commerce systems, APIs, and AI/data tools with React, TypeScript, Python, and modern web technologies.`,
+    location: formatLocation(currentLocation),
+    keywords: `software developer ${currentLocation.replace(/-/g, ' ')}, full stack developer ${currentLocation.replace(/-/g, ' ')}, react developer ${currentLocation.replace(/-/g, ' ')}, python developer ${currentLocation.replace(/-/g, ' ')}`,
+  };
+
+  const currentPageData = pageData[currentLocation] || fallbackPageData;
+  const canonicalUrl = pathname;
+  const pageUrl = `https://mutsvedutafara.com${pathname}`;
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: currentPageData.title,
+    description: currentPageData.description,
+    provider: {
+      '@type': 'Person',
+      name: 'Tafara Mutsvedu',
+      url: 'https://mutsvedutafara.com'
+    },
+    areaServed: currentPageData.location || (currentPageData.remote ? 'Remote' : 'South Africa'),
+    serviceType: currentPageData.subtitle,
+    url: pageUrl
+  };
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://mutsvedutafara.com/'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: currentPageData.title,
+        item: pageUrl
+      }
+    ]
+  };
 
   return (
     <>
       <SEO 
-        title={currentPageData.title}
+        title={`${currentPageData.title} | Tafara Mutsvedu`}
         description={currentPageData.description}
         canonical={canonicalUrl}
         keywords={currentPageData.keywords}
+        tags={[currentPageData.subtitle, currentPageData.location || 'Remote software development']}
+        structuredData={[serviceSchema, breadcrumbSchema]}
       />
       <div className="min-h-screen bg-gradient-to-b from-stone-900 to-stone-800 text-stone-50">
         <div className="container mx-auto px-6 py-24 max-w-5xl">

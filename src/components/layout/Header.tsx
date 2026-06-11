@@ -84,7 +84,7 @@ const Header = () => {
 
   const navLinks = [
     { name: 'Work', href: '#projects' },
-    { name: 'About', href: '#about' },
+    { name: 'What I Do', href: '#about' },
     { name: 'Education', onClick: () => setIsEducationOpen(true) },
     { name: 'Support', href: '#support' },
     { name: 'Contact', href: '#contact' },

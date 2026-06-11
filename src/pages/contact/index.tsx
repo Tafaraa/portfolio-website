@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Phone, Mail, MapPin, Github, Linkedin, MessageCircle, Check, AlertCircle, Loader } from 'lucide-react';
+import { Phone, Mail, MapPin, Github, Linkedin, MessageCircle, Check, AlertCircle, Loader, ArrowRight } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import toast, { Toaster } from 'react-hot-toast';
 import FormInput from '../../components/ui/FormInput';
@@ -106,11 +106,36 @@ const Contact = () => {
   const phoneNumber = '+27606249151';
   const whatsappMessage = encodeURIComponent('Hi Tafara, I found your portfolio website and would like to connect!');
   const whatsappLink = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
+  const projectTypes = ['Website', 'Dashboard', 'E-commerce', 'AI/Data tool'];
 
   return (
     <section id="contact" className="py-20 md:py-32">
       <Toaster position="top-right" />
       <div className="container mx-auto px-6 md:px-12">
+        <div className="mb-12 max-w-3xl">
+          <p className="text-sm font-medium tracking-[0.25em] text-stone-500 dark:text-dark-muted">
+            START HERE
+          </p>
+          <h2 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight">
+            Have a website, dashboard, or AI idea that needs to become real?
+          </h2>
+          <p className="mt-5 text-lg text-stone-600 dark:text-dark-muted">
+            Send a short message with what you want to build, improve, or automate. I will help you shape the next step.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {projectTypes.map((type) => (
+              <a
+                key={type}
+                href="#message"
+                className="group inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/70 px-4 py-2 text-sm font-medium text-stone-800 transition-colors hover:border-stone-900 hover:bg-stone-900 hover:text-white dark:border-white/10 dark:bg-white/5 dark:text-dark-text dark:hover:bg-white/10"
+              >
+                {type}
+                <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+              </a>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="md:col-span-1">
             <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tighter">CONTACT</h2>

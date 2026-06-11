@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, ArrowRight } from 'lucide-react';
 import AnimatedElement from '../../components/ui/AnimatedElement';
 import OptimizedImage from '../../components/ui/OptimizedImage';
 
@@ -60,11 +60,40 @@ const Hero = () => {
               </h1>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.6}>
-              <p className="text-lg md:text-xl mb-8 max-w-lg dark:text-dark-text">
-                I support businesses and organizations with innovative solutions at the intersection of software development and data science.
+              <p className="text-lg md:text-xl mb-6 max-w-lg dark:text-dark-text">
+                I build fast websites, dashboards, admin systems, and data-powered tools for businesses that need clean digital products that actually work.
               </p>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.8}>
+              <div className="mb-8 flex flex-wrap gap-2">
+                {['Web apps', 'Dashboards', 'E-commerce', 'AI/Data tools'].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-stone-300/80 bg-white/60 px-3 py-1 text-sm font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </AnimatedElement>
+            <AnimatedElement animation="fade" delay={0.9}>
+              <div className="mb-8 flex flex-col sm:flex-row gap-3">
+                <a
+                  href="#projects"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-6 py-3 text-stone-50 transition-colors hover:bg-stone-700 dark:bg-dark-text dark:text-dark-bg dark:hover:bg-white"
+                >
+                  View projects
+                  <ArrowRight size={18} />
+                </a>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center rounded-full border border-stone-900/20 px-6 py-3 text-stone-900 transition-colors hover:bg-stone-900 hover:text-stone-50 dark:border-white/20 dark:text-dark-text dark:hover:bg-white/10"
+                >
+                  Start a project
+                </a>
+              </div>
+            </AnimatedElement>
+            <AnimatedElement animation="fade" delay={1}>
               <div className="flex items-center space-x-4">
                 <a 
                   href="https://github.com/Tafaraa" 
