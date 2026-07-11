@@ -86,7 +86,6 @@ const Header = () => {
     { name: 'Work', href: '#projects' },
     { name: 'What I Do', href: '#about' },
     { name: 'Education', onClick: () => setIsEducationOpen(true) },
-    { name: 'Support', href: '#support' },
     { name: 'Contact', href: '#contact' },
   ];
 

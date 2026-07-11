@@ -45,3 +45,6 @@ coverage
 
 # System Files
 Thumbs.db
+
+# Claude Code local tooling
+.claude/

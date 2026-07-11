@@ -15,7 +15,6 @@ const Education = lazy(() => import('./pages/education'));
 const Skills = lazy(() => import('./pages/skills'));
 const Projects = lazy(() => import('./pages/projects'));
 const Contact = lazy(() => import('./pages/contact'));
-const Support = lazy(() => import('./pages/support'));
 const LocationLanding = lazy(() => import('./pages/locationLanding'));
 const Hero = lazy(() => import('./pages/home'));
 
@@ -38,7 +37,7 @@ const MainLayout = () => {
     };
 
     const updateCurrentSection = () => {
-      const sections = ['projects', 'about', 'skills', 'contact', 'support'];
+      const sections = ['projects', 'about', 'skills', 'contact'];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -209,7 +208,6 @@ const MainLayout = () => {
         </Suspense>
         <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
           <Projects />
-          <Support />
           <Contact />
         </Suspense>
       </main>
