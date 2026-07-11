@@ -13,6 +13,8 @@ type Project = {
   color?: string;
   status?: string;
   result?: string;
+  live?: boolean;
+  offlineNote?: string;
 };
 
 const PROJECTS: Project[] = [
@@ -50,15 +52,17 @@ const PROJECTS: Project[] = [
     result: 'Storefront, inventory flow, orders, and WhatsApp customer ordering.'
   },
   {
-    title: 'E-Commerce Platform',
-    description: 'Full-stack e-commerce solution with microservices architecture. Features include real-time patient management, secure payment processing and advanced analytics dashboard. Handles 100+ daily active users with 99.9% uptime.',
+    title: 'Revival Medical Aesthetics',
+    description: 'A booking and management platform for a medical aesthetics clinic. Clients book consultations and appointments online, pay securely by card, and the clinic runs the whole day from one admin dashboard — patient records, schedule, and payments in one place.',
     image: '/images/rma.webp',
-    tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Payfast'],
+    tags: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Payfast', 'Admin Dashboard'],
     github: 'https://github.com/Tafaraa',
-    demo: 'http://revivalmedicalaesthetics.com/',
+    demo: 'https://revivalmedicalaesthetics.com/',
     color: 'from-emerald-500/20 to-teal-500/20',
     status: 'Medical platform',
-    result: 'Patient workflows, payments, and analytics for daily operational use.'
+    result: 'Online bookings, card payments, patient records, and clinic operations from one dashboard.',
+    live: false,
+    offlineNote: "The live site is paused while the owner sorts out hosting — the build is done and working. I can give you a private walkthrough anytime."
   },
   {
     title: 'DollarNation Record Label Web App',
@@ -276,16 +280,31 @@ const Projects = () => {
                   </div>
 
                   <div className="mt-4 md:mt-8">
+                    {activeProject.live === false && (
+                      <div className="mb-3 flex items-start gap-2 rounded-xl border border-amber-300/30 bg-amber-400/10 px-3 py-2 text-[11px] md:text-xs text-amber-100">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300" />
+                        <span>{activeProject.offlineNote ?? 'This live site is temporarily offline.'}</span>
+                      </div>
+                    )}
                     <div className="flex flex-row gap-2 md:gap-3">
-                      <a
-                        href={activeProject.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex flex-1 items-center justify-center gap-1.5 md:gap-2 rounded-full bg-white px-3 md:px-5 py-2 md:py-3 text-xs md:text-sm font-semibold text-stone-950 transition-colors hover:bg-stone-100"
-                      >
-                        Open
-                        <ExternalLink size={15} />
-                      </a>
+                      {activeProject.live === false ? (
+                        <span
+                          className="inline-flex flex-1 cursor-not-allowed items-center justify-center gap-1.5 md:gap-2 rounded-full bg-white/20 px-3 md:px-5 py-2 md:py-3 text-xs md:text-sm font-semibold text-white/70"
+                          title="The live site is temporarily offline"
+                        >
+                          Site offline
+                        </span>
+                      ) : (
+                        <a
+                          href={activeProject.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex flex-1 items-center justify-center gap-1.5 md:gap-2 rounded-full bg-white px-3 md:px-5 py-2 md:py-3 text-xs md:text-sm font-semibold text-stone-950 transition-colors hover:bg-stone-100"
+                        >
+                          Open
+                          <ExternalLink size={15} />
+                        </a>
+                      )}
                       <button
                         type="button"
                         onClick={() => setLightboxProject(activeProject)}
@@ -395,6 +414,12 @@ const Projects = () => {
                           {project.status}
                         </div>
                       )}
+                      {project.live === false && (
+                        <div className="absolute right-1.5 top-1.5 md:right-3 md:top-3 inline-flex items-center gap-1 rounded-full bg-amber-500/95 px-1.5 md:px-2.5 py-0.5 md:py-1 text-[8px] md:text-xs font-semibold text-stone-950 shadow-sm">
+                          <span className="h-1 w-1 rounded-full bg-stone-900" />
+                          Offline
+                        </div>
+                      )}
                     </div>
 
                     <div className="p-2 md:p-6">
@@ -414,16 +439,26 @@ const Projects = () => {
                           >
                             <Github size={18} />
                           </a>
-                          <a
-                            href={project.demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 text-stone-600 hover:text-stone-900 dark:text-gray-300 dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-dark-border/50 rounded-full"
-                            aria-label={`Open ${project.title} live demo`}
-                            title="Take a Look"
-                          >
-                            <ExternalLink size={18} />
-                          </a>
+                          {project.live === false ? (
+                            <span
+                              className="p-2 text-stone-400 dark:text-gray-500 rounded-full cursor-not-allowed"
+                              aria-label={`${project.title} live site is temporarily offline`}
+                              title="Live site temporarily offline"
+                            >
+                              <ExternalLink size={18} />
+                            </span>
+                          ) : (
+                            <a
+                              href={project.demo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 text-stone-600 hover:text-stone-900 dark:text-gray-300 dark:hover:text-white transition-colors hover:bg-stone-100 dark:hover:bg-dark-border/50 rounded-full"
+                              aria-label={`Open ${project.title} live demo`}
+                              title="Take a Look"
+                            >
+                              <ExternalLink size={18} />
+                            </a>
+                          )}
                         </div>
                       </div>
 
@@ -570,6 +605,13 @@ const Projects = () => {
                   </div>
                 )}
 
+                {detailProject.live === false && (
+                  <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-300/40 bg-amber-50 p-3 text-sm leading-relaxed text-amber-800 dark:border-amber-300/20 dark:bg-amber-400/10 dark:text-amber-200">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+                    <span>{detailProject.offlineNote ?? 'This live site is temporarily offline.'}</span>
+                  </div>
+                )}
+
                 <div className="mt-4 flex flex-wrap gap-2">
                   {detailProject.tags.map((tag) => (
                     <span
@@ -582,15 +624,24 @@ const Projects = () => {
                 </div>
 
                 <div className="mt-5 grid grid-cols-2 gap-2">
-                  <a
-                    href={detailProject.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-4 py-3 text-sm font-semibold text-white dark:bg-white dark:text-gray-950"
-                  >
-                    Live site
-                    <ExternalLink size={16} />
-                  </a>
+                  {detailProject.live === false ? (
+                    <span
+                      className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-stone-200 px-4 py-3 text-sm font-semibold text-stone-500 dark:bg-white/10 dark:text-gray-400"
+                      title="Live site temporarily offline"
+                    >
+                      Site offline
+                    </span>
+                  ) : (
+                    <a
+                      href={detailProject.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-4 py-3 text-sm font-semibold text-white dark:bg-white dark:text-gray-950"
+                    >
+                      Live site
+                      <ExternalLink size={16} />
+                    </a>
+                  )}
                   <a
                     href={detailProject.github}
                     target="_blank"

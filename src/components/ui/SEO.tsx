@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 interface SEOProps {
   title: string;
@@ -16,22 +16,49 @@ interface SEOProps {
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const SEO = ({ 
-  title, 
-  description, 
-  canonical, 
-  keywords, 
-  ogImage, 
-  ogType = "website",
-  twitterCard = "summary_large_image",
-  author = "Tafara Mutsvedu",
-  publishedTime,
-  modifiedTime,
-  section,
+const siteUrl = 'https://mutsvedutafara.com';
+
+/**
+ * Imperatively manages the document head.
+ *
+ * This deliberately does NOT use react-helmet-async: v2 renders nothing under
+ * React 18 + StrictMode in this app, which left every route falling back to the
+ * static index.html head (so every landing page canonicalised to the homepage).
+ * A direct DOM approach is reliable for a client-only SPA and keeps per-page
+ * title/description/canonical/OG/structured-data correct.
+ */
+const upsertMeta = (selector: string, attr: 'name' | 'property', key: string, content: string) => {
+  let el = document.head.querySelector<HTMLMetaElement>(selector);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+};
+
+const upsertLink = (rel: string, href: string) => {
+  let el = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+  if (!el) {
+    el = document.createElement('link');
+    el.setAttribute('rel', rel);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('href', href);
+};
+
+const SEO = ({
+  title,
+  description,
+  canonical,
+  keywords,
+  ogImage,
+  ogType = 'website',
+  twitterCard = 'summary_large_image',
+  author = 'Tafara Mutsvedu',
   tags = [],
   structuredData
 }: SEOProps) => {
-  const siteUrl = 'https://mutsvedutafara.com';
   const defaultImage = `${siteUrl}/og.webp`;
   const fullCanonical = canonical
     ? canonical.startsWith('http')
@@ -43,85 +70,60 @@ const SEO = ({
       ? ogImage
       : `${siteUrl}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`
     : defaultImage;
-  const jsonLd = structuredData
-    ? Array.isArray(structuredData)
-      ? structuredData
-      : [structuredData]
-    : [];
 
-  return (
-    <Helmet>
-      {/* Basic Meta Tags */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
-      <meta name="author" content={author} />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="application-name" content="Tafara Mutsvedu Portfolio" />
-      <meta name="creator" content={author} />
-      <meta name="publisher" content={author} />
-      
-      {/* Canonical URL */}
-      <link rel="canonical" href={fullCanonical} />
-      <link rel="alternate" hrefLang="en-ZA" href={fullCanonical} />
-      <link rel="alternate" hrefLang="x-default" href={siteUrl} />
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={fullCanonical} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={fullOgImage} />
-      <meta property="og:image:type" content="image/webp" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:site_name" content="Tafara Mutsvedu Portfolio" />
-      <meta property="og:locale" content="en_US" />
-      {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-      {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
-      {section && <meta property="article:section" content={section} />}
-      {tags.length > 0 && tags.map((tag, index) => (
-        <meta key={index} property="article:tag" content={tag} />
-      ))}
-      
-      {/* Twitter */}
-      <meta name="twitter:card" content={twitterCard} />
-      <meta name="twitter:url" content={fullCanonical} />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={fullOgImage} />
-      <meta name="twitter:creator" content="@tafaramutsvedu" />
-      <meta name="twitter:site" content="@tafaramutsvedu" />
-      <meta name="twitter:label1" content="Services" />
-      <meta name="twitter:data1" content="Web development, dashboards, AI and data tools" />
-      
-      {/* Additional Meta Tags */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="format-detection" content="telephone=no" />
-      <meta name="theme-color" content="#f8fafc" />
-      <meta name="color-scheme" content="light dark" />
-      
-      {/* Language and Region */}
-      <meta property="og:locale:alternate" content="en_ZA" />
-      <meta property="og:locale:alternate" content="en_GB" />
-      <meta property="og:locale:alternate" content="en_US" />
-      
-      {/* Security Headers */}
-      <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-      <meta http-equiv="X-Frame-Options" content="DENY" />
-      <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-      
-      {/* Performance */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+  const jsonLd = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
+  const serializedLd = JSON.stringify(jsonLd);
+  const tagsKey = tags.join('|');
 
-      {jsonLd.map((item, index) => (
-        <script key={index} type="application/ld+json">
-          {JSON.stringify(item)}
-        </script>
-      ))}
-    </Helmet>
-  );
+  useEffect(() => {
+    document.title = title;
+
+    upsertMeta('meta[name="description"]', 'name', 'description', description);
+    if (keywords) upsertMeta('meta[name="keywords"]', 'name', 'keywords', keywords);
+    upsertMeta('meta[name="author"]', 'name', 'author', author);
+    upsertMeta(
+      'meta[name="robots"]',
+      'name',
+      'robots',
+      'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+    );
+
+    upsertLink('canonical', fullCanonical);
+
+    // Open Graph
+    upsertMeta('meta[property="og:type"]', 'property', 'og:type', ogType);
+    upsertMeta('meta[property="og:url"]', 'property', 'og:url', fullCanonical);
+    upsertMeta('meta[property="og:title"]', 'property', 'og:title', title);
+    upsertMeta('meta[property="og:description"]', 'property', 'og:description', description);
+    upsertMeta('meta[property="og:image"]', 'property', 'og:image', fullOgImage);
+    upsertMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'Tafara Mutsvedu');
+
+    // Twitter
+    upsertMeta('meta[name="twitter:card"]', 'name', 'twitter:card', twitterCard);
+    upsertMeta('meta[name="twitter:url"]', 'name', 'twitter:url', fullCanonical);
+    upsertMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
+    upsertMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
+    upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', fullOgImage);
+
+    // Page-specific JSON-LD (kept separate from the static index.html blocks).
+    const added: HTMLScriptElement[] = [];
+    document.head.querySelectorAll('script[data-seo="1"]').forEach((node) => node.remove());
+    jsonLd.forEach((item) => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-seo', '1');
+      script.textContent = JSON.stringify(item);
+      document.head.appendChild(script);
+      added.push(script);
+    });
+
+    return () => {
+      added.forEach((node) => node.remove());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, description, keywords, author, fullCanonical, ogType, fullOgImage, twitterCard, serializedLd, tagsKey]);
+
+  return null;
 };
 
 export default SEO;

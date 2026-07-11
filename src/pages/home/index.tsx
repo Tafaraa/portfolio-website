@@ -33,6 +33,11 @@ const Hero = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
+            <AnimatedElement animation="fade" delay={0.15}>
+              <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-stone-500 dark:text-dark-muted">
+                Tafara Mutsvedu
+              </p>
+            </AnimatedElement>
             <AnimatedElement animation="slide-in" delay={0.2}>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider overflow-hidden whitespace-nowrap">
                 S<span className="font-mono">{oSymbol}</span>FTWARE<br />
@@ -61,12 +66,12 @@ const Hero = () => {
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.6}>
               <p className="text-lg md:text-xl mb-6 max-w-lg dark:text-dark-text">
-                I build fast websites, dashboards, admin systems, and data-powered tools for businesses that need clean digital products that actually work.
+                I build the digital side of a business — websites, online stores, dashboards, and AI workflows that quietly do the boring work for you. Hiring for a team or trying to get your business online and automated? Either way, I've got you.
               </p>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.8}>
               <div className="mb-8 flex flex-wrap gap-2">
-                {['Web apps', 'Dashboards', 'E-commerce', 'AI/Data tools'].map((item) => (
+                {['Websites & e-commerce', 'AI workflows', 'Dashboards & data', 'Automation & training'].map((item) => (
                   <span
                     key={item}
                     className="rounded-full border border-stone-300/80 bg-white/60 px-3 py-1 text-sm font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text"

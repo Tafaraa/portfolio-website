@@ -60,63 +60,63 @@ const normalize = (value: string) => value.toLowerCase().trim();
 const projectSuggestions: ProjectSuggestion[] = [
   {
     title: 'BabyEmporium',
-    summary: 'E-commerce storefront with inventory, orders, and WhatsApp ordering.',
+    summary: 'Online store with inventory, orders, and WhatsApp ordering built in.',
     href: 'https://www.babyemporium.co.zw/',
-    keywords: ['shop', 'store', 'ecommerce', 'e-commerce', 'inventory', 'orders', 'whatsapp']
+    keywords: ['shop', 'store', 'ecommerce', 'e-commerce', 'inventory', 'orders', 'whatsapp', 'sell', 'online']
   },
   {
     title: 'Dr Metuse',
-    summary: 'Client website plus admin system for bookings, content, payments, and operations.',
+    summary: 'Clinic website plus an admin system that runs bookings, content, payments and daily ops.',
     href: 'https://drmetuseplasticsurgeon.co.za/',
-    keywords: ['booking', 'clinic', 'admin', 'dashboard', 'payment', 'medical']
+    keywords: ['booking', 'clinic', 'admin', 'dashboard', 'payment', 'medical', 'automate', 'automation', 'system']
   },
   {
     title: 'SkillLens',
-    summary: 'AI/data product that turns GitHub repository activity into skill insights.',
+    summary: 'An AI tool that turns GitHub activity into clear skill insights.',
     href: 'https://skill-lens.vercel.app/',
-    keywords: ['ai', 'data', 'analytics', 'machine learning', 'developer', 'dashboard']
+    keywords: ['ai', 'data', 'analytics', 'machine learning', 'developer', 'dashboard', 'workflow', 'automation']
   },
   {
     title: 'Okra Advisory',
-    summary: 'Clean consulting website focused on brand clarity and lead generation.',
+    summary: 'A clean consulting site built to look sharp and pull in enquiries.',
     href: 'https://okraadvisory.co.za/',
-    keywords: ['consulting', 'business', 'brand', 'website', 'leads']
+    keywords: ['consulting', 'business', 'brand', 'website', 'leads', 'online', 'presence']
   }
 ];
 
 const quickPrompts = [
-  'What can Tafara build?',
+  'What can Tafara do?',
+  'Get my business online',
+  'Set up AI workflows for me',
+  'How much does this cost?',
   'Recommend a project',
-  'Start guided project brief',
-  'How much does a website cost?',
-  'I need an e-commerce site',
-  'Contact Tafara'
+  'Talk to Tafara'
 ];
 
 const briefQuestions: BriefQuestion[] = [
   {
     key: 'projectType',
-    question: 'Great. What do you want Tafara to help you with? For example: website, dashboard, e-commerce store, booking system, AI/data tool, or improving an existing site.'
+    question: "Cool. What do you want Tafara to help with? e.g. a website, online store, AI workflow/automation, a dashboard, team training, or fixing up an existing site."
   },
   {
     key: 'goal',
-    question: 'What is the main goal? For example: get more leads, sell products, manage bookings, automate admin, or understand data better.'
+    question: "What's the main goal? e.g. get more enquiries, sell online, cut admin time, understand your numbers, or get the team trained up."
   },
   {
     key: 'features',
-    question: 'What are the must-have pages or features? A rough list is perfect.'
+    question: "What are the must-haves? A rough list is perfect — pages, features, whatever's in your head."
   },
   {
     key: 'timeline',
-    question: 'When would you like it done? You can say a date, a month, or something like "as soon as possible".'
+    question: "When do you want it live? A date, a month, or just 'asap' all work."
   },
   {
     key: 'budget',
-    question: 'Do you have a budget range in mind? You can also say "not sure yet".'
+    question: 'Got a budget range in mind? "Not sure yet" is a totally fine answer too.'
   },
   {
     key: 'contact',
-    question: 'Last one: what name or business name should Tafara see in the WhatsApp message?'
+    question: 'Last one — what name or business should Tafara see in the WhatsApp message?'
   }
 ];
 
@@ -134,11 +134,11 @@ const JulieChatWidget = () => {
       id: 'julie-hello',
       role: 'julie',
       text:
-        "Hi, I'm Julie, Tafara's portfolio assistant. I can help you find the right project example, explain what Tafara builds, estimate timelines, or help you start a WhatsApp conversation.",
+        "Hey — I'm Julie, I run point on Tafara's site. Tell me what you're after: getting your business online, selling, automating the boring admin, or hiring him. I'll point you the right way or tee up a WhatsApp intro.",
       actions: [
-        { type: 'prompt', label: 'What can he build?', value: 'What can Tafara build?' },
+        { type: 'prompt', label: 'What can he do?', value: 'What can Tafara do?' },
         { type: 'prompt', label: 'Build my brief', value: 'Start guided project brief' },
-        { type: 'prompt', label: 'Show project fit', value: 'Recommend a project for my idea' }
+        { type: 'prompt', label: 'Show me examples', value: 'Recommend a project for my idea' }
       ]
     }
   ]);
@@ -158,7 +158,7 @@ const JulieChatWidget = () => {
   );
 
   const servicesText =
-    'Tafara builds fast business websites, e-commerce stores, admin dashboards, booking systems, APIs, data dashboards, AI prototypes, and performance/UX improvements for existing sites.';
+    'Tafara builds business websites and online stores, sets up AI workflows and automations that cut admin, builds dashboards and data tools, and trains teams to actually run it all. He also fixes up and speeds up existing sites.';
 
   useEffect(() => {
     jokePoolRef.current = Array.from({ length: jokes.length }, (_, i) => i);
@@ -286,8 +286,8 @@ const JulieChatWidget = () => {
     const wantsProjectRecommendation =
       /(recommend|similar|example|portfolio|project|built|work|show|case study|ecommerce|e-commerce|dashboard|ai|data|booking|website)/i.test(text);
     const hasProjectIntent =
-      /(i need|i want|looking for|build me|create me|make me|help me build|need a|want a|need an|want an)/i.test(text) &&
-      /(website|site|dashboard|ecommerce|e-commerce|store|shop|booking|system|app|application|ai|data|automation|portal|admin)/i.test(text);
+      /(i need|i want|looking for|build me|create me|make me|help me|need a|want a|need an|want an|get my|set ?up|automate|train)/i.test(text) &&
+      /(website|site|dashboard|ecommerce|e-commerce|store|shop|booking|system|app|application|\bai\b|data|automation|workflow|portal|admin|online|digital|team|training)/i.test(text);
 
     if (/(start guided project brief|guided project brief|build my brief|create brief|project brief flow)/i.test(text)) {
       return startBriefFlow();
@@ -311,7 +311,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          'Pricing depends on scope. A simple business website is usually smaller than a dashboard, e-commerce store, booking system, or AI/data tool. The fastest next step is to send Tafara the type of project, deadline, and 2-3 must-have features.',
+          "Honest answer: it depends on scope. A simple business site is smaller than a full store, a dashboard, or an AI workflow setup. Quickest way to a real number — tell me the type of project, your deadline, and 2-3 must-haves, and I'll pass it straight to Tafara.",
         actions: [
           {
             type: 'prompt',
@@ -352,6 +352,45 @@ const JulieChatWidget = () => {
             label: 'Start guided brief',
             value: 'Start guided project brief'
           }
+        ]
+      };
+    }
+
+    if (/(ai workflow|automat|workflow|repetitive|manual work|admin work|chatbot|integrat|zapier|save time)/i.test(text)) {
+      return {
+        id,
+        role: 'julie',
+        text:
+          "Yes — this is a big part of what Tafara does. He hooks up the tools you already use so the repetitive stuff (quotes, bookings, follow-ups, data entry) runs itself in the background, and he can add a smart chatbot or assistant on top. He'll also train your team so you're not dependent on him forever.",
+        actions: [
+          { type: 'prompt', label: 'Set this up for me', value: 'I want to set up AI workflows and automation' },
+          { type: 'link', label: 'See what I do', href: '#skills' }
+        ]
+      };
+    }
+
+    if (/(train|training|teach|upskill|workshop|learn to use)/i.test(text)) {
+      return {
+        id,
+        role: 'julie',
+        text:
+          "For sure. Tafara doesn't just build and disappear — he sets the system up, then walks your team through actually running it, with a proper handover and simple docs so it sticks.",
+        actions: [
+          { type: 'prompt', label: 'Set up training', value: 'I want training for my team' },
+          { type: 'link', label: 'See what I do', href: '#skills' }
+        ]
+      };
+    }
+
+    if (/(get online|get my business online|online presence|digital presence|new to online|no website|first website|enter the market)/i.test(text)) {
+      return {
+        id,
+        role: 'julie',
+        text:
+          "Perfect starting point. Tafara can get you a proper online presence from scratch — a site or store that makes you look legit, shows up on Google, and actually brings in enquiries. Then he can layer on payments, bookings, and automation as you grow.",
+        actions: [
+          { type: 'prompt', label: 'Get me online', value: 'I want to get my business online' },
+          { type: 'link', label: 'See examples', href: '#projects' }
         ]
       };
     }
@@ -409,7 +448,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          "Hi! I can help you move fast. Ask me what Tafara builds, ask for a project recommendation, ask about timelines, or ask me to help you contact him.",
+          "Hey! Quick version — ask me what Tafara can do, get a project recommendation, sort out pricing or timelines, or I'll set up a WhatsApp intro. What are you working on?",
         actions: quickPrompts.slice(0, 4).map((prompt) => ({
           type: 'prompt',
           label: prompt.replace('Tafara ', ''),
@@ -494,7 +533,7 @@ const JulieChatWidget = () => {
               </div>
               <div className="min-w-0">
                 <p className="font-medium text-stone-900 dark:text-dark-text">Julie</p>
-                <p className="text-xs text-stone-600 dark:text-dark-muted">Portfolio guide and project helper</p>
+                <p className="text-xs text-stone-600 dark:text-dark-muted">Here to help you get started</p>
               </div>
             </div>
             <button
@@ -512,7 +551,7 @@ const JulieChatWidget = () => {
               <Sparkles size={14} className="text-primary-600" aria-hidden="true" />
               {briefFlow
                 ? `Project brief: question ${briefFlow.step + 1} of ${briefQuestions.length}`
-                : 'Try: "I need an e-commerce site" or "What should I send Tafara?"'}
+                : 'Try: "Get my business online" or "Set up AI workflows"'}
             </div>
           </div>
 
@@ -646,10 +685,10 @@ const JulieChatWidget = () => {
           >
             <span className="flex items-center gap-2 font-medium">
               <Briefcase size={14} aria-hidden="true" />
-              Need help picking a project example?
+              Not sure where to start?
             </span>
             <span className="mt-0.5 block text-stone-600 dark:text-dark-muted">
-              Julie can guide you through Tafara's work quickly.
+              I'll help you figure out how Tafara can help — takes 30 seconds.
             </span>
             <span
               aria-hidden="true"

@@ -23,8 +23,11 @@
 
 [[headers]]
   for = "/images/*"
+  # Images in /public are not content-hashed, so they must stay revalidatable.
+  # Otherwise an updated image (same filename) stays stuck in returning
+  # visitors' browser caches and appears broken/missing after a swap.
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"
 
 [[redirects]]
   from = "/images/*"

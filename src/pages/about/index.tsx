@@ -1,29 +1,29 @@
-import { ArrowRight, BarChart3, CheckCircle2, Code2, FileDown, Gauge } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Code2, FileDown, Gauge, Workflow } from 'lucide-react';
 import AnimatedElement from '../../components/ui/AnimatedElement';
 
 const capabilities = [
   {
     icon: Code2,
     title: 'Build',
-    description: 'Fast websites, dashboards, portals, and full-stack apps that feel polished on every screen.'
+    description: 'Websites, online stores, dashboards, and full-stack apps that look sharp on every screen.'
   },
   {
-    icon: BarChart3,
-    title: 'Analyze',
-    description: 'Data workflows, reporting, machine learning experiments, and practical business insight.'
+    icon: Workflow,
+    title: 'Automate',
+    description: 'AI workflows and automations that handle the repetitive admin so your team can focus on real work.'
   },
   {
     icon: Gauge,
-    title: 'Improve',
-    description: 'Performance, UX clarity, SEO, and conversion-focused refinements for existing products.'
+    title: 'Grow',
+    description: 'SEO, speed, clean UX, and data that turn a site into something that actually brings in business.'
   }
 ];
 
 const proofPoints = [
   'Production client websites',
-  'Admin dashboards and order workflows',
-  'E-commerce and payment integrations',
-  'AI and data science prototypes'
+  'Admin dashboards & order flows',
+  'E-commerce & card payments',
+  'AI workflows & automation'
 ];
 
 const About = () => {
@@ -45,13 +45,13 @@ const About = () => {
 
             <AnimatedElement animation="slide-in" delay={0.2}>
               <h2 className="mt-3 md:mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-                I turn ideas into usable software, data tools, and cleaner digital experiences.
+                I build the digital side of businesses — and make their data actually useful.
               </h2>
             </AnimatedElement>
 
             <AnimatedElement animation="fade" delay={0.35}>
               <p className="mt-3 md:mt-5 text-sm md:text-lg text-primary-100 leading-relaxed max-w-xl">
-                Skip the long bio: I build modern web products, connect them to real business workflows, and use data to make better decisions faster.
+                No long bio. I design and ship web products, wire them into the tools a business already runs on, set up AI workflows that cut the busywork, and turn messy data into clear decisions. Recruiters — I do all of this full-time too.
               </p>
             </AnimatedElement>
 
@@ -82,7 +82,7 @@ const About = () => {
                 {capabilities.map(({ icon: Icon, title, description }) => (
                   <a
                     key={title}
-                    href={title === 'Analyze' ? '#skills' : '#projects'}
+                    href={title === 'Automate' ? '#skills' : '#projects'}
                     className="group rounded-lg border border-white/10 bg-white/5 p-3 md:p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-primary-200/40"
                   >
                     <span className="mb-2 md:mb-5 inline-flex h-8 w-8 md:h-11 md:w-11 items-center justify-center rounded-lg bg-primary-50 text-primary-900 transition-transform duration-300 group-hover:scale-105">

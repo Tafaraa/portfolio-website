@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useId } from 'react';
 import { isMobileDevice } from '../../utils/performance';
 import styles from './OptimizedImage.module.css';
 
@@ -23,8 +23,17 @@ const OptimizedImage = ({
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
+  const [hasError, setHasError] = useState(false);
   const isMobile = useMemo(() => typeof window !== 'undefined' && isMobileDevice(), []);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Unique per-instance id so the same image used twice on a page never
+  // produces duplicate DOM ids (which would break the lazy-load observer).
+  const reactId = useId();
+  const imageId = useMemo(
+    () => `image-${src.replace(/\W/g, '')}-${reactId.replace(/\W/g, '')}`,
+    [src, reactId]
+  );
   
   // Check for dark mode on mount and when theme changes
   useEffect(() => {
@@ -64,7 +73,7 @@ const OptimizedImage = ({
       { rootMargin } // Start loading when image is near viewport
     );
 
-    const currentRef = document.getElementById(`image-${src.replace(/\W/g, '')}`);
+    const currentRef = document.getElementById(imageId);
     if (currentRef) {
       observer.observe(currentRef);
     }
@@ -74,14 +83,22 @@ const OptimizedImage = ({
         observer.unobserve(currentRef);
       }
     };
-  }, [src, priority, isMobile]);
+  }, [imageId, priority, isMobile]);
+
+  // Reset error/loaded state if the same instance is pointed at a new image.
+  useEffect(() => {
+    setHasError(false);
+    setIsLoaded(false);
+  }, [src]);
 
   const handleLoad = () => {
     setIsLoaded(true);
   };
 
-  // Generate a unique ID for the image element
-  const imageId = useMemo(() => `image-${src.replace(/\W/g, '')}`, [src]);
+  const handleError = () => {
+    setHasError(true);
+    setIsLoaded(true);
+  };
 
   // Create CSS classes for dimensions
   const getWidthClass = useMemo(() => {
@@ -113,16 +130,17 @@ const OptimizedImage = ({
       id={imageId}
       className={`${styles.imageContainer} ${getWidthClass} ${getHeightClass} ${className}`}
     >
-      {(isInView || priority) && (
+      {(isInView || priority) && !hasError && (
         <img
           src={src}
           alt={alt}
           width={width}
           height={height}
           onLoad={handleLoad}
+          onError={handleError}
           loading={priority ? 'eager' : 'lazy'}
           decoding={priority ? 'sync' : 'async'}
-          {...{ fetchpriority: priority ? 'high' : 'auto' } as any}
+          {...({ fetchpriority: priority ? 'high' : 'auto' } as Record<string, string>)}
           className={`${styles.image} ${isLoaded ? styles.loaded : styles.loading} ${
             objectFit === 'cover' ? styles.objectCover :
             objectFit === 'contain' ? styles.objectContain :
@@ -132,14 +150,25 @@ const OptimizedImage = ({
           }`}
         />
       )}
-      {!isLoaded && !priority && (
+      {!isLoaded && !priority && !hasError && (
         <div
           className={`${styles.placeholder} ${isDarkMode ? styles.darkPlaceholder : ''}`}
           aria-hidden="true"
         >
-          <div 
-            className={`${styles.placeholderInner} ${isDarkMode ? styles.darkPlaceholderInner : styles.lightPlaceholderInner}`} 
+          <div
+            className={`${styles.placeholderInner} ${isDarkMode ? styles.darkPlaceholderInner : styles.lightPlaceholderInner}`}
           />
+        </div>
+      )}
+      {hasError && (
+        <div
+          className={`${styles.placeholder} ${isDarkMode ? styles.darkPlaceholder : ''}`}
+          role="img"
+          aria-label={alt}
+        >
+          <span className="px-3 text-center text-xs font-medium text-stone-500 dark:text-gray-400">
+            {alt}
+          </span>
         </div>
       )}
     </div>
