@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, ChevronsDown, ChevronUp, ExternalLink, Github } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import OptimizedImage from '../../components/ui/OptimizedImage';
 
 type Project = {
@@ -144,6 +144,7 @@ const Projects = () => {
   const total = projects.length;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const allProjectsRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -151,6 +152,12 @@ const Projects = () => {
   const currentRef = useRef(0);
   const [current, setCurrent] = useState(0);
   const [showAll, setShowAll] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress: allProjectsScrollProgress } = useScroll({
+    target: allProjectsRef,
+    offset: ['start end', 'end start']
+  });
+  const parallaxY = useTransform(allProjectsScrollProgress, [0, 1], ['-7%', '7%']);
 
   // Preload every project image so nothing pops in blank mid-scroll
   useEffect(() => {
@@ -387,14 +394,46 @@ const Projects = () => {
       </div>
 
       {/* All projects: normal-flow section right after the horizontal stage */}
-      <section id="all-projects" className="relative overflow-hidden bg-stone-950 py-14 md:py-20">
-        <div className="container mx-auto px-6 md:px-12">
+      <section
+        id="all-projects"
+        ref={allProjectsRef}
+        className="relative isolate overflow-hidden bg-stone-100 py-20 md:py-28"
+      >
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-6 -inset-y-[18%] -z-20 overflow-hidden will-change-transform md:-inset-x-12"
+          style={{ y: prefersReducedMotion ? 0 : parallaxY }}
+        >
+          <picture>
+            <source media="(min-width: 768px)" srcSet="/images/projects-parallax-bg.webp" />
+            <img
+              src="/images/projects-parallax-bg-mobile.webp"
+              alt=""
+              className="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </motion.div>
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(250,250,249,0.78),rgba(250,250,249,0.46)_48%,rgba(250,250,249,0.82))]" aria-hidden="true" />
+        <div className="container relative mx-auto px-6 md:px-12">
+          <div className="mx-auto mb-10 max-w-2xl text-center md:mb-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-700/70 md:text-sm">
+              Beyond the spotlight
+            </p>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-stone-950 md:text-5xl">
+              Explore the full build archive.
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-stone-600 md:text-base">
+              More client platforms, experiments, data products, and engineering work live here.
+            </p>
+          </div>
           <div className="flex justify-center">
             <button
               type="button"
               onClick={() => setShowAll((v) => !v)}
               aria-expanded={showAll}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-6 py-3 text-sm font-medium text-white backdrop-blur transition-colors hover:bg-white/20"
+              className="inline-flex items-center gap-2 rounded-full border border-stone-900/15 bg-white/75 px-6 py-3 text-sm font-semibold text-stone-900 shadow-[0_16px_50px_rgba(28,25,23,0.12)] backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:border-indigo-500/30 hover:bg-white"
             >
               {showAll ? 'Hide all projects' : 'View all projects'}
               {showAll ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -411,7 +450,7 @@ const Projects = () => {
                 transition={{ duration: 0.4, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
-                <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+                <div className="mt-10 grid grid-cols-1 gap-4 rounded-3xl border border-white/10 bg-stone-950/90 p-4 shadow-[0_28px_90px_rgba(28,25,23,0.24)] backdrop-blur-xl sm:grid-cols-2 sm:p-5 lg:grid-cols-3 md:gap-6 md:p-6">
                   {projects.map((p, i) => (
                     <motion.article
                       key={p.title}
@@ -474,7 +513,7 @@ const Projects = () => {
               href="https://github.com/Tafaraa"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-8 py-4 text-sm text-white transition-colors hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-stone-950 bg-stone-950 px-8 py-4 text-sm font-semibold text-white shadow-[0_16px_50px_rgba(28,25,23,0.2)] transition-all hover:-translate-y-0.5 hover:bg-indigo-700"
             >
               <span>View More on GitHub</span>
               <ArrowUpRight size={16} />

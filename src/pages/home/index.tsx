@@ -34,8 +34,8 @@ const Hero = () => {
   ];
 
   return (
-    <section id="home" className="pt-32 pb-20 md:pt-40 md:pb-32 min-h-screen flex flex-col justify-between">
-      <div className="container mx-auto px-6 md:px-12">
+    <section id="home" className="hero-atmosphere relative isolate flex min-h-screen flex-col justify-between overflow-hidden pt-32 pb-20 md:pt-40 md:pb-32">
+      <div className="container relative z-10 mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <AnimatedElement animation="fade" delay={0.15}>
@@ -50,7 +50,7 @@ const Hero = () => {
               </h1>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.5}>
-              <div className="w-full md:w-3/4 aspect-video bg-stone-300 dark:bg-dark-surface overflow-hidden mb-8 shadow-md">
+              <div className="hero-portrait-frame mb-8 aspect-video w-full overflow-hidden bg-stone-300 shadow-2xl dark:bg-dark-surface md:w-3/4">
                 <OptimizedImage
                   src="/images/profile.webp"
                   alt="Tafara Mutsvedu"
@@ -120,7 +120,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 flex justify-center md:justify-start">
+      <div className="container relative z-10 mx-auto flex justify-center px-6 md:justify-start md:px-12">
         <AnimatedElement animation="slide-up" delay={1.2} once={false}>
           <a
             href="#about"
