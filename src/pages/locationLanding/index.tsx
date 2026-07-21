@@ -21,7 +21,7 @@ import { LandingFaq, PageDataEntry } from '../../types';
 // One consistent identity + voice across every landing page ("one language").
 // ---------------------------------------------------------------------------
 const NAME = 'Tafara Mutsvedu';
-const ROLE = 'Software Engineer & Data Scientist — specialising in AI engineering';
+const ROLE = 'Software Engineer & Data Scientist, specialising in AI engineering';
 const SITE_URL = 'https://mutsvedutafara.com';
 const WHATSAPP_NUMBER_E164 = '27606249151';
 
@@ -92,7 +92,7 @@ const defaultFaqs: LandingFaq[] = [
   },
   {
     q: 'Do you only build websites, or AI and automation too?',
-    a: 'Both. A lot of my work now is AI engineering — LLM features, automations and chatbots — on top of websites, stores, dashboards and full-stack systems.'
+    a: 'Both. A lot of my work now is AI engineering (LLM features, automations and chatbots) on top of websites, stores, dashboards and full-stack systems.'
   },
   {
     q: "Can you help if I'm starting from zero?",
@@ -100,7 +100,7 @@ const defaultFaqs: LandingFaq[] = [
   },
   {
     q: 'Are you open to full-time or contract roles?',
-    a: "Yes — I'm open to full-time and contract work alongside client projects. Download the CV or send a message and let's talk."
+    a: "Yes, I'm open to full-time and contract work alongside client projects. Download the CV or send a message and let's talk."
   }
 ];
 
@@ -118,7 +118,7 @@ const LocationLanding = () => {
     // ---- Location pages -------------------------------------------------
     midrand: {
       title: 'Software Engineer & Data Scientist in Midrand',
-      subtitle: 'Websites, AI workflows and data tools — built in Midrand',
+      subtitle: 'Websites, AI workflows and data tools, built in Midrand',
       description:
         'Based in Midrand and building the digital side of businesses across Gauteng: websites, online stores, AI workflows and data dashboards. Software engineering and data science, with a heavy focus on AI.',
       location: 'Midrand, Gauteng',
@@ -138,7 +138,7 @@ const LocationLanding = () => {
     },
     zimbabwe: {
       title: 'Software Engineer & Data Scientist for Zimbabwe',
-      subtitle: 'Global-standard web, AI and data — built for Zimbabwean businesses',
+      subtitle: 'Global-standard web, AI and data, built for Zimbabwean businesses',
       description:
         'Zimbabwean software engineer and data scientist building websites, online stores, AI workflows and dashboards for businesses at home and abroad. Get online, sell, and automate the busywork.',
       location: 'Zimbabwe',
@@ -172,7 +172,7 @@ const LocationLanding = () => {
       title: 'Hire a Remote Full-Stack Engineer',
       subtitle: 'End-to-end: front-end, back-end, AI and data',
       description:
-        'Looking to hire a remote full-stack engineer? I ship from front-end to back-end, plus AI workflows and data tooling — with the communication to make remote actually work.',
+        'Looking to hire a remote full-stack engineer? I ship from front-end to back-end, plus AI workflows and data tooling, with the communication to make remote actually work.',
       remote: true,
       audience: 'recruiter',
       keywords:
@@ -182,7 +182,7 @@ const LocationLanding = () => {
       title: 'Remote React Developer for US Teams',
       subtitle: 'Modern React & TypeScript, US-friendly hours',
       description:
-        'React developer available for US companies. Fast, responsive, well-tested React and TypeScript front-ends — plus AI features and data dashboards when you need them.',
+        'React developer available for US companies. Fast, responsive, well-tested React and TypeScript front-ends, plus AI features and data dashboards when you need them.',
       remote: true,
       location: 'Available for US companies',
       audience: 'recruiter',
@@ -204,7 +204,7 @@ const LocationLanding = () => {
       title: 'Remote Data Scientist in South Africa',
       subtitle: 'Machine learning, analysis and dashboards',
       description:
-        'Data scientist in South Africa available remotely. Machine learning, predictive modelling, analysis and dashboards that turn data into decisions — with AI engineering to ship it into real products.',
+        'Data scientist in South Africa available remotely. Machine learning, predictive modelling, analysis and dashboards that turn data into decisions, with AI engineering to ship it into real products.',
       remote: true,
       location: 'South Africa',
       audience: 'both',
@@ -217,7 +217,7 @@ const LocationLanding = () => {
       title: 'React Developer in South Africa',
       subtitle: 'Modern, fast React & TypeScript front-ends',
       description:
-        'React developer in South Africa building fast, responsive and scalable front-ends for websites, dashboards and web apps — with AI features baked in where they help.',
+        'React developer in South Africa building fast, responsive and scalable front-ends for websites, dashboards and web apps, with AI features baked in where they help.',
       location: 'South Africa',
       audience: 'both',
       keywords:
@@ -225,7 +225,7 @@ const LocationLanding = () => {
     },
     'fullstack-developer-south-africa': {
       title: 'Full-Stack Developer in South Africa',
-      subtitle: 'Front-end, back-end, AI and data — one person',
+      subtitle: 'Front-end, back-end, AI and data, one person',
       description:
         'Full-stack developer in South Africa handling the whole build: front-end, back-end, databases, AI workflows and data tooling. End-to-end, no hand-offs.',
       location: 'South Africa',
@@ -247,7 +247,7 @@ const LocationLanding = () => {
       title: 'Data Scientist | Machine Learning & AI',
       subtitle: 'From messy data to decisions and shipped products',
       description:
-        'Data scientist working across machine learning, analysis and AI engineering. Models, predictive analytics and dashboards — built into real products, not left in a notebook.',
+        'Data scientist working across machine learning, analysis and AI engineering. Models, predictive analytics and dashboards, built into real products, not left in a notebook.',
       audience: 'both',
       keywords:
         'data scientist, machine learning engineer, ai engineer, predictive analytics, data analysis, data science consultant'
@@ -265,7 +265,7 @@ const LocationLanding = () => {
       title: 'React Developer | Modern Front-End Development',
       subtitle: 'React & TypeScript that feels fast and polished',
       description:
-        'React developer building fast, responsive front-ends for business websites, dashboards, portals and web apps — with AI features and data views where they add value.',
+        'React developer building fast, responsive front-ends for business websites, dashboards, portals and web apps, with AI features and data views where they add value.',
       audience: 'both',
       keywords:
         'react developer, react engineer, typescript developer, frontend developer, react web applications'
@@ -283,7 +283,7 @@ const LocationLanding = () => {
       title: 'Machine Learning Engineer | AI & Data Products',
       subtitle: 'Models and AI features shipped into real products',
       description:
-        'Machine learning engineer building practical AI and data products — model prototypes, NLP and LLM features, analytics tools and intelligent web apps.',
+        'Machine learning engineer building practical AI and data products, model prototypes, NLP and LLM features, analytics tools and intelligent web apps.',
       audience: 'both',
       keywords:
         'machine learning engineer, ml engineer, ai engineer, nlp developer, llm engineer, data science engineer'
@@ -310,7 +310,7 @@ const LocationLanding = () => {
     // ---- AI-focused pages ----------------------------------------------
     'ai-engineer': {
       title: 'AI Engineer | LLMs, Automation & AI Products',
-      subtitle: 'AI that ships — not AI that stays in a demo',
+      subtitle: 'AI that ships, not AI that stays in a demo',
       description:
         'AI engineer building LLM features, AI assistants, automations and machine learning into real products. I take AI from idea to something your business or users actually use every day.',
       audience: 'both',
@@ -320,11 +320,11 @@ const LocationLanding = () => {
       faqs: [
         {
           q: 'What kind of AI work do you actually do?',
-          a: 'LLM and GenAI features, AI assistants and chatbots, document/data automation, and classic machine learning — always built into a product or workflow, not left as a demo.'
+          a: 'LLM and GenAI features, AI assistants and chatbots, document/data automation, and classic machine learning, always built into a product or workflow, not left as a demo.'
         },
         {
           q: 'Can you add AI to a product I already have?',
-          a: 'Definitely. A lot of the work is layering AI onto an existing site, app or process — a smart assistant, automated admin, or an ML feature — without rebuilding everything.'
+          a: 'Definitely. A lot of the work is layering AI onto an existing site, app or process (a smart assistant, automated admin, or an ML feature) without rebuilding everything.'
         }
       ]
     },
@@ -340,7 +340,7 @@ const LocationLanding = () => {
     },
     'ai-consultant': {
       title: 'AI Consultant for Business',
-      subtitle: 'Figure out where AI actually helps — then build it',
+      subtitle: 'Figure out where AI actually helps, then build it',
       description:
         'AI consultant who also does the building. I help you find where AI and automation genuinely save time or make money, then set it up and train your team to run it.',
       audience: 'business',
@@ -349,7 +349,7 @@ const LocationLanding = () => {
         'ai consultant, ai consultant south africa, ai automation consultant, business ai consultant, ai strategy, ai for small business',
       faqs: [
         {
-          q: "We're not technical — is AI even worth it for us?",
+          q: "We're not technical, is AI even worth it for us?",
           a: "Often yes, and often smaller than you'd think. I'll point out the boring, repetitive stuff AI can quietly take off your plate, and I'll be honest when it's not worth it."
         }
       ]
@@ -374,7 +374,7 @@ const LocationLanding = () => {
       title: 'AI & Automation for Business',
       subtitle: 'Practical AI that saves your team hours',
       description:
-        'AI and automation for real businesses — not buzzwords. I set up the automations and AI assistants that cut admin, then train your team so it sticks. Get online, sell, and stop drowning in busywork.',
+        'AI and automation for real businesses, not buzzwords. I set up the automations and AI assistants that cut admin, then train your team so it sticks. Get online, sell, and stop drowning in busywork.',
       audience: 'business',
       highlights: ['Cut admin time', 'AI assistants', 'Online & selling', 'Team trained'],
       keywords:
@@ -382,9 +382,9 @@ const LocationLanding = () => {
     },
     'ai-chatbot-developer': {
       title: 'AI Chatbot Developer',
-      subtitle: 'Assistants that answer, book and qualify — 24/7',
+      subtitle: 'Assistants that answer, book and qualify, 24/7',
       description:
-        'AI chatbot developer building smart assistants for websites and WhatsApp that answer questions, qualify leads and book appointments around the clock — connected to your real data.',
+        'AI chatbot developer building smart assistants for websites and WhatsApp that answer questions, qualify leads and book appointments around the clock, connected to your real data.',
       audience: 'business',
       highlights: ['Website & WhatsApp bots', 'Lead qualifying', 'Booking flows', 'Connected to your data'],
       keywords:
@@ -394,7 +394,7 @@ const LocationLanding = () => {
       title: 'LLM Engineer | Generative AI Features',
       subtitle: 'RAG, assistants and GenAI features that hold up',
       description:
-        'LLM engineer building generative AI features — assistants, retrieval (RAG), summarisation and automation — wired into products with the guardrails to run in production.',
+        'LLM engineer building generative AI features such as assistants, retrieval (RAG), summarisation and automation, wired into products with the guardrails to run in production.',
       audience: 'recruiter',
       highlights: ['LLM apps & RAG', 'AI assistants', 'Prompt & eval', 'Production-ready'],
       keywords:
@@ -406,7 +406,7 @@ const LocationLanding = () => {
       title: 'Website Creation Services',
       subtitle: 'Websites and stores that bring in real enquiries',
       description:
-        'Website creation for businesses: sharp, fast sites and online stores that show up on Google and actually bring in enquiries and sales — with room to add AI and automation as you grow.',
+        'Website creation for businesses: sharp, fast sites and online stores that show up on Google and actually bring in enquiries and sales, with room to add AI and automation as you grow.',
       audience: 'business',
       highlights: ['Business websites', 'Online stores', 'Local SEO', 'Room to scale'],
       keywords:
@@ -416,21 +416,21 @@ const LocationLanding = () => {
       title: 'Get Your Business Online',
       subtitle: 'From zero to a proper online presence',
       description:
-        'New to the digital side of things? I get your business online properly — a site or store that looks legit, ranks on Google and brings in enquiries — then layer on payments, bookings and automation.',
+        'New to the digital side of things? I get your business online properly, a site or store that looks legit, ranks on Google and brings in enquiries, then layer on payments, bookings and automation.',
       audience: 'business',
       highlights: ['Look legit online', 'Show up on Google', 'Take payments', 'Grow into automation'],
       keywords:
         'get your business online, small business website, online presence, digital presence, get online south africa, business website design',
       faqs: [
         {
-          q: 'I have nothing yet — where do we even start?',
+          q: 'I have nothing yet, where do we even start?',
           a: "With a quick chat about what you do and who you serve. From there I'll get you a simple, sharp online presence and grow it as you grow. No jargon."
         }
       ]
     },
     'ecommerce-website-developer': {
       title: 'E-commerce Website Developer',
-      subtitle: 'Sell online — storefront, payments and orders',
+      subtitle: 'Sell online, storefront, payments and orders',
       description:
         'E-commerce developer building online stores with inventory, card payments, WhatsApp ordering and an admin dashboard to run it all. Everything you need to start taking money online.',
       audience: 'business',
@@ -442,7 +442,7 @@ const LocationLanding = () => {
       title: 'Websites for Small Businesses',
       subtitle: 'Affordable, sharp and built to bring in work',
       description:
-        'Websites for small businesses that punch above their weight: clean design, fast load, local SEO and clear calls to action — built to bring in enquiries, not just sit there.',
+        'Websites for small businesses that punch above their weight: clean design, fast load, local SEO and clear calls to action, built to bring in enquiries, not just sit there.',
       audience: 'business',
       highlights: ['Clean & fast', 'Local SEO', 'Clear CTAs', 'Easy to update'],
       keywords:
@@ -452,7 +452,7 @@ const LocationLanding = () => {
       title: 'Freelance Software Engineer & Data Scientist',
       subtitle: 'Available for projects worldwide',
       description:
-        'Freelance software engineer and data scientist available for projects worldwide — websites, AI workflows, dashboards and full-stack systems, delivered without the agency overhead.',
+        'Freelance software engineer and data scientist available for projects worldwide, websites, AI workflows, dashboards and full-stack systems, delivered without the agency overhead.',
       audience: 'both',
       keywords:
         'freelance developer, freelance software engineer, freelance data scientist, freelance ai engineer, contract developer, project-based developer'
@@ -468,7 +468,7 @@ const LocationLanding = () => {
 
   const fallbackPageData: PageDataEntry = {
     title: `Software Engineer & Data Scientist in ${formatLocation(currentLocation)}`,
-    subtitle: 'Web, AI and data — built for your business',
+    subtitle: 'Web, AI and data, built for your business',
     description: `Software engineer and data scientist available in ${formatLocation(
       currentLocation
     )} and for remote teams. I build websites, online stores, AI workflows, dashboards and full-stack systems with React, TypeScript and Python.`,
@@ -630,7 +630,7 @@ const LocationLanding = () => {
           <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">What I can build for you</h2>
             <p className="mt-2 max-w-2xl text-sm text-stone-600 dark:text-dark-muted md:text-base">
-              Same person, whole stack — from the website out front to the AI quietly working in the back.
+              Same person, whole stack, from the website out front to the AI quietly working in the back.
             </p>
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-8 md:gap-4 lg:grid-cols-4">
               {services.map(({ icon: Icon, title, points }) => (
@@ -669,7 +669,7 @@ const LocationLanding = () => {
                 <h3 className="mt-2 text-xl font-bold md:text-2xl">Get online, sell, and automate the busywork.</h3>
                 <p className={`mt-3 text-sm leading-relaxed md:text-base ${audience === 'recruiter' ? 'text-stone-600 dark:text-dark-muted' : 'text-white/85'}`}>
                   Whether you're starting from nothing or fixing something that isn't working, I'll build it, automate it,
-                  and train your team to run it — so you're not stuck depending on me forever.
+                  and train your team to run it, so you're not stuck depending on me forever.
                 </p>
                 <a
                   href="/#contact"
@@ -715,7 +715,7 @@ const LocationLanding = () => {
               <div>
                 <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Recent work</h2>
                 <p className="mt-2 text-sm text-stone-600 dark:text-dark-muted md:text-base">
-                  Real, live builds — not mock-ups.
+                  Real, live builds, not mock-ups.
                 </p>
               </div>
               <Link
@@ -767,7 +767,7 @@ const LocationLanding = () => {
               <div className="max-w-2xl">
                 <h2 className="text-2xl font-bold tracking-tight md:text-4xl">Let's build the next one.</h2>
                 <p className="mt-3 text-sm text-white/80 md:text-lg">
-                  Tell me what you're trying to do — get online, sell, automate, or hire. I'll tell you straight if I'm
+                  Tell me what you're trying to do, get online, sell, automate, or hire. I'll tell you straight if I'm
                   the right fit.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">

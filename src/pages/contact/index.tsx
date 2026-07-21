@@ -146,12 +146,12 @@ const Contact = () => {
                   <Mail size={20} aria-hidden="true" />
                   Email
                 </h3>
-                <a 
-                  href="mailto:mutsvedu.work@gmail.com" 
+                <a
+                  href="mailto:tafara@mutsvedutafara.com"
                   className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                  aria-label="Email me at mutsvedu.work@gmail.com"
+                  aria-label="Email me at tafara@mutsvedutafara.com"
                 >
-                  mutsvedu.work@gmail.com
+                  tafara@mutsvedutafara.com
                 </a>
               </div>
               

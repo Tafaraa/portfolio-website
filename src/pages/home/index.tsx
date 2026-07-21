@@ -7,16 +7,16 @@ const Hero = () => {
   const [oSymbol, setOSymbol] = useState("O");
   const [eSymbol, setESymbol] = useState("E");
   const [aSymbol, setASymbol] = useState("A");
-  
+
   useEffect(() => {
     const symbols = {
       o: ["O", "0", "Q", "Ø"],
       e: ["E", "Ξ", "Σ", "Ε"],
       a: ["A", "Λ", "Δ", "Α"]
     };
-    
+
     let symbolIndex = 0;
-    
+
     const interval = setInterval(() => {
       symbolIndex = (symbolIndex + 1) % symbols.o.length;
       setOSymbol(symbols.o[symbolIndex]);
@@ -27,6 +27,11 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const highlights = [
+    { value: 'Websites', label: 'that bring enquiries' },
+    { value: 'AI workflows', label: 'that kill the admin' },
+    { value: 'Dashboards', label: 'that show the truth' }
+  ];
 
   return (
     <section id="home" className="pt-32 pb-20 md:pt-40 md:pb-32 min-h-screen flex flex-col justify-between">
@@ -35,7 +40,7 @@ const Hero = () => {
           <div className="order-2 md:order-1">
             <AnimatedElement animation="fade" delay={0.15}>
               <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-stone-500 dark:text-dark-muted">
-                Tafara Mutsvedu
+                Tafara Mutsvedu, South Africa
               </p>
             </AnimatedElement>
             <AnimatedElement animation="slide-in" delay={0.2}>
@@ -46,9 +51,9 @@ const Hero = () => {
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.5}>
               <div className="w-full md:w-3/4 aspect-video bg-stone-300 dark:bg-dark-surface overflow-hidden mb-8 shadow-md">
-                <OptimizedImage 
-                  src="/images/profile.webp" 
-                  alt="Tafara Mutsvedu" 
+                <OptimizedImage
+                  src="/images/profile.webp"
+                  alt="Tafara Mutsvedu"
                   className="w-full h-full"
                   objectFit="cover"
                   priority={true} /* LCP image, load with priority */
@@ -56,7 +61,7 @@ const Hero = () => {
               </div>
             </AnimatedElement>
           </div>
-          
+
           <div className="order-1 md:order-2">
             <AnimatedElement animation="slide-in" delay={0.3}>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-none mb-8 dark:text-dark-text tracking-wider overflow-hidden whitespace-nowrap">
@@ -65,29 +70,22 @@ const Hero = () => {
               </h1>
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.6}>
-              <p className="text-lg md:text-xl mb-6 max-w-lg dark:text-dark-text">
-                I build the digital side of a business — websites, online stores, dashboards, and AI workflows that quietly do the boring work for you. Hiring for a team or trying to get your business online and automated? Either way, I've got you.
-              </p>
-            </AnimatedElement>
-            <AnimatedElement animation="fade" delay={0.8}>
-              <div className="mb-8 flex flex-wrap gap-2">
-                {['Websites & e-commerce', 'AI workflows', 'Dashboards & data', 'Automation & training'].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-stone-300/80 bg-white/60 px-3 py-1 text-sm font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text"
-                  >
-                    {item}
-                  </span>
+              <div className="mb-8 divide-y divide-stone-300/70 border-y border-stone-300/70 dark:divide-white/10 dark:border-white/10">
+                {highlights.map(({ value, label }) => (
+                  <div key={value} className="flex items-baseline justify-between gap-4 py-3">
+                    <span className="text-lg md:text-2xl font-bold tracking-tight dark:text-dark-text">{value}</span>
+                    <span className="text-sm md:text-base text-stone-500 dark:text-dark-muted text-right">{label}</span>
+                  </div>
                 ))}
               </div>
             </AnimatedElement>
-            <AnimatedElement animation="fade" delay={0.9}>
+            <AnimatedElement animation="fade" delay={0.85}>
               <div className="mb-8 flex flex-col sm:flex-row gap-3">
                 <a
                   href="#projects"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-6 py-3 text-stone-50 transition-colors hover:bg-stone-700 dark:bg-dark-text dark:text-dark-bg dark:hover:bg-white"
                 >
-                  View projects
+                  See the work
                   <ArrowRight size={18} />
                 </a>
                 <a
@@ -100,17 +98,17 @@ const Hero = () => {
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={1}>
               <div className="flex items-center space-x-4">
-                <a 
-                  href="https://github.com/Tafaraa" 
-                  target="_blank" 
+                <a
+                  href="https://github.com/Tafaraa"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="underline underline-offset-4 hover:text-stone-600 dark:text-dark-text dark:hover:text-dark-accent transition-colors"
                 >
                   GitHub
                 </a>
-                <a 
-                  href="https://www.linkedin.com/in/tafara-mutsvedu-93825621b" 
-                  target="_blank" 
+                <a
+                  href="https://www.linkedin.com/in/tafara-mutsvedu-93825621b"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="underline underline-offset-4 hover:text-stone-600 dark:text-dark-text dark:hover:text-dark-accent transition-colors"
                 >
@@ -121,11 +119,11 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="container mx-auto px-6 md:px-12 flex justify-center md:justify-start">
         <AnimatedElement animation="slide-up" delay={1.2} once={false}>
-          <a 
-            href="#about" 
+          <a
+            href="#about"
             className="flex items-center space-x-2 text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
           >
             <ArrowDown size={24} className="animate-bounce" />

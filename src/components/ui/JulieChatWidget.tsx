@@ -104,7 +104,7 @@ const briefQuestions: BriefQuestion[] = [
   },
   {
     key: 'features',
-    question: "What are the must-haves? A rough list is perfect — pages, features, whatever's in your head."
+    question: "What are the must-haves? A rough list is perfect: pages, features, whatever's in your head."
   },
   {
     key: 'timeline',
@@ -116,7 +116,7 @@ const briefQuestions: BriefQuestion[] = [
   },
   {
     key: 'contact',
-    question: 'Last one — what name or business should Tafara see in the WhatsApp message?'
+    question: 'Last one: what name or business should Tafara see in the WhatsApp message?'
   }
 ];
 
@@ -134,7 +134,7 @@ const JulieChatWidget = () => {
       id: 'julie-hello',
       role: 'julie',
       text:
-        "Hey — I'm Julie, I run point on Tafara's site. Tell me what you're after: getting your business online, selling, automating the boring admin, or hiring him. I'll point you the right way or tee up a WhatsApp intro.",
+        "Hey, I'm Julie, I run point on Tafara's site. Tell me what you're after: getting your business online, selling, automating the boring admin, or hiring him. I'll point you the right way or tee up a WhatsApp intro.",
       actions: [
         { type: 'prompt', label: 'What can he do?', value: 'What can Tafara do?' },
         { type: 'prompt', label: 'Build my brief', value: 'Start guided project brief' },
@@ -311,7 +311,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          "Honest answer: it depends on scope. A simple business site is smaller than a full store, a dashboard, or an AI workflow setup. Quickest way to a real number — tell me the type of project, your deadline, and 2-3 must-haves, and I'll pass it straight to Tafara.",
+          "Honest answer: it depends on scope. A simple business site is smaller than a full store, a dashboard, or an AI workflow setup. Quickest way to a real number: tell me the type of project, your deadline, and 2-3 must-haves, and I'll pass it straight to Tafara.",
         actions: [
           {
             type: 'prompt',
@@ -361,7 +361,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          "Yes — this is a big part of what Tafara does. He hooks up the tools you already use so the repetitive stuff (quotes, bookings, follow-ups, data entry) runs itself in the background, and he can add a smart chatbot or assistant on top. He'll also train your team so you're not dependent on him forever.",
+          "Yes, this is a big part of what Tafara does. He hooks up the tools you already use so the repetitive stuff (quotes, bookings, follow-ups, data entry) runs itself in the background, and he can add a smart chatbot or assistant on top. He'll also train your team so you're not dependent on him forever.",
         actions: [
           { type: 'prompt', label: 'Set this up for me', value: 'I want to set up AI workflows and automation' },
           { type: 'link', label: 'See what I do', href: '#skills' }
@@ -374,7 +374,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          "For sure. Tafara doesn't just build and disappear — he sets the system up, then walks your team through actually running it, with a proper handover and simple docs so it sticks.",
+          "For sure. Tafara doesn't just build and disappear, he sets the system up, then walks your team through actually running it, with a proper handover and simple docs so it sticks.",
         actions: [
           { type: 'prompt', label: 'Set up training', value: 'I want training for my team' },
           { type: 'link', label: 'See what I do', href: '#skills' }
@@ -387,7 +387,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          "Perfect starting point. Tafara can get you a proper online presence from scratch — a site or store that makes you look legit, shows up on Google, and actually brings in enquiries. Then he can layer on payments, bookings, and automation as you grow.",
+          "Perfect starting point. Tafara can get you a proper online presence from scratch, a site or store that makes you look legit, shows up on Google, and actually brings in enquiries. Then he can layer on payments, bookings, and automation as you grow.",
         actions: [
           { type: 'prompt', label: 'Get me online', value: 'I want to get my business online' },
           { type: 'link', label: 'See examples', href: '#projects' }
@@ -448,7 +448,7 @@ const JulieChatWidget = () => {
         id,
         role: 'julie',
         text:
-          "Hey! Quick version — ask me what Tafara can do, get a project recommendation, sort out pricing or timelines, or I'll set up a WhatsApp intro. What are you working on?",
+          "Hey! Quick version, ask me what Tafara can do, get a project recommendation, sort out pricing or timelines, or I'll set up a WhatsApp intro. What are you working on?",
         actions: quickPrompts.slice(0, 4).map((prompt) => ({
           type: 'prompt',
           label: prompt.replace('Tafara ', ''),
@@ -688,7 +688,7 @@ const JulieChatWidget = () => {
               Not sure where to start?
             </span>
             <span className="mt-0.5 block text-stone-600 dark:text-dark-muted">
-              I'll help you figure out how Tafara can help — takes 30 seconds.
+              I'll help you figure out how Tafara can help, takes 30 seconds.
             </span>
             <span
               aria-hidden="true"

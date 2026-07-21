@@ -22,6 +22,12 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      workbox: {
+        // Opening a static file (certificate image, resume, sitemap) in a new
+        // tab is a navigation request. Without this denylist the service
+        // worker's SPA fallback serves index.html instead of the file.
+        navigateFallbackDenylist: [/^\/images\//, /\.(?:webp|png|jpe?g|svg|gif|ico|pdf|xml|txt|webmanifest)$/i],
+      },
       manifest: {
         name: 'Tafara Mutsvedu - Software Developer & Data Scientist',
         short_name: 'Tafara Mutsvedu',
