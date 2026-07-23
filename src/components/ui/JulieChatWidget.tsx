@@ -774,15 +774,16 @@ const JulieChatWidget = () => {
         <button
           type="button"
           onClick={() => setIsOpen((value) => !value)}
-          className="group relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-sky-600 text-white shadow-[0_10px_30px_rgba(14,165,233,0.45)] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-transparent"
+          className="group relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-sky-600 text-white shadow-sm transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-transparent"
           aria-label={isOpen ? 'Close Julie chat' : 'Open Julie chat'}
           title={isOpen ? 'Close Julie' : 'Chat with Julie'}
         >
-          {!isOpen && (
-            <span className="absolute inset-0 rounded-full bg-sky-500/60 motion-safe:animate-ping" aria-hidden="true" />
-          )}
           <span className="relative">
-            {isOpen ? <X size={24} aria-hidden="true" /> : <MessageCircle size={24} aria-hidden="true" />}
+            {isOpen ? (
+              <X size={24} aria-hidden="true" />
+            ) : (
+              <MessageCircle size={24} className="julie-chat-icon-pulse" aria-hidden="true" />
+            )}
           </span>
         </button>
       </div>

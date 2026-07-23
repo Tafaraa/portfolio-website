@@ -101,21 +101,8 @@ body {
   }
 }
 
-/* ------------------------------------------------------------------ *
-   Hero taglines: a staggered cascade that reads top-to-bottom.
-   "Websites" resolves to full focus first, then "AI workflows", then
-   "Dashboards", then the loop restarts cleanly. Everything is driven by
-   CSS keyframes (no JS timers, no framer-motion viewport gating) so the
-   motion is identical in every browser and at every screen size.
-
-   Three animations run per row, all sharing the same 7.2s master cycle
-   and the same per-row delay, so they stay locked in phase:
-     - hero-tag-frame   -> appear / dim  (opacity + slide)
-     - hero-tag-sheen   -> the shimmering colour band sweeping the word
-     - hero-tag-rule    -> the accent underline growing under the word
-   The delay of (row index * 2.4s) is exactly one third of the cycle, so
-   the three rows light up one after another and the loop is seamless.
- * ------------------------------------------------------------------ */
+/* Hero taglines stay structurally still. Only the outcome text on the right
+   receives a restrained, staggered shimmer. */
 .hero-taglines {
   --hero-tag-cycle: 7.2s;
 }
@@ -128,33 +115,31 @@ body {
   gap: 1rem;
   overflow: hidden;
   padding: 0.75rem 0;
-  opacity: 0.34;
-  transform: translateX(12px);
-  animation: hero-tag-frame var(--hero-tag-cycle) cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
-  will-change: opacity, transform;
 }
 
-/* The word itself. A mostly-solid, high-contrast gradient with a thin
-   bright band travelling through it -> the "shimmer". background-clip:text
-   (with the -webkit- prefix) is supported in every current browser. The
-   sheen element never gets its own transform/opacity, which sidesteps the
-   Chromium bug where a composited background-clip:text node renders blank. */
 .hero-tag-value {
   position: relative;
   font-weight: 700;
   letter-spacing: -0.01em;
   font-size: 1.125rem;
   line-height: 1.15;
+  color: #44403c;
+}
+
+.hero-tag-label {
+  display: inline-block;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 600;
   background-image: linear-gradient(
     100deg,
-    #44403c 0%,
-    #44403c 40%,
+    #78716c 0%,
+    #78716c 40%,
     #b45309 47%,
     #f59e0b 50%,
     #b45309 53%,
-    #44403c 60%,
-    #44403c 100%
+    #78716c 60%,
+    #78716c 100%
   );
   background-size: 260% 100%;
   background-repeat: no-repeat;
@@ -167,66 +152,26 @@ body {
   animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
 }
 
-.hero-tag-label {
-  display: inline-block;
-  text-align: right;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #78716c;
-  transition: color 0.3s ease;
-  animation: hero-tag-label var(--hero-tag-cycle) linear infinite;
-  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
-}
-
-.hero-tag-rule {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 3rem;
-  transform-origin: left center;
-  transform: scaleX(0);
-  background-color: #0ea5e9;
-  animation: hero-tag-rule var(--hero-tag-cycle) cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
-}
-
 @media (min-width: 768px) {
   .hero-tag-value { font-size: 1.5rem; }
   .hero-tag-label { font-size: 1rem; }
 }
 
-/* Each row reveals with a slightly different pace/feel while sharing the same
-   master cycle, so they "move at different speeds" yet still loop in sync. */
-.hero-tag:nth-child(1),
-.hero-tag:nth-child(1) .hero-tag-rule { animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
-.hero-tag:nth-child(2),
-.hero-tag:nth-child(2) .hero-tag-rule { animation-timing-function: cubic-bezier(0.34, 1.2, 0.5, 1); }
-.hero-tag:nth-child(3),
-.hero-tag:nth-child(3) .hero-tag-rule { animation-timing-function: cubic-bezier(0.45, 0.05, 0.3, 1); }
-
-/* Dark theme: lighter base with a warm highlight band. */
 .dark .hero-tag-value {
+  color: #d6d3d1;
+}
+
+.dark .hero-tag-label {
   background-image: linear-gradient(
     100deg,
-    #d6d3d1 0%,
-    #d6d3d1 40%,
+    #78716c 0%,
+    #78716c 40%,
     #fcd34d 47%,
     #fffbeb 50%,
     #fcd34d 53%,
-    #d6d3d1 60%,
-    #d6d3d1 100%
+    #78716c 60%,
+    #78716c 100%
   );
-}
-.dark .hero-tag-label { color: #78716c; }
-.dark .hero-tag-rule { background-color: #38bdf8; }
-
-@keyframes hero-tag-frame {
-  0%   { opacity: 0.34; transform: translateX(12px); }
-  6%   { opacity: 1;    transform: translateX(0); }
-  30%  { opacity: 1;    transform: translateX(0); }
-  40%  { opacity: 0.34; transform: translateX(12px); }
-  100% { opacity: 0.34; transform: translateX(12px); }
 }
 
 @keyframes hero-tag-sheen {
@@ -236,67 +181,44 @@ body {
   100% { background-position: -50% 0; }
 }
 
-@keyframes hero-tag-label {
-  0%   { color: #78716c; }
-  8%   { color: #b45309; }
-  30%  { color: #b45309; }
-  42%  { color: #78716c; }
-  100% { color: #78716c; }
-}
-.dark .hero-tag-label {
-  animation-name: hero-tag-label-dark;
-}
-@keyframes hero-tag-label-dark {
-  0%   { color: #78716c; }
-  8%   { color: #fcd34d; }
-  30%  { color: #fcd34d; }
-  42%  { color: #78716c; }
-  100% { color: #78716c; }
-}
-
-@keyframes hero-tag-rule {
-  0%   { transform: scaleX(0); }
-  6%   { transform: scaleX(0); }
-  30%  { transform: scaleX(1); }
-  42%  { transform: scaleX(0); }
-  100% { transform: scaleX(0); }
-}
-
-/* Motion off: show every tagline solid, legible and static. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-tag,
-  .hero-tag-value,
-  .hero-tag-label,
-  .hero-tag-rule {
+  .hero-tag-label {
     animation: none;
-  }
-  .hero-tag {
-    opacity: 1;
-    transform: none;
-  }
-  .hero-tag-value {
     background-image: none;
-    -webkit-text-fill-color: #44403c;
-    color: #44403c;
+    -webkit-text-fill-color: #78716c;
+    color: #78716c;
   }
-  .dark .hero-tag-value {
-    -webkit-text-fill-color: #d6d3d1;
-    color: #d6d3d1;
-  }
-  .hero-tag-rule { transform: scaleX(1); }
 }
 
-/* Extremely old engines with no background-clip:text: keep the word solid
+/* Extremely old engines with no background-clip:text: keep the outcome solid
    so it can never render as invisible transparent text. */
 @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-  .hero-tag-value {
+  .hero-tag-label {
     background-image: none;
-    -webkit-text-fill-color: #44403c;
-    color: #44403c;
+    -webkit-text-fill-color: #78716c;
+    color: #78716c;
   }
-  .dark .hero-tag-value {
-    -webkit-text-fill-color: #d6d3d1;
-    color: #d6d3d1;
+}
+
+.julie-chat-icon-pulse {
+  transform-origin: center;
+  animation: julie-chat-icon-pulse 3.8s ease-in-out infinite;
+}
+
+@keyframes julie-chat-icon-pulse {
+  0%, 100% {
+    opacity: 0.88;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .julie-chat-icon-pulse {
+    animation: none;
   }
 }
 

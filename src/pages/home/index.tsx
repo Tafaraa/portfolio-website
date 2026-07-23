@@ -84,7 +84,6 @@ const Hero = () => {
                   >
                     <span className="hero-tag-value">{value}</span>
                     <span className="hero-tag-label">{label}</span>
-                    <span aria-hidden="true" className="hero-tag-rule" />
                   </div>
                 ))}
                 <p className="sr-only">
