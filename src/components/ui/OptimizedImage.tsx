@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useId } from 'react';
+import { useState, useEffect, useMemo, useId, useRef } from 'react';
 import { isMobileDevice } from '../../utils/performance';
 import styles from './OptimizedImage.module.css';
 
@@ -24,6 +24,7 @@ const OptimizedImage = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const [hasError, setHasError] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
   const isMobile = useMemo(() => typeof window !== 'undefined' && isMobileDevice(), []);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -88,7 +89,8 @@ const OptimizedImage = ({
   // Reset error/loaded state if the same instance is pointed at a new image.
   useEffect(() => {
     setHasError(false);
-    setIsLoaded(false);
+    const image = imageRef.current;
+    setIsLoaded(Boolean(image?.complete && image.naturalWidth > 0));
   }, [src]);
 
   const handleLoad = () => {
@@ -132,6 +134,7 @@ const OptimizedImage = ({
     >
       {(isInView || priority) && !hasError && (
         <img
+          ref={imageRef}
           src={src}
           alt={alt}
           width={width}

@@ -500,21 +500,24 @@ const Projects = () => {
       >
         <motion.div
           aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-6 -inset-y-[18%] -z-20 overflow-hidden will-change-transform md:-inset-x-12"
+          className="pointer-events-none absolute -inset-x-6 top-0 -z-20 h-[760px] overflow-hidden will-change-transform md:-inset-x-12 md:-inset-y-[18%] md:h-auto"
           style={{ y: prefersReducedMotion ? 0 : parallaxY }}
         >
           <picture>
             <source media="(min-width: 768px)" srcSet="/images/projects-parallax-bg.webp" />
             <img
-              src="/images/projects-parallax-bg-mobile.webp"
+              src="/images/projects-archive-mobile-v2.webp"
               alt=""
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top md:object-center"
               loading="lazy"
               decoding="async"
             />
           </picture>
         </motion.div>
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(250,250,249,0.78),rgba(250,250,249,0.46)_48%,rgba(250,250,249,0.82))]" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[760px] bg-[linear-gradient(180deg,rgba(250,250,249,0.48),rgba(250,250,249,0.22)_48%,rgba(245,245,244,1))] md:inset-0 md:h-auto md:bg-[linear-gradient(180deg,rgba(250,250,249,0.78),rgba(250,250,249,0.46)_48%,rgba(250,250,249,0.82))]"
+          aria-hidden="true"
+        />
         <div className="container relative mx-auto px-6 md:px-12">
           <div className="mx-auto mb-10 max-w-2xl text-center md:mb-12">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-700/70 md:text-sm">

@@ -9,7 +9,6 @@ import Education from '../../pages/education';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [displayText, setDisplayText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const [isEducationOpen, setIsEducationOpen] = useState(false);
 
@@ -27,56 +26,12 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    // Cursor blinking effect
     const cursorInterval = setInterval(() => {
       setShowCursor(prev => !prev);
     }, 500);
 
-    // Text animation variables
-    const names = ['Tafara', 'Mutsvedu'];
-    let currentNameIndex = 0;
-    let isTyping = true;
-    let charIndex = 0;
-    let timeoutId: number | null = null;
-
-    // Text animation function
-    const animateText = () => {
-      const currentName = names[currentNameIndex];
-      
-      if (isTyping) {
-        // Typing phase
-        if (charIndex < currentName.length) {
-          setDisplayText(currentName.substring(0, charIndex + 1));
-          charIndex++;
-          timeoutId = window.setTimeout(animateText, 150);
-        } else {
-          // Finished typing, pause before deleting
-          timeoutId = window.setTimeout(() => {
-            isTyping = false;
-            animateText();
-          }, 2000);
-        }
-      } else {
-        // Deleting phase
-        if (charIndex > 0) {
-          setDisplayText(currentName.substring(0, charIndex - 1));
-          charIndex--;
-          timeoutId = window.setTimeout(animateText, 150);
-        } else {
-          timeoutId = window.setTimeout(() => {
-            isTyping = true;
-            currentNameIndex = (currentNameIndex + 1) % names.length;
-            animateText();
-          }, 1000);
-        }
-      }
-    };
-
-    animateText();
-
     return () => {
       clearInterval(cursorInterval);
-      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
@@ -97,7 +52,7 @@ const Header = () => {
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <AnimatedElement animation="fade" delay={0.1}>
             <a href="#home" onClick={(e) => handleAnchorClick(e, '#home')} className="flex items-center text-xl font-medium focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" aria-label="Go to home section">
-              <span className="dark:text-dark-text">{displayText}</span>
+              <span className="dark:text-dark-text">Tafara Mutsvedu</span>
               <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity ml-1 dark:text-dark-text`} aria-hidden="true">|</span>
             </a>
           </AnimatedElement>

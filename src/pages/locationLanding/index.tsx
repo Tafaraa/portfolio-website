@@ -10,9 +10,11 @@ import {
   Download,
   MapPin,
   MessageCircle,
+  Phone,
   Sparkles,
   Workflow
 } from 'lucide-react';
+import OptimizedImage from '../../components/ui/OptimizedImage';
 import SEO from '../../components/ui/SEO';
 import ThemeToggle from '../../components/ui/ThemeToggle';
 import { LandingFaq, PageDataEntry } from '../../types';
@@ -24,6 +26,7 @@ const NAME = 'Tafara Mutsvedu';
 const ROLE = 'Software Engineer & Data Scientist, specialising in AI engineering';
 const SITE_URL = 'https://www.mutsvedutafara.com';
 const WHATSAPP_NUMBER_E164 = '27606249151';
+const PHONE_LINK = 'tel:+27606249151';
 
 const buildWhatsAppLink = (text: string) =>
   `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent(text)}`;
@@ -644,6 +647,7 @@ const LocationLanding = () => {
   const canonicalUrl = pathname;
   const pageUrl = `${SITE_URL}${pathname}`;
   const audience = currentPageData.audience ?? 'both';
+  const showLongFormSections = false;
   const eyebrow =
     currentPageData.eyebrow ||
     (currentPageData.location ? `${ROLE} • ${currentPageData.location}` : currentPageData.remote ? `${ROLE} • Remote` : ROLE);
@@ -695,7 +699,12 @@ const LocationLanding = () => {
         canonical={canonicalUrl}
         keywords={`${currentPageData.keywords}, Tafara Mutsvedu, Mutsvedu Tafara, Tafara, Mutsvedu`}
         tags={[currentPageData.subtitle, currentPageData.location || 'Remote']}
-        structuredData={[personSchema, serviceSchema, breadcrumbSchema, faqSchema]}
+        structuredData={[
+          personSchema,
+          serviceSchema,
+          breadcrumbSchema,
+          ...(showLongFormSections ? [faqSchema] : [])
+        ]}
       />
 
       <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 dark:from-dark-bg dark:to-dark-surface dark:text-dark-text">
@@ -729,64 +738,108 @@ const LocationLanding = () => {
 
         <main className="relative z-10">
           {/* Hero */}
-          <section className="container mx-auto px-6 pt-14 pb-10 md:px-12 md:pt-24 md:pb-16">
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-stone-200/70 bg-white/70 px-4 py-1.5 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm">
-                {currentPageData.location ? <MapPin size={14} /> : <Sparkles size={14} />}
-                <span>{eyebrow}</span>
-              </div>
+          <section className="container mx-auto px-6 pb-14 pt-12 md:px-12 md:pb-20 md:pt-20">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-stone-200/70 bg-white/70 px-4 py-1.5 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm">
+                  {currentPageData.location ? <MapPin size={14} /> : <Sparkles size={14} />}
+                  <span>{eyebrow}</span>
+                </div>
 
-              <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight md:mt-7 md:text-6xl">
-                {currentPageData.title}
-              </h1>
-              <p className="mt-4 max-w-2xl text-lg font-medium text-stone-700 dark:text-dark-text md:mt-5 md:text-2xl">
-                {currentPageData.subtitle}
-              </p>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600 dark:text-dark-muted md:mt-4 md:text-lg">
-                {currentPageData.description}
-              </p>
+                <h1 className="mt-5 text-4xl font-bold leading-[1.02] tracking-tight md:mt-7 md:text-6xl">
+                  {currentPageData.title}
+                </h1>
+                <p className="mt-4 max-w-2xl text-lg font-semibold text-stone-700 dark:text-dark-text md:mt-5 md:text-2xl">
+                  {currentPageData.subtitle}
+                </p>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600 dark:text-dark-muted md:mt-4 md:text-lg">
+                  {currentPageData.description}
+                </p>
 
-              <div className="mt-5 flex flex-wrap gap-2 md:mt-7">
-                {highlights.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-stone-200/70 bg-white/60 px-3 py-1 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm"
+                <div className="mt-5 flex flex-wrap gap-2 md:mt-7">
+                  {highlights.slice(0, 4).map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-stone-200/70 bg-white/60 px-3 py-1 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-7 grid gap-3 sm:grid-cols-2 md:mt-9">
+                  <a
+                    href="/#contact"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-stone-700 dark:bg-white dark:text-gray-950 dark:hover:bg-white/90"
                   >
-                    {item}
-                  </span>
-                ))}
+                    Start a project
+                    <ArrowRight size={18} />
+                  </a>
+                  <a
+                    href="/#projects"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-stone-900/20 bg-white/60 px-6 py-3 text-sm font-semibold text-stone-900 transition-all hover:-translate-y-0.5 hover:bg-white dark:border-white/20 dark:bg-white/5 dark:text-dark-text dark:hover:bg-white/10"
+                  >
+                    View the main portfolio
+                    <ArrowUpRight size={18} />
+                  </a>
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-emerald-500"
+                  >
+                    <MessageCircle size={18} />
+                    WhatsApp
+                  </a>
+                  <a
+                    href={PHONE_LINK}
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-stone-900/20 bg-white/60 px-6 py-3 text-sm font-semibold text-stone-900 transition-all hover:-translate-y-0.5 hover:bg-white dark:border-white/20 dark:bg-white/5 dark:text-dark-text dark:hover:bg-white/10"
+                  >
+                    <Phone size={18} />
+                    Call Tafara
+                  </a>
+                </div>
+
+                {audience === 'recruiter' && (
+                  <a
+                    href="/resume.pdf"
+                    download="Tafara_Mutsvedu_Resume.pdf"
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-stone-700 underline decoration-stone-300 underline-offset-4 hover:text-stone-950 dark:text-dark-muted dark:hover:text-white"
+                  >
+                    <Download size={16} />
+                    Download my CV
+                  </a>
+                )}
               </div>
 
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9">
-                <a
-                  href="/#contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-stone-700 dark:bg-white dark:text-gray-950 dark:hover:bg-white/90"
-                >
-                  Start a project
-                  <ArrowRight size={18} />
-                </a>
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
-                >
-                  <MessageCircle size={18} />
-                  Chat on WhatsApp
-                </a>
-                <a
-                  href="/resume.pdf"
-                  download="Tafara_Mutsvedu_Resume.pdf"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-stone-900/20 px-6 py-3 text-sm font-medium text-stone-900 transition-colors hover:bg-stone-900 hover:text-white dark:border-white/20 dark:text-dark-text dark:hover:bg-white/10 dark:hover:text-white"
-                >
-                  <Download size={18} />
-                  Download CV
-                </a>
-              </div>
+              <aside className="mx-auto w-full max-w-md lg:mx-0 lg:ml-auto">
+                <div className="hero-portrait-frame relative aspect-[4/5] overflow-hidden bg-stone-300 dark:bg-dark-surface">
+                  <OptimizedImage
+                    src="/images/profile.webp"
+                    alt="Tafara Mutsvedu"
+                    className="h-full w-full"
+                    objectFit="cover"
+                    priority
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/90 via-stone-950/55 to-transparent px-6 pb-6 pt-24 text-white">
+                    <p className="text-lg font-bold">Tafara Mutsvedu</p>
+                    <p className="mt-1 text-sm text-white/75">South Africa based. Working worldwide.</p>
+                  </div>
+                </div>
+                <div className="relative mx-4 -mt-5 rounded-2xl border border-white/70 bg-white/90 p-5 shadow-[0_20px_60px_rgba(28,25,23,0.16)] backdrop-blur-xl dark:border-white/10 dark:bg-stone-950/90">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-700 dark:text-sky-300">
+                    One clear next step
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-dark-muted">
+                    {currentPageData.marketSummary ||
+                      'See the work, share what you need, and get a straight answer on the best way to build it.'}
+                  </p>
+                </div>
+              </aside>
             </div>
           </section>
 
-          {currentPageData.marketHeading && (
+          {showLongFormSections && currentPageData.marketHeading && (
             <section className="container mx-auto px-6 py-6 md:px-12 md:py-10">
               <div className="grid gap-6 rounded-3xl border border-stone-200/70 bg-white/70 p-6 backdrop-blur-xl dark:border-white/10 dark:bg-gray-950/40 md:grid-cols-[1.1fr_1fr] md:p-8">
                 <div>
@@ -816,7 +869,7 @@ const LocationLanding = () => {
           )}
 
           {/* Services */}
-          <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
+          {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">What I can build for you</h2>
             <p className="mt-2 max-w-2xl text-sm text-stone-600 dark:text-dark-muted md:text-base">
               Same person, whole stack, from the website out front to the AI quietly working in the back.
@@ -842,10 +895,10 @@ const LocationLanding = () => {
                 </div>
               ))}
             </div>
-          </section>
+          </section>}
 
           {/* Who this is for */}
-          <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
+          {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
             <div className="grid grid-cols-1 gap-3 md:gap-4 lg:grid-cols-2">
               <div
                 className={`rounded-2xl border p-6 backdrop-blur-xl md:p-8 ${
@@ -896,7 +949,7 @@ const LocationLanding = () => {
                 </a>
               </div>
             </div>
-          </section>
+          </section>}
 
           {/* Proof */}
           <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
@@ -935,7 +988,7 @@ const LocationLanding = () => {
           </section>
 
           {/* FAQ */}
-          <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
+          {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Questions people usually ask</h2>
             <div className="mt-6 max-w-3xl divide-y divide-stone-200/70 overflow-hidden rounded-2xl border border-stone-200/70 bg-white/70 backdrop-blur-xl dark:divide-white/10 dark:border-white/10 dark:bg-gray-950/40">
               {faqs.map((faq) => (
@@ -948,10 +1001,10 @@ const LocationLanding = () => {
                 </details>
               ))}
             </div>
-          </section>
+          </section>}
 
           {/* CTA band */}
-          <section className="container mx-auto px-6 py-10 md:px-12 md:py-16">
+          {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-16">
             <div className="overflow-hidden rounded-3xl border border-stone-900/10 bg-stone-900 p-8 text-white dark:border-white/10 dark:bg-white/5 md:p-12">
               <div className="max-w-2xl">
                 <h2 className="text-2xl font-bold tracking-tight md:text-4xl">Let's build the next one.</h2>
@@ -979,7 +1032,7 @@ const LocationLanding = () => {
                 </div>
               </div>
             </div>
-          </section>
+          </section>}
 
           {/* Footer */}
           <footer className="border-t border-stone-200/60 dark:border-white/10">

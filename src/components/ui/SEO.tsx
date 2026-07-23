@@ -61,7 +61,7 @@ const SEO = ({
   structuredData,
   noIndex = false
 }: SEOProps) => {
-  const defaultImage = `${siteUrl}/og.webp`;
+  const defaultImage = `${siteUrl}/og-v2.jpg`;
   const fullCanonical = canonical
     ? canonical.startsWith('http')
       ? canonical
@@ -100,6 +100,11 @@ const SEO = ({
     upsertMeta('meta[property="og:title"]', 'property', 'og:title', title);
     upsertMeta('meta[property="og:description"]', 'property', 'og:description', description);
     upsertMeta('meta[property="og:image"]', 'property', 'og:image', fullOgImage);
+    upsertMeta('meta[property="og:image:secure_url"]', 'property', 'og:image:secure_url', fullOgImage);
+    upsertMeta('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/jpeg');
+    upsertMeta('meta[property="og:image:width"]', 'property', 'og:image:width', '1200');
+    upsertMeta('meta[property="og:image:height"]', 'property', 'og:image:height', '630');
+    upsertMeta('meta[property="og:image:alt"]', 'property', 'og:image:alt', 'Tafara Mutsvedu, Software Engineer and Data Scientist');
     upsertMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'Tafara Mutsvedu');
 
     // Twitter
@@ -108,6 +113,7 @@ const SEO = ({
     upsertMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
     upsertMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
     upsertMeta('meta[name="twitter:image"]', 'name', 'twitter:image', fullOgImage);
+    upsertMeta('meta[name="twitter:image:alt"]', 'name', 'twitter:image:alt', 'Tafara Mutsvedu, Software Engineer and Data Scientist');
 
     // Page-specific JSON-LD (kept separate from the static index.html blocks).
     const added: HTMLScriptElement[] = [];
