@@ -25,6 +25,24 @@ body {
     radial-gradient(circle at 78% 18%, rgba(168, 162, 158, 0.16), transparent 34%),
     radial-gradient(circle at 15% 72%, rgba(14, 165, 233, 0.11), transparent 32%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent 48%);
+  animation: hero-glow-breathe 11s ease-in-out infinite;
+}
+
+/* Calm background motion: the glow slowly breathes, the circuit pattern drifts
+   one tile per 90s so the movement is felt more than seen. */
+@keyframes hero-glow-breathe {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 1; }
+}
+
+@keyframes hero-pattern-drift {
+  from { background-position: 0 0; }
+  to { background-position: 160px 160px; }
+}
+
+@keyframes hero-pattern-drift-sm {
+  from { background-position: 0 0; }
+  to { background-position: 132px 132px; }
 }
 
 /* Subtle tech pattern: faint circuit traces with node dots, very low opacity,
@@ -40,6 +58,7 @@ body {
   background-size: 160px 160px;
   -webkit-mask-image: linear-gradient(to bottom, transparent 4%, #000 26%, #000 74%, transparent 96%);
   mask-image: linear-gradient(to bottom, transparent 4%, #000 26%, #000 74%, transparent 96%);
+  animation: hero-pattern-drift 90s linear infinite;
 }
 
 .hero-portrait-frame {
@@ -71,6 +90,14 @@ body {
   .hero-atmosphere::after {
     opacity: 0.65;
     background-size: 132px 132px;
+    animation-name: hero-pattern-drift-sm;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-atmosphere::before,
+  .hero-atmosphere::after {
+    animation: none;
   }
 }
 
