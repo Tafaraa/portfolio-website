@@ -78,7 +78,6 @@ const Contact = () => {
   const honeypotRef = useRef<HTMLInputElement>(null);
   const submissionIdRef = useRef(createSubmissionId());
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [formValid, setFormValid] = useState(false);
   const [activeContactStep, setActiveContactStep] = useState(0);
   const [typedProgress, setTypedProgress] = useState('Step 1 of 4: Your details');
 
@@ -117,21 +116,54 @@ const Contact = () => {
       }).format(new Date(pricingConfig.ratesUpdatedAt)),
     [pricingConfig.ratesUpdatedAt]
   );
-  const requiredChecks = useMemo(
+  const requiredItems = useMemo(
     () => [
-      formData.from_name.trim().length >= 2,
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
-      Boolean(formData.projectType),
-      Boolean(formData.scope),
-      Boolean(formData.timeline),
-      Boolean(formData.budgetRange),
-      Boolean(formData.carePlan),
-      formData.message.trim().length >= 20
+      {
+        label: 'Your name',
+        complete: formData.from_name.trim().length >= 2,
+        targetId: 'from_name'
+      },
+      {
+        label: 'A valid work email',
+        complete: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
+        targetId: 'email'
+      },
+      {
+        label: 'Project type',
+        complete: Boolean(formData.projectType),
+        targetId: 'project_type'
+      },
+      {
+        label: 'Scope level',
+        complete: Boolean(formData.scope),
+        targetId: 'contact-step-project'
+      },
+      {
+        label: 'Target timeline',
+        complete: Boolean(formData.timeline),
+        targetId: 'timeline'
+      },
+      {
+        label: 'Working budget',
+        complete: Boolean(formData.budgetRange),
+        targetId: 'budget_range'
+      },
+      {
+        label: 'Hosting and ongoing care',
+        complete: Boolean(formData.carePlan),
+        targetId: 'care_plan'
+      },
+      {
+        label: 'Project outcome, at least 20 characters',
+        complete: formData.message.trim().length >= 20,
+        targetId: 'message'
+      }
     ],
     [formData]
   );
-  const completedRequiredFields = requiredChecks.filter(Boolean).length;
-  const requiredFieldsRemaining = requiredChecks.length - completedRequiredFields;
+  const missingRequiredItems = requiredItems.filter((item) => !item.complete);
+  const completedRequiredFields = requiredItems.length - missingRequiredItems.length;
+  const formValid = missingRequiredItems.length === 0;
 
   useEffect(() => {
     let active = true;
@@ -166,10 +198,6 @@ const Contact = () => {
       active = false;
     };
   }, []);
-
-  useEffect(() => {
-    setFormValid(requiredChecks.every(Boolean));
-  }, [requiredChecks]);
 
   useEffect(() => {
     let animationFrame = 0;
@@ -244,11 +272,19 @@ const Contact = () => {
     window.setTimeout(() => document.getElementById('project_type')?.focus(), 100);
   };
 
+  const focusRequiredItem = (targetId: string) => {
+    const target = document.getElementById(targetId);
+    target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(() => target?.focus({ preventScroll: true }), 350);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formValid) {
-      toast.error('Complete the required project details before submitting.');
+      const missingLabels = missingRequiredItems.map((item) => item.label).join(', ');
+      toast.error(`Still needed: ${missingLabels}.`);
+      focusRequiredItem(missingRequiredItems[0].targetId);
       return;
     }
 
@@ -417,7 +453,7 @@ const Contact = () => {
           </div>
 
           <div className="md:col-span-2">
-            <form onSubmit={handleSubmit} className="relative space-y-12">
+            <form noValidate onSubmit={handleSubmit} className="relative space-y-12">
               <div className="sticky top-20 z-30 -mx-2 overflow-hidden rounded-2xl border border-stone-200 bg-white/95 px-4 py-3 shadow-lg shadow-stone-900/5 backdrop-blur-md dark:border-white/10 dark:bg-stone-950/95 md:hidden">
                 <div className="flex items-center justify-between gap-3">
                   <p className="min-w-0 truncate font-mono text-xs font-semibold text-stone-800 dark:text-white">
@@ -427,7 +463,7 @@ const Contact = () => {
                     </span>
                   </p>
                   <span className="shrink-0 text-xs text-stone-500 dark:text-dark-muted">
-                    {completedRequiredFields}/{requiredChecks.length} ready
+                    {completedRequiredFields}/{requiredItems.length} ready
                   </span>
                 </div>
                 <div className="mt-2 h-1 overflow-hidden rounded-full bg-stone-200 dark:bg-white/10">
@@ -949,15 +985,47 @@ const Contact = () => {
                 </p>
               </div>
 
+              <div
+                id="form-readiness"
+                className={`rounded-2xl border p-4 ${
+                  formValid
+                    ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-400/20 dark:bg-emerald-400/10'
+                    : 'border-amber-200 bg-amber-50 dark:border-amber-400/20 dark:bg-amber-400/10'
+                }`}
+                aria-live="polite"
+              >
+                {formValid ? (
+                  <p className="flex items-center text-sm font-medium text-emerald-800 dark:text-emerald-200">
+                    <CheckCircle2 size={17} className="mr-2 shrink-0" aria-hidden="true" />
+                    Your brief is complete and ready to send.
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-sm font-semibold text-amber-900 dark:text-amber-100">
+                      Complete these before sending:
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {missingRequiredItems.map((item) => (
+                        <button
+                          key={item.label}
+                          type="button"
+                          onClick={() => focusRequiredItem(item.targetId)}
+                          className="rounded-full border border-amber-300 bg-white px-3 py-1.5 text-left text-xs font-medium text-amber-900 transition-colors hover:border-amber-500 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-amber-300/20 dark:bg-white/5 dark:text-amber-100 dark:hover:bg-amber-300/10"
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <button
                   type="submit"
-                  disabled={!formValid || formState === 'submitting'}
-                  className={`relative inline-flex items-center justify-center rounded-full border px-8 py-4 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent ${
-                    formValid
-                      ? 'border-stone-900 bg-stone-900 text-white hover:border-emerald-700 hover:bg-emerald-700 dark:border-emerald-300 dark:bg-emerald-300 dark:text-stone-950 dark:hover:border-emerald-200 dark:hover:bg-emerald-200'
-                      : 'cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400 dark:border-dark-border dark:bg-white/5 dark:text-dark-muted'
-                  }`}
+                  disabled={formState === 'submitting'}
+                  aria-describedby="form-readiness"
+                  className="relative inline-flex items-center justify-center rounded-full border border-stone-900 bg-stone-900 px-8 py-4 font-semibold text-white transition-colors hover:border-emerald-700 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-stone-500 disabled:cursor-wait disabled:opacity-60 dark:border-emerald-300 dark:bg-emerald-300 dark:text-stone-950 dark:hover:border-emerald-200 dark:hover:bg-emerald-200 dark:focus:ring-dark-accent"
                 >
                   {formState === 'submitting' ? (
                     <>
@@ -975,7 +1043,7 @@ const Contact = () => {
                       Please try again
                     </>
                   ) : (
-                    formValid ? 'Send project brief' : 'Complete the brief to send'
+                    'Send project brief'
                   )}
                 </button>
 
@@ -993,7 +1061,7 @@ const Contact = () => {
                     ) : (
                       <>
                         <AlertCircle size={16} className="mr-1.5" aria-hidden="true" />
-                        {requiredFieldsRemaining} required {requiredFieldsRemaining === 1 ? 'answer' : 'answers'} left
+                        Select a missing item above to complete it
                       </>
                     )}
                   </span>
