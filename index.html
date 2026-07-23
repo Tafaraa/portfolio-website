@@ -625,6 +625,215 @@
     <!-- Firefox and other browsers theme color support -->
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="application-name" content="Tafara Mutsvedu Portfolio">
+
+    <!-- Apply the saved/system theme before first paint so the intro loader and
+         the app render in the correct colour scheme with no flash. Mirrors the
+         logic in ThemeContext (same 'theme' localStorage key). -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var dark = saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Intro loader styles: a branded "arc reactor" boot animation that greets
+         every visitor for ~2.6s (a deliberate hook, even on fast networks) and
+         covers the page while the app mounts. Pure CSS, theme-aware, works in
+         every browser. -->
+    <style>
+      #intro-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        background-color: #fafaf9;
+        color: #1c1917;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        opacity: 1;
+        transition: opacity 0.55s ease;
+      }
+      html.dark #intro-loader { background-color: #121212; color: #e0e0e0; }
+      #intro-loader.intro-hide { opacity: 0; pointer-events: none; }
+
+      /* Soft radial glow + faint circuit texture, matching the hero. */
+      #intro-loader::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(14, 165, 233, 0.14), transparent 45%),
+          radial-gradient(circle at 78% 82%, rgba(168, 162, 158, 0.12), transparent 40%);
+      }
+      #intro-loader::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.5;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='rgb(28,25,23)' stroke-opacity='0.09' stroke-width='1'%3E%3Cpath d='M12 34h44v38h30'/%3E%3Cpath d='M136 16v46h-28'/%3E%3Cpath d='M38 134h50v-32'/%3E%3Cpath d='M148 106h-26v28'/%3E%3C/g%3E%3Cg fill='rgb(28,25,23)' fill-opacity='0.13'%3E%3Ccircle cx='12' cy='34' r='2.2'/%3E%3Ccircle cx='86' cy='72' r='2.2'/%3E%3Ccircle cx='136' cy='16' r='2.2'/%3E%3Ccircle cx='108' cy='62' r='2.2'/%3E%3Ccircle cx='38' cy='134' r='2.2'/%3E%3Ccircle cx='88' cy='102' r='2.2'/%3E%3Ccircle cx='148' cy='106' r='2.2'/%3E%3Ccircle cx='122' cy='134' r='2.2'/%3E%3C/g%3E%3C/svg%3E");
+        -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 10%, transparent 62%);
+        mask-image: radial-gradient(circle at 50% 45%, #000 10%, transparent 62%);
+      }
+      html.dark #intro-loader::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='rgb(255,255,255)' stroke-opacity='0.07' stroke-width='1'%3E%3Cpath d='M12 34h44v38h30'/%3E%3Cpath d='M136 16v46h-28'/%3E%3Cpath d='M38 134h50v-32'/%3E%3Cpath d='M148 106h-26v28'/%3E%3C/g%3E%3Cg fill='rgb(255,255,255)' fill-opacity='0.1'%3E%3Ccircle cx='12' cy='34' r='2.2'/%3E%3Ccircle cx='86' cy='72' r='2.2'/%3E%3Ccircle cx='136' cy='16' r='2.2'/%3E%3Ccircle cx='108' cy='62' r='2.2'/%3E%3Ccircle cx='38' cy='134' r='2.2'/%3E%3Ccircle cx='88' cy='102' r='2.2'/%3E%3Ccircle cx='148' cy='106' r='2.2'/%3E%3Ccircle cx='122' cy='134' r='2.2'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .intro-core {
+        position: relative;
+        width: 132px;
+        height: 132px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+      }
+      .intro-ring {
+        position: absolute;
+        border-radius: 50%;
+        inset: 0;
+      }
+      /* Outer sweeping arc (the "reactor" spin). */
+      .intro-ring--sweep {
+        background: conic-gradient(from 0deg, rgba(14,165,233,0) 0deg, rgba(14,165,233,0) 250deg, #0ea5e9 340deg, #7dd3fc 360deg);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+        animation: intro-spin 1.25s linear infinite;
+      }
+      html.dark .intro-ring--sweep {
+        background: conic-gradient(from 0deg, rgba(56,189,248,0) 0deg, rgba(56,189,248,0) 250deg, #38bdf8 340deg, #bae6fd 360deg);
+      }
+      /* Static faint track. */
+      .intro-ring--track {
+        border: 2px solid rgba(28,25,23,0.10);
+      }
+      html.dark .intro-ring--track { border-color: rgba(255,255,255,0.09); }
+      /* Inner counter-rotating dashed ring. */
+      .intro-ring--inner {
+        inset: 24px;
+        border: 1.5px dashed rgba(245,158,11,0.55);
+        animation: intro-spin-rev 3.4s linear infinite;
+      }
+      html.dark .intro-ring--inner { border-color: rgba(252,211,77,0.5); }
+      /* Pulsing core with the monogram. */
+      .intro-core-dot {
+        position: relative;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: 0.02em;
+        color: #0369a1;
+        background: radial-gradient(circle at 50% 45%, rgba(14,165,233,0.22), rgba(14,165,233,0.05));
+        box-shadow: 0 0 0 1px rgba(14,165,233,0.25), 0 0 34px rgba(14,165,233,0.35);
+        animation: intro-pulse 1.9s ease-in-out infinite;
+      }
+      html.dark .intro-core-dot {
+        color: #7dd3fc;
+        background: radial-gradient(circle at 50% 45%, rgba(56,189,248,0.26), rgba(56,189,248,0.06));
+        box-shadow: 0 0 0 1px rgba(56,189,248,0.3), 0 0 36px rgba(56,189,248,0.4);
+      }
+
+      .intro-meta {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9rem;
+        width: min(280px, 72vw);
+      }
+      .intro-name {
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.42em;
+        padding-left: 0.42em;
+        color: #57534e;
+      }
+      html.dark .intro-name { color: #a8a29e; }
+      .intro-bar {
+        position: relative;
+        width: 100%;
+        height: 3px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(28,25,23,0.10);
+      }
+      html.dark .intro-bar { background: rgba(255,255,255,0.10); }
+      .intro-bar-fill {
+        position: absolute;
+        inset: 0;
+        width: 0%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #0ea5e9, #f59e0b);
+        animation: intro-fill 2.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      .intro-bar-sheen {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.6) 50%, transparent 80%);
+        transform: translateX(-100%);
+        animation: intro-sheen 1.25s linear infinite;
+      }
+
+      .intro-skip {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.25rem;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.85rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #78716c;
+        background: transparent;
+        border: 1px solid rgba(28,25,23,0.12);
+        border-radius: 999px;
+        cursor: pointer;
+        opacity: 0.45;
+        transition: opacity 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      }
+      .intro-skip:hover, .intro-skip:focus-visible {
+        opacity: 1;
+        color: #1c1917;
+        border-color: rgba(28,25,23,0.3);
+        outline: none;
+      }
+      html.dark .intro-skip { color: #a0a0a0; border-color: rgba(255,255,255,0.14); }
+      html.dark .intro-skip:hover, html.dark .intro-skip:focus-visible { color: #e0e0e0; border-color: rgba(255,255,255,0.32); }
+
+      @keyframes intro-spin { to { transform: rotate(360deg); } }
+      @keyframes intro-spin-rev { to { transform: rotate(-360deg); } }
+      @keyframes intro-pulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(14,165,233,0.25), 0 0 26px rgba(14,165,233,0.28); }
+        50% { transform: scale(1.08); box-shadow: 0 0 0 1px rgba(14,165,233,0.4), 0 0 44px rgba(14,165,233,0.5); }
+      }
+      @keyframes intro-fill { 0% { width: 0%; } 100% { width: 100%; } }
+      @keyframes intro-sheen { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .intro-ring--sweep, .intro-ring--inner, .intro-core-dot, .intro-bar-sheen { animation: none; }
+        .intro-bar-fill { animation-duration: 0.4s; }
+        .intro-ring--sweep { opacity: 0.6; }
+      }
+    </style>
   </head>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-JG6PLJ9J21"></script>
@@ -636,6 +845,63 @@
   gtag('config', 'G-JG6PLJ9J21');
 </script>
   <body>
+    <!-- Branded intro loader. Lives in the HTML so it paints on the very first
+         frame, before the JS bundle loads, and covers whatever route is mounting. -->
+    <div id="intro-loader" role="progressbar" aria-label="Loading Tafara Mutsvedu portfolio" aria-live="polite">
+      <button type="button" id="intro-skip" class="intro-skip" aria-label="Skip intro animation">Skip &times;</button>
+      <div class="intro-core" aria-hidden="true">
+        <span class="intro-ring intro-ring--track"></span>
+        <span class="intro-ring intro-ring--sweep"></span>
+        <span class="intro-ring intro-ring--inner"></span>
+        <span class="intro-core-dot">TM</span>
+      </div>
+      <div class="intro-meta">
+        <span class="intro-name">Tafara Mutsvedu</span>
+        <div class="intro-bar">
+          <span class="intro-bar-fill"></span>
+          <span class="intro-bar-sheen" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var loader = document.getElementById('intro-loader');
+        if (!loader) return;
+
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var MIN_MS = reduce ? 500 : 2600;   // minimum on-screen time (the hook)
+        var CAP_MS = 9000;                   // hard safety cap so it can never stick
+        var start = Date.now();
+        var appReady = false, minElapsed = false, hidden = false;
+
+        // Lock scroll while the loader is up.
+        var htmlEl = document.documentElement;
+        var prevOverflow = htmlEl.style.overflow;
+        htmlEl.style.overflow = 'hidden';
+
+        function hide() {
+          if (hidden) return;
+          hidden = true;
+          htmlEl.style.overflow = prevOverflow;
+          loader.classList.add('intro-hide');
+          window.setTimeout(function () {
+            if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+          }, 600);
+        }
+
+        function maybeHide() { if (appReady && minElapsed) hide(); }
+
+        window.setTimeout(function () { minElapsed = true; maybeHide(); }, MIN_MS);
+        window.setTimeout(hide, CAP_MS);
+
+        // The React app calls this once it has mounted.
+        window.__appReady = function () { appReady = true; maybeHide(); };
+        // If the app never signals (edge case), the CAP timeout still clears it.
+
+        var skip = document.getElementById('intro-skip');
+        if (skip) skip.addEventListener('click', hide);
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

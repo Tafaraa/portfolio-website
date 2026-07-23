@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 import AnimatedElement from '../../components/ui/AnimatedElement';
 import OptimizedImage from '../../components/ui/OptimizedImage';
 import { handleAnchorClick } from '../../utils/scroll';
 
+const highlights = [
+  { value: 'Websites', label: 'that bring enquiries' },
+  { value: 'AI workflows', label: 'that kill the admin' },
+  { value: 'Dashboards', label: 'that show the truth' }
+];
+
 const Hero = () => {
-  const prefersReducedMotion = useReducedMotion();
   const [oSymbol, setOSymbol] = useState("O");
   const [eSymbol, setESymbol] = useState("E");
   const [aSymbol, setASymbol] = useState("A");
-  const [activeHighlight, setActiveHighlight] = useState(0);
 
   useEffect(() => {
     const symbols = {
@@ -30,23 +34,6 @@ const Hero = () => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const highlights = [
-    { value: 'Websites', label: 'that bring enquiries' },
-    { value: 'AI workflows', label: 'that kill the admin' },
-    { value: 'Dashboards', label: 'that show the truth' }
-  ];
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-
-    const displayTimes = [2400, 2800, 3200];
-    const timeout = window.setTimeout(() => {
-      setActiveHighlight((current) => (current + 1) % highlights.length);
-    }, displayTimes[activeHighlight]);
-
-    return () => window.clearTimeout(timeout);
-  }, [activeHighlight, highlights.length, prefersReducedMotion]);
 
   return (
     <section id="home" className="hero-atmosphere relative isolate flex min-h-screen flex-col justify-between overflow-hidden pt-32 pb-20 md:pt-40 md:pb-32">
@@ -86,46 +73,22 @@ const Hero = () => {
             </AnimatedElement>
             <AnimatedElement animation="fade" delay={0.6}>
               <div
-                className="mb-8 divide-y divide-stone-300/70 border-y border-stone-300/70 dark:divide-white/10 dark:border-white/10"
+                className="hero-taglines mb-8 divide-y divide-stone-300/70 border-y border-stone-300/70 dark:divide-white/10 dark:border-white/10"
                 aria-label="What I build"
               >
-                {highlights.map(({ value, label }, index) => {
-                  const isActive = prefersReducedMotion || index === activeHighlight;
-                  const transitionDuration = [0.38, 0.52, 0.66][index];
-
-                  return (
-                    <motion.div
-                      key={value}
-                      className="relative flex items-baseline justify-between gap-4 overflow-hidden py-3"
-                      animate={{ opacity: isActive ? 1 : 0.34, x: isActive ? 0 : 10 }}
-                      transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <motion.span
-                        aria-hidden="true"
-                        className="absolute bottom-0 left-0 h-0.5 origin-left bg-sky-500"
-                        initial={false}
-                        animate={{ scaleX: isActive && !prefersReducedMotion ? 1 : 0 }}
-                        transition={{
-                          duration: isActive ? [2.4, 2.8, 3.2][index] : 0.2,
-                          ease: 'linear'
-                        }}
-                        style={{ width: '3rem' }}
-                      />
-                      <span className="text-lg font-bold tracking-tight dark:text-dark-text md:text-2xl">{value}</span>
-                      <span
-                        className={`inline-block text-right text-sm font-semibold transition-colors md:text-base ${
-                          isActive
-                            ? 'text-amber-700 dark:text-amber-300'
-                            : 'text-stone-500 dark:text-stone-500'
-                        }`}
-                      >
-                        {label}
-                      </span>
-                    </motion.div>
-                  );
-                })}
-                <p className="sr-only" aria-live="polite">
-                  {highlights[activeHighlight].value}: {highlights[activeHighlight].label}
+                {highlights.map(({ value, label }, index) => (
+                  <div
+                    key={value}
+                    className="hero-tag"
+                    style={{ '--i': index } as CSSProperties}
+                  >
+                    <span className="hero-tag-value">{value}</span>
+                    <span className="hero-tag-label">{label}</span>
+                    <span aria-hidden="true" className="hero-tag-rule" />
+                  </div>
+                ))}
+                <p className="sr-only">
+                  Websites that bring enquiries. AI workflows that kill the admin. Dashboards that show the truth.
                 </p>
               </div>
             </AnimatedElement>

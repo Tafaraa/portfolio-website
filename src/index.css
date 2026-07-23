@@ -101,55 +101,200 @@ body {
   }
 }
 
-/* Tagline shimmer: a metallic glint sweeps across the text while a dark, readable
-   base colour keeps it high-contrast. The base stops stay solid so the words are
-   always legible; only a thin gold band travels through. */
-.tagline-shimmer {
+/* ------------------------------------------------------------------ *
+   Hero taglines: a staggered cascade that reads top-to-bottom.
+   "Websites" resolves to full focus first, then "AI workflows", then
+   "Dashboards", then the loop restarts cleanly. Everything is driven by
+   CSS keyframes (no JS timers, no framer-motion viewport gating) so the
+   motion is identical in every browser and at every screen size.
+
+   Three animations run per row, all sharing the same 7.2s master cycle
+   and the same per-row delay, so they stay locked in phase:
+     - hero-tag-frame   -> appear / dim  (opacity + slide)
+     - hero-tag-sheen   -> the shimmering colour band sweeping the word
+     - hero-tag-rule    -> the accent underline growing under the word
+   The delay of (row index * 2.4s) is exactly one third of the cycle, so
+   the three rows light up one after another and the loop is seamless.
+ * ------------------------------------------------------------------ */
+.hero-taglines {
+  --hero-tag-cycle: 7.2s;
+}
+
+.hero-tag {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 0.75rem 0;
+  opacity: 0.34;
+  transform: translateX(12px);
+  animation: hero-tag-frame var(--hero-tag-cycle) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
+  will-change: opacity, transform;
+}
+
+/* The word itself. A mostly-solid, high-contrast gradient with a thin
+   bright band travelling through it -> the "shimmer". background-clip:text
+   (with the -webkit- prefix) is supported in every current browser. The
+   sheen element never gets its own transform/opacity, which sidesteps the
+   Chromium bug where a composited background-clip:text node renders blank. */
+.hero-tag-value {
+  position: relative;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 1.125rem;
+  line-height: 1.15;
   background-image: linear-gradient(
     100deg,
     #44403c 0%,
-    #44403c 38%,
+    #44403c 40%,
     #b45309 47%,
     #f59e0b 50%,
     #b45309 53%,
-    #44403c 62%,
+    #44403c 60%,
     #44403c 100%
   );
-  background-size: 220% 100%;
+  background-size: 260% 100%;
   background-repeat: no-repeat;
+  background-position: 150% 0;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: tagline-shimmer 3.4s linear infinite;
+  animation: hero-tag-sheen var(--hero-tag-cycle) linear infinite;
+  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
 }
 
-.dark .tagline-shimmer {
+.hero-tag-label {
+  display: inline-block;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #78716c;
+  transition: color 0.3s ease;
+  animation: hero-tag-label var(--hero-tag-cycle) linear infinite;
+  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
+}
+
+.hero-tag-rule {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 3rem;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background-color: #0ea5e9;
+  animation: hero-tag-rule var(--hero-tag-cycle) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: calc(var(--i) * (var(--hero-tag-cycle) / 3));
+}
+
+@media (min-width: 768px) {
+  .hero-tag-value { font-size: 1.5rem; }
+  .hero-tag-label { font-size: 1rem; }
+}
+
+/* Each row reveals with a slightly different pace/feel while sharing the same
+   master cycle, so they "move at different speeds" yet still loop in sync. */
+.hero-tag:nth-child(1),
+.hero-tag:nth-child(1) .hero-tag-rule { animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+.hero-tag:nth-child(2),
+.hero-tag:nth-child(2) .hero-tag-rule { animation-timing-function: cubic-bezier(0.34, 1.2, 0.5, 1); }
+.hero-tag:nth-child(3),
+.hero-tag:nth-child(3) .hero-tag-rule { animation-timing-function: cubic-bezier(0.45, 0.05, 0.3, 1); }
+
+/* Dark theme: lighter base with a warm highlight band. */
+.dark .hero-tag-value {
   background-image: linear-gradient(
     100deg,
     #d6d3d1 0%,
-    #d6d3d1 38%,
+    #d6d3d1 40%,
     #fcd34d 47%,
     #fffbeb 50%,
     #fcd34d 53%,
-    #d6d3d1 62%,
+    #d6d3d1 60%,
     #d6d3d1 100%
   );
 }
+.dark .hero-tag-label { color: #78716c; }
+.dark .hero-tag-rule { background-color: #38bdf8; }
 
-@keyframes tagline-shimmer {
-  0% { background-position: 130% 0; }
-  100% { background-position: -30% 0; }
+@keyframes hero-tag-frame {
+  0%   { opacity: 0.34; transform: translateX(12px); }
+  6%   { opacity: 1;    transform: translateX(0); }
+  30%  { opacity: 1;    transform: translateX(0); }
+  40%  { opacity: 0.34; transform: translateX(12px); }
+  100% { opacity: 0.34; transform: translateX(12px); }
 }
 
+@keyframes hero-tag-sheen {
+  0%   { background-position: 150% 0; }
+  6%   { background-position: 150% 0; }
+  26%  { background-position: -50% 0; }
+  100% { background-position: -50% 0; }
+}
+
+@keyframes hero-tag-label {
+  0%   { color: #78716c; }
+  8%   { color: #b45309; }
+  30%  { color: #b45309; }
+  42%  { color: #78716c; }
+  100% { color: #78716c; }
+}
+.dark .hero-tag-label {
+  animation-name: hero-tag-label-dark;
+}
+@keyframes hero-tag-label-dark {
+  0%   { color: #78716c; }
+  8%   { color: #fcd34d; }
+  30%  { color: #fcd34d; }
+  42%  { color: #78716c; }
+  100% { color: #78716c; }
+}
+
+@keyframes hero-tag-rule {
+  0%   { transform: scaleX(0); }
+  6%   { transform: scaleX(0); }
+  30%  { transform: scaleX(1); }
+  42%  { transform: scaleX(0); }
+  100% { transform: scaleX(0); }
+}
+
+/* Motion off: show every tagline solid, legible and static. */
 @media (prefers-reduced-motion: reduce) {
-  .tagline-shimmer {
+  .hero-tag,
+  .hero-tag-value,
+  .hero-tag-label,
+  .hero-tag-rule {
     animation: none;
+  }
+  .hero-tag {
+    opacity: 1;
+    transform: none;
+  }
+  .hero-tag-value {
     background-image: none;
     -webkit-text-fill-color: #44403c;
     color: #44403c;
   }
-  .dark .tagline-shimmer {
+  .dark .hero-tag-value {
+    -webkit-text-fill-color: #d6d3d1;
+    color: #d6d3d1;
+  }
+  .hero-tag-rule { transform: scaleX(1); }
+}
+
+/* Extremely old engines with no background-clip:text: keep the word solid
+   so it can never render as invisible transparent text. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-tag-value {
+    background-image: none;
+    -webkit-text-fill-color: #44403c;
+    color: #44403c;
+  }
+  .dark .hero-tag-value {
     -webkit-text-fill-color: #d6d3d1;
     color: #d6d3d1;
   }
@@ -349,6 +494,47 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(0);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
+}
+
+/* Skeleton placeholders: stone-toned blocks with a light sweep, matching the
+   site's warm, hand-made aesthetic. Used as Suspense fallbacks. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(120, 113, 108, 0.16);
+  border-radius: 0.5rem;
+}
+.dark .skeleton {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(250, 250, 249, 0.55) 50%,
+    transparent 100%
+  );
+  animation: skeleton-sweep 1.6s ease-in-out infinite;
+}
+.dark .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.09) 50%,
+    transparent 100%
+  );
+}
+@keyframes skeleton-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; }
+  .skeleton { animation: pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 }
 
 /* Card flip animations */

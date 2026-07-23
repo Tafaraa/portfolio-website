@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, lazy, Suspense, ReactNode } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import LoadingSpinner from './components/ui/LoadingSpinner';
+import SectionSkeleton from './components/ui/SectionSkeleton';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import SEO from './components/ui/SEO';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -199,10 +199,10 @@ const MainLayout = () => {
       <Header />
       <main>
         <Hero />
-        <Suspense fallback={<div className="py-20 md:py-32"><LoadingSpinner /></div>}>
+        <Suspense fallback={<SectionSkeleton cards={0} />}>
           <About />
         </Suspense>
-        <Suspense fallback={<div className="py-20 text-center"><LoadingSpinner size="lg" className="mb-4" /><p className="text-stone-600">Loading content...</p></div>}>
+        <Suspense fallback={<SectionSkeleton cards={3} />}>
           <Projects />
           <Contact />
         </Suspense>
@@ -235,12 +235,7 @@ const MainLayout = () => {
 };
 
 // Reusable loading component for lazy-loaded routes
-const LazyLoadingFallback = () => (
-  <div className="min-h-screen flex flex-col items-center justify-center">
-    <LoadingSpinner size="lg" className="mb-4" />
-    <p className="text-stone-600">Loading content...</p>
-  </div>
-);
+const LazyLoadingFallback = () => <SectionSkeleton fullPage cards={3} />;
 
 // Wrapper for lazy-loaded components
 const LazyRoute = ({ children }: { children: ReactNode }) => (
@@ -295,6 +290,12 @@ const LANDING_ROUTES = [
 ] as const;
 
 function App() {
+  useEffect(() => {
+    // Tell the HTML intro loader the app shell has mounted. The loader still
+    // honours its own minimum on-screen time before it fades out.
+    (window as unknown as { __appReady?: () => void }).__appReady?.();
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider>
