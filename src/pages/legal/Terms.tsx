@@ -29,7 +29,9 @@ const Terms = () => (
         <p>
           When you send a message through the contact form, you will receive an automated confirmation and I
           will aim to respond within one business day. Submitting an enquiry creates no obligation on either
-          side. Your details are handled as described in the Privacy Policy.
+          side. Your details are handled as described in the Privacy Policy, which is written to meet POPIA, the
+          GDPR and UK GDPR, the CCPA/CPRA, PIPEDA, the LGPD, the Australian Privacy Act and other applicable data
+          protection laws in the regions I serve.
         </p>
         <p>
           Any price range produced by the project calculator is an early planning estimate based only on the
@@ -81,14 +83,24 @@ const Terms = () => (
         </p>
       </LegalSection>
 
-      <LegalSection heading="8. Governing law">
+      <LegalSection heading="8. International visitors">
         <p>
-          These terms are governed by the laws of the Republic of South Africa, and any disputes are subject to
-          the jurisdiction of the South African courts.
+          The site is operated from South Africa and can be accessed worldwide. You are responsible for
+          complying with any local laws that apply to you. Nothing in these terms removes mandatory consumer,
+          privacy, or other protections you have under the laws of your own country or region, and where such
+          laws give you rights that cannot be waived, those rights continue to apply.
         </p>
       </LegalSection>
 
-      <LegalSection heading="9. Changes">
+      <LegalSection heading="9. Governing law">
+        <p>
+          These terms are governed by the laws of the Republic of South Africa, and any disputes are subject to
+          the jurisdiction of the South African courts. This does not deprive you of the protection of any
+          mandatory provisions of the law of your country of residence.
+        </p>
+      </LegalSection>
+
+      <LegalSection heading="10. Changes">
         <p>
           These terms may be updated from time to time. The date at the top shows the latest revision.
           Continued use of the site after changes means you accept the updated terms.

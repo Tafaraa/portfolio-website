@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
-  Bot,
   Briefcase,
   ExternalLink,
   MessageCircle,
@@ -9,6 +8,12 @@ import {
   Sparkles,
   X
 } from 'lucide-react';
+import {
+  DEFAULT_PRICING_CONFIG,
+  formatMoney,
+  loadPublishedPricing,
+  type PricingConfig
+} from '../../lib/quoteCalculator';
 
 type JulieAction =
   | {
@@ -145,20 +150,82 @@ const JulieChatWidget = () => {
 
   const listRef = useRef<HTMLDivElement>(null);
 
+  // Live pricing/services, pulled from the same published config the contact form
+  // and admin dashboard use. Change a price, service label or wording in the DB
+  // and Julie's answers update automatically, no code change needed.
+  const [pricing, setPricing] = useState<PricingConfig>(DEFAULT_PRICING_CONFIG);
+
+  useEffect(() => {
+    let active = true;
+    loadPublishedPricing().then((config) => {
+      if (active) setPricing(config);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const jokes = useMemo(
     () => [
       'Why do programmers prefer dark mode? Because light attracts bugs.',
       'Why did the developer go broke? Because they used up all their cache.',
-      'Why was the developer calm? Because they had good exception handling.',
-      'Why did the API go to therapy? It could not handle requests.',
-      'Debugging: removing the needles from the haystack.',
-      'Why did the developer cross the road? To refactor the other side.'
+      'Why was the developer calm during the outage? Great exception handling.',
+      'Why did the API go to therapy? It couldn\'t handle all the requests.',
+      'Debugging is just removing the needles you added to the haystack.',
+      'Why did the developer cross the road? To refactor the other side.',
+      'A SQL query walks into a bar, sees two tables, and asks: "Mind if I join you?"',
+      'Why do Java developers wear glasses? Because they don\'t C#.',
+      'There are only 10 kinds of people: those who read binary and those who don\'t.',
+      'Why was the function sad after the party? It didn\'t get a single call back.',
+      'I\'d tell you a UDP joke, but you might not get it.',
+      'How do you comfort a JavaScript bug? You console it.',
+      'Why did the database break up with the spreadsheet? It wanted a real relationship.',
+      'My code doesn\'t work and I have no idea why. My code works and I have no idea why.',
+      'Why did the AI cross the road? It was trained on chicken data.',
+      'Why don\'t robots ever panic? They keep everything under control-flow.',
+      '99 little bugs in the code, patch one down, 127 little bugs in the code.',
+      'A byte walked into a bar looking rough. Bartender asked: "Rough day?" It said: "Parity error."',
+      'Why did the startup hire a baker? They needed someone who understood raising dough and scaling.',
+      'Automation is doing in 3 hours what would\'ve taken you 3 minutes to do by hand. Then never doing it again.',
+      'Why was the spreadsheet always invited to meetings? It brought all the cells... I mean, skills.',
+      'To the person who stole my dark mode: I hope your screen brightness is stuck at 100%.'
     ],
     []
   );
 
-  const servicesText =
-    'Tafara builds business websites and online stores, sets up AI workflows and automations that cut admin, builds dashboards and data tools, and trains teams to actually run it all. He also fixes up and speeds up existing sites.';
+  // Built from the live config so the service list always matches the DB wording.
+  const sellableProjects = useMemo(
+    () => pricing.projectTypes.filter((project) => project.basePrice !== null),
+    [pricing]
+  );
+
+  const servicesText = useMemo(() => {
+    const labels = sellableProjects.map((project) => project.label.toLowerCase());
+    if (labels.length === 0) {
+      return 'Tafara builds websites, online stores, dashboards, and AI workflows, and trains teams to run them.';
+    }
+    const list =
+      labels.length > 1
+        ? `${labels.slice(0, -1).join(', ')} and ${labels[labels.length - 1]}`
+        : labels[0];
+    return `Tafara handles ${list}, then trains your team so you're not stuck depending on him forever.`;
+  }, [sellableProjects]);
+
+  // A real, DB-accurate price rundown (base prices are in USD, the pricing base).
+  const buildPricingText = () => {
+    const lines = sellableProjects
+      .map((project) => `• ${project.label}: from ${formatMoney(project.basePrice as number, pricing.currency)}`)
+      .join('\n');
+    const paidCarePlans = pricing.carePlans.filter((plan) => plan.monthlyPrice > 0);
+    const carePlanLine =
+      paidCarePlans.length > 0
+        ? `\n\nOngoing care/hosting starts at ${formatMoney(
+            Math.min(...paidCarePlans.map((plan) => plan.monthlyPrice)),
+            pricing.currency
+          )}/month (a no-fee self-managed option is available too).`
+        : '';
+    return `Here's the honest starting point (these are base prices, scope and features move the final number):\n\n${lines}${carePlanLine}\n\n${pricing.quoteDisclaimer}`;
+  };
 
   useEffect(() => {
     jokePoolRef.current = Array.from({ length: jokes.length }, (_, i) => i);
@@ -306,19 +373,18 @@ const JulieChatWidget = () => {
       };
     }
 
-    if (/(price|pricing|cost|budget|rate|rates|how much)/i.test(text)) {
+    if (/(price|pricing|cost|budget|rate|rates|how much|quote)/i.test(text)) {
       return {
         id,
         role: 'julie',
-        text:
-          "Honest answer: it depends on scope. A simple business site is smaller than a full store, a dashboard, or an AI workflow setup. Quickest way to a real number: tell me the type of project, your deadline, and 2-3 must-haves, and I'll pass it straight to Tafara.",
+        text: buildPricingText(),
         actions: [
           {
             type: 'prompt',
-            label: 'Build quote brief',
+            label: 'Build my quote',
             value: 'Start guided project brief'
           },
-          { type: 'prompt', label: 'What details should I send?', value: 'What should I include in a project brief?' }
+          { type: 'link', label: 'Full estimator', href: '#contact' }
         ]
       };
     }
@@ -526,14 +592,20 @@ const JulieChatWidget = () => {
     <div className="julie-chat fixed bottom-5 left-4 z-50 sm:bottom-6 sm:left-6">
       {isOpen && (
         <div className="mb-3 w-[calc(100vw-2rem)] max-w-[400px] overflow-hidden rounded-2xl border border-stone-200 bg-white/95 backdrop-blur-md shadow-2xl dark:border-dark-border dark:bg-dark-surface/95">
-          <div className="flex items-center justify-between border-b border-stone-200 px-4 py-3 dark:border-dark-border">
+          <div className="relative flex items-center justify-between border-b border-stone-200 bg-gradient-to-br from-sky-500/[0.08] to-transparent px-4 py-3 dark:border-dark-border dark:from-sky-400/[0.06]">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-600 text-white">
-                <Bot size={20} aria-hidden="true" />
+              <div className="relative shrink-0">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-sky-600 font-bold text-white shadow-[0_6px_18px_rgba(14,165,233,0.35)]">
+                  J
+                </div>
+                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-dark-surface" />
               </div>
               <div className="min-w-0">
-                <p className="font-medium text-stone-900 dark:text-dark-text">Julie</p>
-                <p className="text-xs text-stone-600 dark:text-dark-muted">Here to help you get started</p>
+                <p className="font-semibold text-stone-900 dark:text-dark-text">Julie</p>
+                <p className="flex items-center gap-1.5 text-xs text-stone-600 dark:text-dark-muted">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  Online · usually replies instantly
+                </p>
               </div>
             </div>
             <button
@@ -606,8 +678,10 @@ const JulieChatWidget = () => {
 
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="rounded-2xl bg-stone-100 px-3 py-2 text-sm text-stone-700 dark:bg-dark-bg dark:text-dark-text">
-                    Julie is thinking...
+                  <div className="flex items-center gap-1.5 rounded-2xl bg-stone-100 px-3.5 py-3 dark:bg-dark-bg">
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-stone-400 [animation-delay:-0.3s] dark:bg-dark-muted" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-stone-400 [animation-delay:-0.15s] dark:bg-dark-muted" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-stone-400 dark:bg-dark-muted" />
                   </div>
                 </div>
               )}
@@ -700,11 +774,16 @@ const JulieChatWidget = () => {
         <button
           type="button"
           onClick={() => setIsOpen((value) => !value)}
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-600 text-white shadow-2xl hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400"
+          className="group relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-sky-600 text-white shadow-[0_10px_30px_rgba(14,165,233,0.45)] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-transparent"
           aria-label={isOpen ? 'Close Julie chat' : 'Open Julie chat'}
           title={isOpen ? 'Close Julie' : 'Chat with Julie'}
         >
-          <MessageCircle size={24} aria-hidden="true" />
+          {!isOpen && (
+            <span className="absolute inset-0 rounded-full bg-sky-500/60 motion-safe:animate-ping" aria-hidden="true" />
+          )}
+          <span className="relative">
+            {isOpen ? <X size={24} aria-hidden="true" /> : <MessageCircle size={24} aria-hidden="true" />}
+          </span>
         </button>
       </div>
     </div>

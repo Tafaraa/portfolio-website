@@ -3,15 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import type { Session } from '@supabase/supabase-js';
 import {
+  ArrowRight,
   BadgeDollarSign,
   Inbox as InboxIcon,
   LineChart,
+  Lock,
   LogOut,
   Mail,
   Megaphone,
   RefreshCw,
-  ShieldAlert,
-  Sparkles
+  ShieldAlert
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured, ADMIN_EMAIL, type ContactSubmission } from '../../lib/supabase';
 import Inbox from './Inbox';
@@ -66,54 +67,102 @@ const SignIn = () => {
   };
 
   return (
-    <div className="admin-shell flex min-h-screen items-center justify-center px-6">
+    <div className="admin-shell flex min-h-screen items-center justify-center px-6 py-12">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.04] p-8 shadow-[0_30px_90px_rgba(0,0,0,0.5)] backdrop-blur-xl"
+        className="w-full max-w-sm"
       >
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-emerald-300">
-          <Sparkles size={13} /> Private dashboard
-        </div>
-        <h1 className="text-2xl font-bold text-white">Welcome back.</h1>
-        <p className="mt-2 text-sm text-white/55">
-          Enter your email and I'll send a one-time sign-in link. No passwords.
-        </p>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-7 shadow-[0_30px_90px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:p-8">
+          {/* Brand mark + private-area label */}
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/10 text-emerald-300">
+              <Lock size={17} aria-hidden="true" />
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-300/70">
+                Private area
+              </p>
+              <p className="text-sm font-semibold text-white">Command center</p>
+            </div>
+          </div>
 
-        <AnimatePresence mode="wait">
-          {state === 'sent' ? (
-            <motion.div
-              key="sent"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-5 text-center"
-            >
-              <Mail className="mx-auto mb-3 h-8 w-8 text-emerald-300" />
-              <p className="text-sm font-medium text-white">Check your inbox</p>
-              <p className="mt-1 text-xs text-white/60">Tap the link in the email to sign in. You can close this tab.</p>
-            </motion.div>
-          ) : (
-            <motion.form key="form" onSubmit={sendLink} className="mt-6 space-y-3">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@mutsvedutafara.com"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-emerald-400/50"
-              />
-              <button
-                type="submit"
-                disabled={state === 'sending'}
-                className="w-full rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 px-4 py-3 text-sm font-semibold text-stone-950 transition-opacity hover:opacity-90 disabled:opacity-60"
+          <h1 className="mt-7 text-xl font-bold text-white">Welcome back, Tafara.</h1>
+          <p className="mt-1.5 text-sm leading-relaxed text-white/55">
+            Enter your email and I'll send a one-time sign-in link. No passwords to remember.
+          </p>
+
+          <AnimatePresence mode="wait">
+            {state === 'sent' ? (
+              <motion.div
+                key="sent"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-6 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-5 text-center"
               >
-                {state === 'sending' ? 'Sending link…' : 'Send sign-in link'}
-              </button>
-              {error && <p className="text-xs text-rose-300">{error}</p>}
-            </motion.form>
-          )}
-        </AnimatePresence>
+                <Mail className="mx-auto mb-3 h-7 w-7 text-emerald-300" aria-hidden="true" />
+                <p className="text-sm font-semibold text-white">Check your inbox</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/60">
+                  Tap the link in the email to sign in. You can close this tab.
+                </p>
+              </motion.div>
+            ) : (
+              <motion.form key="form" onSubmit={sendLink} className="mt-6 space-y-4">
+                <div>
+                  <label htmlFor="admin-email" className="mb-1.5 block text-xs font-medium text-white/60">
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <Mail
+                      size={16}
+                      className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35"
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="admin-email"
+                      type="email"
+                      required
+                      autoFocus
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@mutsvedutafara.com"
+                      className="w-full rounded-xl border border-white/10 bg-white/5 py-2.5 pl-10 pr-3 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-emerald-400/60 focus:bg-white/[0.07]"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={state === 'sending'}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-stone-950 transition-colors hover:bg-emerald-300 disabled:cursor-wait disabled:opacity-60"
+                >
+                  {state === 'sending' ? (
+                    <>
+                      <RefreshCw size={15} className="animate-spin" aria-hidden="true" />
+                      Sending link…
+                    </>
+                  ) : (
+                    <>
+                      Send sign-in link
+                      <ArrowRight size={15} aria-hidden="true" />
+                    </>
+                  )}
+                </button>
+                {error && (
+                  <p className="flex items-start gap-1.5 text-xs text-rose-300">
+                    <ShieldAlert size={14} className="mt-px shrink-0" aria-hidden="true" />
+                    <span>{error}</span>
+                  </p>
+                )}
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <p className="mt-5 text-center text-xs text-white/35">
+          Protected area · authorised access only
+        </p>
       </motion.div>
     </div>
   );

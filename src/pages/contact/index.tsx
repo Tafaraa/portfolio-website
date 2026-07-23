@@ -15,8 +15,9 @@ import {
   MessageCircle,
   Phone
 } from 'lucide-react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import FormInput from '../../components/ui/FormInput';
+import { notifyError, notifySuccess } from '../../components/ui/toast';
 import {
   DEFAULT_PRICING_CONFIG,
   calculateQuoteFromConfig,
@@ -283,7 +284,7 @@ const Contact = () => {
 
     if (!formValid) {
       const missingLabels = missingRequiredItems.map((item) => item.label).join(', ');
-      toast.error(`Still needed: ${missingLabels}.`);
+      notifyError(`Still needed: ${missingLabels}.`, { title: 'A few details missing' });
       focusRequiredItem(missingRequiredItems[0].targetId);
       return;
     }
@@ -320,7 +321,10 @@ const Contact = () => {
       }
 
       setFormState('success');
-      toast.success("Project brief received. Check your inbox. I'll reply within one business day.");
+      notifySuccess("Project brief received. Check your inbox, I'll reply within one business day.", {
+        title: 'Project brief sent',
+        duration: 9000
+      });
       setFormData(createEmptyForm(pricingConfig.carePlans[0]?.id));
       setMarketingOptIn(false);
       submissionIdRef.current = createSubmissionId();
@@ -328,7 +332,10 @@ const Contact = () => {
       window.setTimeout(() => setFormState('idle'), 5000);
     } catch (error) {
       setFormState('error');
-      toast.error(error instanceof Error ? error.message : 'Failed to send your project brief. Please try again.');
+      notifyError(
+        error instanceof Error ? error.message : 'Failed to send your project brief. Please try again.',
+        { title: "Couldn't send your brief" }
+      );
       console.error('Contact form error:', error);
       window.setTimeout(() => setFormState('idle'), 3500);
     }
@@ -981,7 +988,8 @@ const Contact = () => {
                   <Link to="/terms" className="underline underline-offset-2 hover:text-stone-900 dark:hover:text-white">
                     Terms of Use
                   </Link>
-                  . Your information is handled in line with POPIA and is never sold.
+                  . Your information is handled in line with POPIA, the GDPR and other applicable data
+                  protection laws, and is never sold.
                 </p>
               </div>
 

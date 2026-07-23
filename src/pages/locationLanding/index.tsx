@@ -11,7 +11,6 @@ import {
   MapPin,
   MessageCircle,
   Phone,
-  Sparkles,
   Workflow
 } from 'lucide-react';
 import OptimizedImage from '../../components/ui/OptimizedImage';
@@ -715,11 +714,7 @@ const LocationLanding = () => {
         ]}
       />
 
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 dark:from-dark-bg dark:to-dark-surface dark:text-dark-text">
-        {/* Ambient gradient blobs */}
-        <div className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[52rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary-500/20 via-emerald-400/15 to-blue-400/15 blur-3xl" />
-        <div className="pointer-events-none absolute top-1/3 right-0 h-80 w-80 rounded-full bg-gradient-to-tr from-purple-400/15 via-rose-400/10 to-amber-300/15 blur-3xl" />
-
+      <div className="site-atmosphere relative min-h-screen overflow-hidden text-stone-900 dark:text-dark-text">
         {/* Top bar */}
         <header className="relative z-10 border-b border-stone-200/60 backdrop-blur-md dark:border-white/10">
           <div className="container mx-auto flex items-center justify-between px-6 py-4 md:px-12">
@@ -749,8 +744,15 @@ const LocationLanding = () => {
           <section className="container mx-auto px-6 pb-14 pt-12 md:px-12 md:pb-20 md:pt-20">
             <div className="grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-stone-200/70 bg-white/70 px-4 py-1.5 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm">
-                  {currentPageData.location ? <MapPin size={14} /> : <Sparkles size={14} />}
+                <div className="inline-flex items-center gap-2.5 border-l-2 border-sky-500 bg-white/50 py-1 pl-3 pr-4 text-xs font-medium uppercase tracking-[0.18em] text-stone-600 backdrop-blur dark:bg-white/[0.03] dark:text-dark-muted md:text-[13px]">
+                  {currentPageData.location ? (
+                    <MapPin size={14} className="text-sky-600 dark:text-sky-400" />
+                  ) : (
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-500/60" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-500" />
+                    </span>
+                  )}
                   <span>{eyebrow}</span>
                 </div>
 
@@ -768,8 +770,9 @@ const LocationLanding = () => {
                   {highlights.slice(0, 4).map((item) => (
                     <span
                       key={item}
-                      className="rounded-full border border-stone-200/70 bg-white/60 px-3 py-1 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm"
+                      className="inline-flex items-center gap-2 rounded-full border border-stone-200/70 bg-white/60 py-1 pl-2.5 pr-3.5 text-xs font-medium text-stone-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-dark-text md:text-sm"
                     >
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500 dark:bg-sky-400" />
                       {item}
                     </span>
                   ))}
@@ -856,7 +859,7 @@ const LocationLanding = () => {
 
           {showLongFormSections && currentPageData.marketHeading && (
             <section className="container mx-auto px-6 py-6 md:px-12 md:py-10">
-              <div className="grid gap-6 rounded-3xl border border-stone-200/70 bg-white/70 p-6 backdrop-blur-xl dark:border-white/10 dark:bg-gray-950/40 md:grid-cols-[1.1fr_1fr] md:p-8">
+              <div className="grid gap-6 rounded-3xl border border-stone-200/70 bg-white/70 p-6 backdrop-blur-xl dark:border-white/10 dark:bg-dark-surface/60 md:grid-cols-[1.1fr_1fr] md:p-8">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">
                     Working in {currentPageData.location}
@@ -893,7 +896,7 @@ const LocationLanding = () => {
               {services.map(({ icon: Icon, title, points }) => (
                 <div
                   key={title}
-                  className="rounded-2xl border border-stone-200/70 bg-white/70 p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary-300/50 hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] dark:border-white/10 dark:bg-gray-950/40"
+                  className="rounded-2xl border border-stone-200/70 bg-white/70 p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary-300/50 hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] dark:border-white/10 dark:bg-dark-surface/60"
                 >
                   <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-stone-900 text-white dark:bg-dark-accent">
                     <Icon className="h-5 w-5" />
@@ -918,7 +921,7 @@ const LocationLanding = () => {
               <div
                 className={`rounded-2xl border p-6 backdrop-blur-xl md:p-8 ${
                   audience === 'recruiter'
-                    ? 'order-2 border-stone-200/70 bg-white/70 dark:border-white/10 dark:bg-gray-950/40'
+                    ? 'order-2 border-stone-200/70 bg-white/70 dark:border-white/10 dark:bg-dark-surface/60'
                     : 'order-1 border-stone-900/10 bg-stone-900 text-white dark:border-white/10 dark:bg-white/5'
                 }`}
               >
@@ -943,7 +946,7 @@ const LocationLanding = () => {
                 className={`rounded-2xl border p-6 backdrop-blur-xl md:p-8 ${
                   audience === 'recruiter'
                     ? 'order-1 border-stone-900/10 bg-stone-900 text-white dark:border-white/10 dark:bg-white/5'
-                    : 'order-2 border-stone-200/70 bg-white/70 dark:border-white/10 dark:bg-gray-950/40'
+                    : 'order-2 border-stone-200/70 bg-white/70 dark:border-white/10 dark:bg-dark-surface/60'
                 }`}
               >
                 <p className="text-xs font-medium uppercase tracking-[0.18em] opacity-70">For recruiters</p>
@@ -990,7 +993,7 @@ const LocationLanding = () => {
                   href={project.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group rounded-2xl border border-stone-200/70 bg-white/70 p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] dark:border-white/10 dark:bg-gray-950/40"
+                  className="group rounded-2xl border border-stone-200/70 bg-white/70 p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] dark:border-white/10 dark:bg-dark-surface/60"
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="text-base font-semibold md:text-lg">{project.title}</h3>
@@ -1005,7 +1008,7 @@ const LocationLanding = () => {
           {/* FAQ */}
           {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Questions people usually ask</h2>
-            <div className="mt-6 max-w-3xl divide-y divide-stone-200/70 overflow-hidden rounded-2xl border border-stone-200/70 bg-white/70 backdrop-blur-xl dark:divide-white/10 dark:border-white/10 dark:bg-gray-950/40">
+            <div className="mt-6 max-w-3xl divide-y divide-stone-200/70 overflow-hidden rounded-2xl border border-stone-200/70 bg-white/70 backdrop-blur-xl dark:divide-white/10 dark:border-white/10 dark:bg-dark-surface/60">
               {faqs.map((faq) => (
                 <details key={faq.q} className="group px-5 py-4 md:px-6">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold md:text-base">

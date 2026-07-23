@@ -331,6 +331,66 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Signature site backdrop for full pages (marketing/landing pages): the same
+   warm stone base, soft glow and faint circuit traces as the hero, fixed to the
+   viewport so it stays as a calm, on-brand atmosphere behind the whole page.
+   Replaces generic gradient "blobs" so landing pages match the portfolio. */
+.site-atmosphere {
+  position: relative;
+  isolation: isolate;
+  background-color: #fafaf9;
+}
+.dark .site-atmosphere {
+  background-color: #121212;
+}
+.site-atmosphere::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 82% 10%, rgba(14, 165, 233, 0.10), transparent 34%),
+    radial-gradient(circle at 10% 84%, rgba(168, 162, 158, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 30%);
+  animation: hero-glow-breathe 12s ease-in-out infinite;
+}
+.dark .site-atmosphere::before {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(14, 165, 233, 0.14), transparent 36%),
+    radial-gradient(circle at 10% 84%, rgba(255, 255, 255, 0.03), transparent 34%);
+}
+.site-atmosphere::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.85;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='rgb(28,25,23)' stroke-opacity='0.09' stroke-width='1'%3E%3Cpath d='M12 34h44v38h30'/%3E%3Cpath d='M136 16v46h-28'/%3E%3Cpath d='M38 134h50v-32'/%3E%3Cpath d='M148 106h-26v28'/%3E%3C/g%3E%3Cg fill='rgb(28,25,23)' fill-opacity='0.13'%3E%3Ccircle cx='12' cy='34' r='2.2'/%3E%3Ccircle cx='86' cy='72' r='2.2'/%3E%3Ccircle cx='136' cy='16' r='2.2'/%3E%3Ccircle cx='108' cy='62' r='2.2'/%3E%3Ccircle cx='38' cy='134' r='2.2'/%3E%3Ccircle cx='88' cy='102' r='2.2'/%3E%3Ccircle cx='148' cy='106' r='2.2'/%3E%3Ccircle cx='122' cy='134' r='2.2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, #000, transparent 78%);
+  mask-image: radial-gradient(circle at 50% 30%, #000, transparent 78%);
+  animation: hero-pattern-drift 90s linear infinite;
+}
+.dark .site-atmosphere::after {
+  opacity: 0.8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='rgb(255,255,255)' stroke-opacity='0.07' stroke-width='1'%3E%3Cpath d='M12 34h44v38h30'/%3E%3Cpath d='M136 16v46h-28'/%3E%3Cpath d='M38 134h50v-32'/%3E%3Cpath d='M148 106h-26v28'/%3E%3C/g%3E%3Cg fill='rgb(255,255,255)' fill-opacity='0.1'%3E%3Ccircle cx='12' cy='34' r='2.2'/%3E%3Ccircle cx='86' cy='72' r='2.2'/%3E%3Ccircle cx='136' cy='16' r='2.2'/%3E%3Ccircle cx='108' cy='62' r='2.2'/%3E%3Ccircle cx='38' cy='134' r='2.2'/%3E%3Ccircle cx='88' cy='102' r='2.2'/%3E%3Ccircle cx='148' cy='106' r='2.2'/%3E%3Ccircle cx='122' cy='134' r='2.2'/%3E%3C/g%3E%3C/svg%3E");
+}
+@media (max-width: 767px) {
+  .site-atmosphere::after {
+    opacity: 0.6;
+    background-size: 132px 132px;
+    animation-name: hero-pattern-drift-sm;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-atmosphere::before,
+  .site-atmosphere::after {
+    animation: none;
+  }
+}
+
 /* Admin dashboard backdrop: dark stone with the same circuit motif + glow as the
    site, so the private tool still feels hand-made and on-brand. */
 .admin-shell {
@@ -535,6 +595,35 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .skeleton::after { animation: none; }
   .skeleton { animation: pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+}
+
+/* Custom toast notifications (react-hot-toast toast.custom). Enter/leave use the
+   toast's `visible` flag; a thin bar counts down the (longer) auto-dismiss time. */
+@keyframes toast-in {
+  0% { opacity: 0; transform: translate3d(0, -14px, 0) scale(0.96); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes toast-out {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  100% { opacity: 0; transform: translate3d(0, -10px, 0) scale(0.96); }
+}
+.toast-in {
+  animation: toast-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.toast-out {
+  animation: toast-out 0.22s ease-in both;
+}
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.toast-progress-bar {
+  transform-origin: left center;
+  animation: toast-progress linear forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast-in, .toast-out { animation: none; }
+  .toast-progress-bar { animation: none; transform: scaleX(1); }
 }
 
 /* Card flip animations */
