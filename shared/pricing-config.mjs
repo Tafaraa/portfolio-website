@@ -1,26 +1,26 @@
 export const DEFAULT_PRICING_CONFIG = {
-  version: 1,
+  version: 2,
   currency: 'USD',
   rounding: 50,
-  rangeMultiplier: 1.25,
+  rangeMultiplier: 1.2,
   quoteDisclaimer:
-    'Planning estimate only, not a binding quote. Prices and proposals are based in USD. Converted values are indicative. Third-party fees, domains, paid software, payment fees, content production, and taxes are excluded unless stated.',
-  ratesUpdatedAt: '2026-07-23T00:00:00.000Z',
+    'Planning estimate only, not a binding quote. Final proposals use USD. Currency conversions are for planning. Domains, paid software, payment fees, content work, and taxes are excluded unless stated.',
+  ratesUpdatedAt: '2026-07-23T14:00:00.000Z',
   displayCurrencies: [
     { code: 'USD', label: 'US Dollar', rate: 1, locale: 'en-US' },
-    { code: 'EUR', label: 'Euro', rate: 0.8778, locale: 'en-IE' },
-    { code: 'GBP', label: 'British Pound', rate: 0.7489, locale: 'en-GB' },
-    { code: 'ZAR', label: 'South African Rand', rate: 16.439, locale: 'en-ZA' },
-    { code: 'CAD', label: 'Canadian Dollar', rate: 1.4075, locale: 'en-CA' },
-    { code: 'AUD', label: 'Australian Dollar', rate: 1.43, locale: 'en-AU' },
-    { code: 'SGD', label: 'Singapore Dollar', rate: 1.2913, locale: 'en-SG' }
+    { code: 'EUR', label: 'Euro', rate: 0.877809, locale: 'en-IE' },
+    { code: 'GBP', label: 'British Pound', rate: 0.748929, locale: 'en-GB' },
+    { code: 'ZAR', label: 'South African Rand', rate: 16.439782, locale: 'en-ZA' },
+    { code: 'CAD', label: 'Canadian Dollar', rate: 1.407479, locale: 'en-CA' },
+    { code: 'AUD', label: 'Australian Dollar', rate: 1.430039, locale: 'en-AU' },
+    { code: 'SGD', label: 'Singapore Dollar', rate: 1.291345, locale: 'en-SG' }
   ],
   projectTypes: [
     {
       id: 'business-website',
       label: 'Business website',
       description: 'A conversion-focused website for a service business or personal brand.',
-      basePrice: 2500,
+      basePrice: 850,
       included: [
         'Up to 5 core pages',
         'Responsive custom layout',
@@ -33,7 +33,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'ecommerce',
       label: 'E-commerce store',
       description: 'Products, payments, orders, delivery rules, and launch support.',
-      basePrice: 5500,
+      basePrice: 1700,
       included: [
         'Storefront and product catalogue',
         'Payment gateway setup',
@@ -46,7 +46,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'web-app',
       label: 'Custom web app or portal',
       description: 'A tailored system with users, workflows, and business logic.',
-      basePrice: 9000,
+      basePrice: 3200,
       included: [
         'Secure user authentication',
         'One core business workflow',
@@ -59,7 +59,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'dashboard',
       label: 'Dashboard and reporting',
       description: 'Business reporting, analytics, and decision-ready views.',
-      basePrice: 4500,
+      basePrice: 1800,
       included: [
         'Up to 2 data sources',
         'Core KPI views and filters',
@@ -72,7 +72,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'ai-automation',
       label: 'AI workflow or automation',
       description: 'Automate repetitive admin, follow-ups, documents, or support.',
-      basePrice: 4000,
+      basePrice: 1500,
       included: [
         'One defined automation workflow',
         'Up to 2 integrations',
@@ -85,7 +85,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'site-improvement',
       label: 'Improve an existing site',
       description: 'A focused UX, speed, SEO, conversion, or reliability upgrade.',
-      basePrice: 1250,
+      basePrice: 400,
       included: [
         'Technical and UX audit',
         'Prioritised improvement plan',
@@ -98,7 +98,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'consulting-training',
       label: 'Consulting or team training',
       description: 'A practical audit, workshop, implementation plan, or handover.',
-      basePrice: 900,
+      basePrice: 250,
       included: [
         'Discovery session',
         'Practical workshop or audit',
@@ -119,20 +119,23 @@ export const DEFAULT_PRICING_CONFIG = {
     {
       id: 'focused',
       label: 'Launch',
-      description: 'One clear outcome with the essentials needed to launch well.',
+      description:
+        'Choose this for one clear result, such as a five page site or one focused workflow. It covers the core build without extra systems.',
       multiplier: 1
     },
     {
       id: 'growth',
       label: 'Growth',
-      description: 'More content, workflows, integrations, and room to scale.',
-      multiplier: 1.4
+      description:
+        'Choose this when you need more pages, one or two integrations, or a small admin area. It suits a business that is already operating.',
+      multiplier: 1.3
     },
     {
       id: 'advanced',
       label: 'Advanced',
-      description: 'Complex journeys, custom logic, or multiple user types.',
-      multiplier: 1.9
+      description:
+        'Choose this when several user types, connected workflows, or custom business rules must work together. It is usually delivered in phases.',
+      multiplier: 1.7
     }
   ],
   timelines: [
@@ -166,85 +169,85 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'strategy-copy',
       label: 'Strategy and copy support',
       description: 'Positioning, page structure, and polished conversion copy.',
-      price: 500
+      price: 250
     },
     {
       id: 'brand-ui',
       label: 'Brand and custom UI direction',
       description: 'A stronger visual system beyond a straightforward implementation.',
-      price: 800
+      price: 350
     },
     {
       id: 'cms',
       label: 'Easy content management',
       description: 'Update pages, posts, products, or content without a developer.',
-      price: 650
+      price: 300
     },
     {
       id: 'payments-bookings',
       label: 'Payments or bookings',
       description: 'Checkout, subscriptions, appointments, or payment workflows.',
-      price: 1000
+      price: 450
     },
     {
       id: 'integrations',
       label: 'Third-party integrations',
       description: 'Connect your CRM, accounting, messaging, or existing systems.',
-      price: 1200
+      price: 500
     },
     {
       id: 'admin-portal',
       label: 'Admin portal',
       description: 'Secure internal tools to manage users, content, orders, or operations.',
-      price: 2200
+      price: 850
     },
     {
       id: 'ai-feature',
       label: 'AI or automation feature',
       description: 'A practical assistant, workflow, extraction, or generation capability.',
-      price: 1800
+      price: 750
     },
     {
       id: 'seo-analytics',
       label: 'SEO and analytics setup',
       description: 'Search foundations, measurement, events, and reporting.',
-      price: 600
+      price: 250
     }
   ],
   budgetOptions: [
     {
-      id: 'under-2k',
-      label: 'Under $2,000',
-      description: 'Best for an audit, consultation, or tightly focused improvement.',
+      id: 'under-1k',
+      label: 'Under $1,000',
+      description: 'Best for advice, a focused improvement, or a simple first version.',
       minimum: null,
-      ceiling: 2000
+      ceiling: 1000
     },
     {
-      id: '2k-5k',
-      label: '$2,000 to $5,000',
-      description: 'Suitable for focused websites, upgrades, or smaller automations.',
-      minimum: 2000,
+      id: '1k-2500',
+      label: '$1,000 to $2,500',
+      description: 'Fits most business websites, smaller stores, and focused automations.',
+      minimum: 1000,
+      ceiling: 2500
+    },
+    {
+      id: '2500-5k',
+      label: '$2,500 to $5,000',
+      description: 'Fits stronger stores, dashboards, portals, and connected workflows.',
+      minimum: 2500,
       ceiling: 5000
     },
     {
       id: '5k-10k',
       label: '$5,000 to $10,000',
-      description: 'Suitable for growth websites, stores, dashboards, and integrations.',
+      description: 'Fits custom applications or systems with several workflows and user types.',
       minimum: 5000,
       ceiling: 10000
     },
     {
-      id: '10k-20k',
-      label: '$10,000 to $20,000',
-      description: 'Suitable for custom apps, portals, and more involved systems.',
+      id: '10k-plus',
+      label: '$10,000+',
+      description: 'For advanced products or phased systems that run a core part of the business.',
       minimum: 10000,
-      ceiling: 20000
-    },
-    {
-      id: '20k-plus',
-      label: '$20,000+',
-      description: 'Suitable for advanced products or phased business systems.',
-      minimum: 20000,
       ceiling: null
     },
     {
@@ -268,7 +271,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'hosting-only',
       label: 'Managed hosting',
       description: 'Reliable hosting without an ongoing content or development allowance.',
-      monthlyPrice: 49,
+      monthlyPrice: 29,
       hostingIncluded: true,
       included: ['Managed hosting', 'SSL certificate', 'Uptime monitoring', 'Weekly backups']
     },
@@ -276,7 +279,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'care',
       label: 'Care plan',
       description: 'Hosting plus routine maintenance and a small monthly update allowance.',
-      monthlyPrice: 149,
+      monthlyPrice: 79,
       hostingIncluded: true,
       included: [
         'Everything in managed hosting',
@@ -289,7 +292,7 @@ export const DEFAULT_PRICING_CONFIG = {
       id: 'growth-support',
       label: 'Growth support',
       description: 'Priority ongoing support for businesses actively improving their digital systems.',
-      monthlyPrice: 349,
+      monthlyPrice: 179,
       hostingIncluded: true,
       included: [
         'Everything in the Care plan',

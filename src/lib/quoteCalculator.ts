@@ -89,8 +89,11 @@ export const loadPublishedPricing = async (force = false): Promise<PricingConfig
         }
         const config = data.published_config as PricingConfig;
         const validationError = validatePricingConfig(config);
-        if (validationError) {
-          console.error('Published pricing is invalid:', validationError);
+        if (validationError || config.version < DEFAULT_PRICING_CONFIG.version) {
+          console.error(
+            'Published pricing is invalid or older than the bundled pricing:',
+            validationError || `Published version ${config.version}, bundled version ${DEFAULT_PRICING_CONFIG.version}.`
+          );
           return DEFAULT_PRICING_CONFIG;
         }
         return config;

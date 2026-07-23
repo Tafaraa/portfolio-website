@@ -62,6 +62,13 @@ const createSubmissionId = () =>
 const selectClasses =
   'w-full appearance-none border-b-2 border-stone-300 bg-transparent px-0 py-4 pr-10 text-stone-900 outline-none transition-colors focus:border-stone-900 dark:border-dark-border dark:bg-transparent dark:text-dark-text dark:focus:border-dark-accent';
 
+const CONTACT_STEPS = [
+  { id: 'contact-step-details', label: 'Your details' },
+  { id: 'contact-step-project', label: 'Project choices' },
+  { id: 'contact-step-result', label: 'The result you need' },
+  { id: 'contact-step-send', label: 'Review and send' }
+] as const;
+
 const Contact = () => {
   const [formData, setFormData] = useState<ContactFormData>(createEmptyForm);
   const [pricingConfig, setPricingConfig] = useState<PricingConfig>(DEFAULT_PRICING_CONFIG);
@@ -72,6 +79,8 @@ const Contact = () => {
   const submissionIdRef = useRef(createSubmissionId());
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formValid, setFormValid] = useState(false);
+  const [activeContactStep, setActiveContactStep] = useState(0);
+  const [typedProgress, setTypedProgress] = useState('Step 1 of 4: Your details');
 
   const quote = useMemo(
     () =>
@@ -99,6 +108,30 @@ const Contact = () => {
   const displayMoney = (value: number) => formatConvertedMoney(value, displayCurrency);
   const budgetCeiling = selectedBudget?.ceiling;
   const budgetMayNeedPhasing = Boolean(quote && budgetCeiling && quote.minimum > budgetCeiling);
+  const ratesUpdatedLabel = useMemo(
+    () =>
+      new Intl.DateTimeFormat('en-ZA', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }).format(new Date(pricingConfig.ratesUpdatedAt)),
+    [pricingConfig.ratesUpdatedAt]
+  );
+  const requiredChecks = useMemo(
+    () => [
+      formData.from_name.trim().length >= 2,
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
+      Boolean(formData.projectType),
+      Boolean(formData.scope),
+      Boolean(formData.timeline),
+      Boolean(formData.budgetRange),
+      Boolean(formData.carePlan),
+      formData.message.trim().length >= 20
+    ],
+    [formData]
+  );
+  const completedRequiredFields = requiredChecks.filter(Boolean).length;
+  const requiredFieldsRemaining = requiredChecks.length - completedRequiredFields;
 
   useEffect(() => {
     let active = true;
@@ -135,18 +168,60 @@ const Contact = () => {
   }, []);
 
   useEffect(() => {
-    const isValid =
-      formData.from_name.trim().length >= 2 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
-      Boolean(formData.projectType) &&
-      Boolean(formData.scope) &&
-      Boolean(formData.timeline) &&
-      Boolean(formData.budgetRange) &&
-      Boolean(formData.carePlan) &&
-      formData.message.trim().length >= 20;
+    setFormValid(requiredChecks.every(Boolean));
+  }, [requiredChecks]);
 
-    setFormValid(isValid);
-  }, [formData]);
+  useEffect(() => {
+    let animationFrame = 0;
+    const updateActiveStep = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(() => {
+        const readingLine = window.innerHeight * 0.34;
+        let nextStep = 0;
+
+        CONTACT_STEPS.forEach((step, index) => {
+          const element = document.getElementById(step.id);
+          if (element && element.getBoundingClientRect().top <= readingLine) {
+            nextStep = index;
+          }
+        });
+
+        setActiveContactStep(nextStep);
+      });
+    };
+
+    updateActiveStep();
+    window.addEventListener('scroll', updateActiveStep, { passive: true });
+    window.addEventListener('resize', updateActiveStep);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener('scroll', updateActiveStep);
+      window.removeEventListener('resize', updateActiveStep);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fullText = `Step ${activeContactStep + 1} of ${CONTACT_STEPS.length}: ${
+      CONTACT_STEPS[activeContactStep].label
+    }`;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      setTypedProgress(fullText);
+      return;
+    }
+
+    let character = 0;
+    setTypedProgress('');
+    const interval = window.setInterval(() => {
+      character += 1;
+      setTypedProgress(fullText.slice(0, character));
+      if (character >= fullText.length) window.clearInterval(interval);
+    }, 28);
+
+    return () => window.clearInterval(interval);
+  }, [activeContactStep]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -343,7 +418,27 @@ const Contact = () => {
 
           <div className="md:col-span-2">
             <form onSubmit={handleSubmit} className="relative space-y-12">
-              <fieldset className="space-y-8">
+              <div className="sticky top-20 z-30 -mx-2 overflow-hidden rounded-2xl border border-stone-200 bg-white/95 px-4 py-3 shadow-lg shadow-stone-900/5 backdrop-blur-md dark:border-white/10 dark:bg-stone-950/95 md:hidden">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="min-w-0 truncate font-mono text-xs font-semibold text-stone-800 dark:text-white">
+                    {typedProgress}
+                    <span className="ml-0.5 animate-pulse text-emerald-600" aria-hidden="true">
+                      |
+                    </span>
+                  </p>
+                  <span className="shrink-0 text-xs text-stone-500 dark:text-dark-muted">
+                    {completedRequiredFields}/{requiredChecks.length} ready
+                  </span>
+                </div>
+                <div className="mt-2 h-1 overflow-hidden rounded-full bg-stone-200 dark:bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-emerald-600 transition-[width] duration-500"
+                    style={{ width: `${((activeContactStep + 1) / CONTACT_STEPS.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              <fieldset id="contact-step-details" className="scroll-mt-32 space-y-8">
                 <legend className="flex items-center gap-3 text-2xl font-semibold">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm text-white dark:bg-white dark:text-stone-900">
                     1
@@ -399,7 +494,7 @@ const Contact = () => {
                 </div>
               </fieldset>
 
-              <fieldset className="space-y-8">
+              <fieldset id="contact-step-project" className="scroll-mt-32 space-y-8">
                 <legend className="flex items-center gap-3 text-2xl font-semibold">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm text-white dark:bg-white dark:text-stone-900">
                     2
@@ -417,7 +512,10 @@ const Contact = () => {
                         Display currency
                       </label>
                       <p className="mt-1 text-sm text-stone-500 dark:text-dark-muted">
-                        USD is the pricing base. Conversions are indicative planning values.
+                        USD is the pricing base. Other currencies are planning values.
+                      </p>
+                      <p className="mt-1 text-xs text-stone-400 dark:text-white/40">
+                        Reference rates refreshed {ratesUpdatedLabel}.
                       </p>
                     </div>
                     <div className="relative min-w-56">
@@ -494,34 +592,51 @@ const Contact = () => {
                     )}
                   </div>
 
-                  <div>
-                    <label htmlFor="scope" className="mb-2 block text-xl font-medium dark:text-dark-text">
+                  <div className="sm:col-span-2">
+                    <p className="mb-2 text-xl font-medium dark:text-dark-text">
                       Scope level <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <select
-                        id="scope"
-                        name="scope"
-                        value={formData.scope}
-                        onChange={handleChange}
-                        required
-                        className={selectClasses}
-                      >
-                        {pricingConfig.scopes.map((option) => (
-                          <option key={option.id} value={option.id}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown
-                        size={18}
-                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
-                        aria-hidden="true"
-                      />
+                    </p>
+                    <p className="text-sm text-stone-500 dark:text-dark-muted">
+                      Pick the closest fit. We can adjust it after the first conversation.
+                    </p>
+                    <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                      {pricingConfig.scopes.map((option) => {
+                        const selected = formData.scope === option.id;
+                        const priceEffect =
+                          option.multiplier === 1
+                            ? 'Base package'
+                            : `About ${Math.round((option.multiplier - 1) * 100)}% above base`;
+
+                        return (
+                          <label
+                            key={option.id}
+                            className={`cursor-pointer rounded-xl border p-4 transition-colors ${
+                              selected
+                                ? 'border-emerald-700 bg-emerald-50 ring-1 ring-emerald-700 dark:border-emerald-400/60 dark:bg-emerald-400/10 dark:ring-emerald-400/60'
+                                : 'border-stone-200 bg-white/60 hover:border-stone-400 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/25'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="scope"
+                              value={option.id}
+                              checked={selected}
+                              onChange={handleChange}
+                              className="sr-only"
+                            />
+                            <span className="flex items-start justify-between gap-3">
+                              <span className="font-semibold text-stone-900 dark:text-white">{option.label}</span>
+                              <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-[11px] font-medium text-stone-600 dark:bg-white/10 dark:text-white/60">
+                                {priceEffect}
+                              </span>
+                            </span>
+                            <span className="mt-2 block text-sm leading-relaxed text-stone-600 dark:text-dark-muted">
+                              {option.description}
+                            </span>
+                          </label>
+                        );
+                      })}
                     </div>
-                    {selectedScope && (
-                      <p className="mt-2 text-sm text-stone-500 dark:text-dark-muted">{selectedScope.description}</p>
-                    )}
                   </div>
 
                   <div>
@@ -741,7 +856,8 @@ const Contact = () => {
                         {displayCurrency.code !== pricingConfig.currency && (
                           <p className="mt-2 text-xs leading-relaxed text-white/40">
                             Displayed in {displayCurrency.code} at 1 USD = {displayCurrency.rate}{' '}
-                            {displayCurrency.code}. Final proposals remain in USD.
+                            {displayCurrency.code}. Rate refreshed {ratesUpdatedLabel}. Final proposals remain in
+                            USD.
                           </p>
                         )}
                       </>
@@ -767,7 +883,7 @@ const Contact = () => {
                 </div>
               </fieldset>
 
-              <fieldset className="space-y-8">
+              <fieldset id="contact-step-result" className="scroll-mt-32 space-y-8">
                 <legend className="flex items-center gap-3 text-2xl font-semibold">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm text-white dark:bg-white dark:text-stone-900">
                     3
@@ -802,7 +918,7 @@ const Contact = () => {
                 className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
               />
 
-              <div className="space-y-4">
+              <div id="contact-step-send" className="scroll-mt-32 space-y-4">
                 <label className="flex cursor-pointer items-start gap-3 text-sm text-stone-600 dark:text-dark-muted">
                   <input
                     type="checkbox"
@@ -837,10 +953,10 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={!formValid || formState === 'submitting'}
-                  className={`relative inline-flex items-center justify-center border px-8 py-4 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent ${
+                  className={`relative inline-flex items-center justify-center rounded-full border px-8 py-4 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent ${
                     formValid
-                      ? 'border-stone-900 text-stone-900 hover:bg-stone-900 hover:text-stone-100 dark:border-dark-text dark:text-dark-text dark:hover:bg-dark-border dark:hover:text-dark-text'
-                      : 'cursor-not-allowed border-stone-400 text-stone-400 dark:border-dark-border dark:text-dark-muted'
+                      ? 'border-stone-900 bg-stone-900 text-white hover:border-emerald-700 hover:bg-emerald-700 dark:border-emerald-300 dark:bg-emerald-300 dark:text-stone-950 dark:hover:border-emerald-200 dark:hover:bg-emerald-200'
+                      : 'cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400 dark:border-dark-border dark:bg-white/5 dark:text-dark-muted'
                   }`}
                 >
                   {formState === 'submitting' ? (
@@ -859,14 +975,27 @@ const Contact = () => {
                       Please try again
                     </>
                   ) : (
-                    'Send Project Brief'
+                    formValid ? 'Send project brief' : 'Complete the brief to send'
                   )}
                 </button>
 
-                {formValid && formState === 'idle' && (
-                  <span className="flex items-center text-sm text-green-700 dark:text-green-400">
-                    <CheckCircle2 size={16} className="mr-1.5" aria-hidden="true" />
-                    Ready for a useful first response
+                {formState === 'idle' && (
+                  <span
+                    className={`flex items-center text-sm ${
+                      formValid ? 'text-green-700 dark:text-green-400' : 'text-stone-500 dark:text-dark-muted'
+                    }`}
+                  >
+                    {formValid ? (
+                      <>
+                        <CheckCircle2 size={16} className="mr-1.5" aria-hidden="true" />
+                        Ready for a useful first response
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle size={16} className="mr-1.5" aria-hidden="true" />
+                        {requiredFieldsRemaining} required {requiredFieldsRemaining === 1 ? 'answer' : 'answers'} left
+                      </>
+                    )}
                   </span>
                 )}
               </div>

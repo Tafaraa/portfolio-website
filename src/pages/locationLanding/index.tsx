@@ -650,11 +650,19 @@ const LocationLanding = () => {
   const showLongFormSections = false;
   const eyebrow =
     currentPageData.eyebrow ||
-    (currentPageData.location ? `${ROLE} • ${currentPageData.location}` : currentPageData.remote ? `${ROLE} • Remote` : ROLE);
+    (currentPageData.location
+      ? `${ROLE} in ${currentPageData.location}`
+      : currentPageData.remote
+        ? `${ROLE}. Available remotely`
+        : ROLE);
   const highlights =
     currentPageData.highlights && currentPageData.highlights.length > 0
       ? currentPageData.highlights
       : ['AI workflows', 'Websites & e-commerce', 'Dashboards & data', 'Full-stack systems'];
+  const decisionPoints =
+    currentPageData.marketPoints && currentPageData.marketPoints.length > 0
+      ? currentPageData.marketPoints.slice(0, 3)
+      : highlights.slice(0, 3);
   const faqs = [...(currentPageData.faqs ?? []), ...defaultFaqs].slice(0, 5);
 
   const whatsappLink = buildWhatsAppLink(
@@ -828,12 +836,19 @@ const LocationLanding = () => {
                 </div>
                 <div className="relative mx-4 -mt-5 rounded-2xl border border-white/70 bg-white/90 p-5 shadow-[0_20px_60px_rgba(28,25,23,0.16)] backdrop-blur-xl dark:border-white/10 dark:bg-stone-950/90">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-700 dark:text-sky-300">
-                    One clear next step
+                    A practical fit
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-dark-muted">
-                    {currentPageData.marketSummary ||
-                      'See the work, share what you need, and get a straight answer on the best way to build it.'}
-                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {decisionPoints.map((point) => (
+                      <li
+                        key={point}
+                        className="flex items-start gap-2 text-sm leading-relaxed text-stone-600 dark:text-dark-muted"
+                      >
+                        <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-emerald-600" aria-hidden="true" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </aside>
             </div>
@@ -872,7 +887,7 @@ const LocationLanding = () => {
           {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">What I can build for you</h2>
             <p className="mt-2 max-w-2xl text-sm text-stone-600 dark:text-dark-muted md:text-base">
-              Same person, whole stack, from the website out front to the AI quietly working in the back.
+              One developer handles the public site and the tools behind it.
             </p>
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-8 md:gap-4 lg:grid-cols-4">
               {services.map(({ icon: Icon, title, points }) => (

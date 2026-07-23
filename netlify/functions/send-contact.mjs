@@ -327,8 +327,12 @@ const loadPublishedPricing = async () => {
 
   const config = rows[0].published_config;
   const validationError = validatePricingConfig(config);
-  if (validationError) {
-    console.warn(`Using USD defaults because published pricing is outdated: ${validationError}`);
+  if (validationError || config.version < DEFAULT_PRICING_CONFIG.version) {
+    console.warn(
+      `Using USD defaults because published pricing is invalid or outdated: ${
+        validationError || `published version ${config.version}, bundled version ${DEFAULT_PRICING_CONFIG.version}`
+      }`
+    );
     return DEFAULT_PRICING_CONFIG;
   }
   return config;

@@ -23,7 +23,7 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
     {
       degree: 'BSc in Computer Science',
       institution: 'Eduvos',
-      year: '2021 - 2024',
+      year: '2021 to 2024',
       description: 'Graduated with focus on software development, algorithms, and data structures.',
       achievements: [
         'Academic Excellence',
@@ -34,7 +34,7 @@ const Education = ({ isOpen, onClose }: EducationModalProps) => {
     {
       degree: 'Data Science Specialization',
       institution: 'ALX',
-      year: '2023 - 2024',
+      year: '2023 to 2024',
       description: 'Comprehensive training in data science fundamentals and advanced applications.',
       achievements: [
         'Machine Learning with Python',

@@ -143,7 +143,12 @@ const Pricing = ({ userId }: Props) => {
           toast.error(`Published pricing is invalid: ${errorMessage}`);
         } else {
           setPublished(cloneConfig(config));
-          setDraft(cloneConfig(config));
+          if (config.version < DEFAULT_PRICING_CONFIG.version) {
+            setDraft(cloneConfig(DEFAULT_PRICING_CONFIG));
+            toast("New starter pricing is ready. Review and publish it.");
+          } else {
+            setDraft(cloneConfig(config));
+          }
           setPublishedAt(data.published_at);
         }
       }
