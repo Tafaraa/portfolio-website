@@ -7,7 +7,7 @@ This document outlines the comprehensive SEO enhancements made to improve search
 
 ### 1. Open Graph Image Fix
 - **Issue**: OG image was referencing `/og.jpeg` instead of the actual `og.webp` file
-- **Fix**: Updated all OG image references to use `https://mutsvedutafara.com/og.webp`
+- **Fix**: Updated all OG image references to use `https://www.mutsvedutafara.com/og.webp`
 - **Impact**: Social media shares will now display the correct image
 
 ### 2. Enhanced Meta Tags

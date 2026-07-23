@@ -22,7 +22,7 @@ import { LandingFaq, PageDataEntry } from '../../types';
 // ---------------------------------------------------------------------------
 const NAME = 'Tafara Mutsvedu';
 const ROLE = 'Software Engineer & Data Scientist, specialising in AI engineering';
-const SITE_URL = 'https://mutsvedutafara.com';
+const SITE_URL = 'https://www.mutsvedutafara.com';
 const WHATSAPP_NUMBER_E164 = '27606249151';
 
 const buildWhatsAppLink = (text: string) =>
@@ -438,6 +438,166 @@ const LocationLanding = () => {
       keywords:
         'ecommerce website developer, online store developer, ecommerce south africa, shopify alternative, payfast integration, sell online'
     },
+    usa: {
+      title: 'Remote Software Developer for US Businesses',
+      subtitle: 'Web apps, AI workflows and dashboards with clear USD pricing',
+      description:
+        'A South African software engineer for US companies that need focused delivery without adding another full agency. I build React products, internal tools, AI workflows and conversion-focused websites.',
+      location: 'United States',
+      remote: true,
+      audience: 'business',
+      highlights: ['USD planning ranges', 'Async delivery', 'React and TypeScript', 'Direct developer access'],
+      keywords:
+        'remote software developer usa, contract react developer usa, ai automation developer usa, offshore software developer south africa',
+      marketHeading: 'Built for a practical remote engagement',
+      marketSummary:
+        'You work directly with the person designing and building the system. Scope, milestones and weekly decisions stay visible from the start.',
+      marketPoints: [
+        'Written updates that keep distributed teams moving',
+        'Overlap planned around your US time zone',
+        'USD proposals with hosting and monthly support shown separately'
+      ]
+    },
+    europe: {
+      title: 'Remote Software Developer for European Businesses',
+      subtitle: 'Reliable web and automation delivery across European time zones',
+      description:
+        'Remote software development for European businesses that need a website, portal, dashboard or AI workflow. I work from South Africa with useful overlap into UK and European business hours.',
+      location: 'Europe',
+      remote: true,
+      audience: 'business',
+      highlights: ['EUR display option', 'CET and UK overlap', 'Privacy-aware builds', 'Clear handover'],
+      keywords:
+        'remote software developer europe, contract react developer europe, ai automation consultant europe, south african developer europe',
+      marketHeading: 'A clean fit for European remote teams',
+      marketSummary:
+        'The work is structured for review, handover and long-term ownership. Privacy requirements and data boundaries are discussed before implementation.',
+      marketPoints: [
+        'Working hours that overlap with the UK, Ireland and Central Europe',
+        'Interfaces prepared for multilingual content when required',
+        'EUR planning display while the signed proposal remains in USD'
+      ]
+    },
+    uae: {
+      title: 'Software Developer for UAE Businesses',
+      subtitle: 'Web platforms and automation for growing service businesses',
+      description:
+        'Remote software development for UAE businesses that need polished customer journeys and stronger internal systems. I build websites, booking flows, portals, dashboards and practical automations.',
+      location: 'United Arab Emirates',
+      remote: true,
+      audience: 'business',
+      highlights: ['Service business systems', 'Booking and payments', 'Mobile-first UX', 'Remote delivery'],
+      keywords:
+        'software developer uae, web developer dubai remote, ai automation consultant uae, custom business software uae',
+      marketHeading: 'Useful for fast-moving service operations',
+      marketSummary:
+        'The strongest fit is a business that has demand but still relies on spreadsheets, inboxes and manual follow-up to deliver the work.',
+      marketPoints: [
+        'Lead, booking and payment journeys designed together',
+        'Admin tools that reduce repeated customer service work',
+        'English-first builds with multilingual support available'
+      ]
+    },
+    'saudi-arabia': {
+      title: 'AI Automation Developer for Saudi Businesses',
+      subtitle: 'Practical automation, portals and dashboards for operations teams',
+      description:
+        'Remote AI automation and software development for Saudi businesses. I turn repeatable admin into reliable workflows and build the portals and dashboards teams need to manage the result.',
+      location: 'Saudi Arabia',
+      remote: true,
+      audience: 'business',
+      highlights: ['AI workflow design', 'Internal portals', 'Operations dashboards', 'Team handover'],
+      keywords:
+        'ai automation developer saudi arabia, software developer saudi arabia remote, business automation consultant saudi',
+      marketHeading: 'Start with one costly workflow',
+      marketSummary:
+        'A focused first automation is easier to measure, safer to launch and clearer for the team than a broad AI transformation project.',
+      marketPoints: [
+        'Map the current process before choosing technology',
+        'Keep human approval where mistakes carry real cost',
+        'Document the workflow so your team can operate it'
+      ]
+    },
+    qatar: {
+      title: 'Software Developer for Qatar Businesses',
+      subtitle: 'Customer platforms and internal tools built around real workflows',
+      description:
+        'Remote software development for Qatar-based service firms and operations teams. I build fast websites, client portals, dashboards and automations with direct communication throughout.',
+      location: 'Qatar',
+      remote: true,
+      audience: 'business',
+      highlights: ['Client portals', 'Reporting dashboards', 'Workflow automation', 'Direct communication'],
+      keywords:
+        'software developer qatar, remote web developer qatar, ai automation qatar, custom portal developer qatar',
+      marketHeading: 'Good systems make service easier to deliver',
+      marketSummary:
+        'The goal is a simpler path from enquiry to delivery, with less status chasing and a clearer view of what the team needs to do next.',
+      marketPoints: [
+        'Client-facing journeys and internal workflow designed together',
+        'Mobile-friendly tools for teams working across locations',
+        'Hosting, maintenance and future improvements priced clearly'
+      ]
+    },
+    mauritius: {
+      title: 'Software Developer for Mauritius Businesses',
+      subtitle: 'Web, data and automation with close time-zone overlap',
+      description:
+        'Software development for Mauritius businesses in professional services, tourism, retail and online commerce. I build customer websites, booking tools, dashboards and business automations remotely.',
+      location: 'Mauritius',
+      remote: true,
+      audience: 'business',
+      highlights: ['Close time-zone overlap', 'Booking systems', 'Business dashboards', 'E-commerce'],
+      keywords:
+        'software developer mauritius, web developer mauritius remote, ecommerce developer mauritius, ai automation mauritius',
+      marketHeading: 'Regional delivery without a distant handoff',
+      marketSummary:
+        'South Africa and Mauritius share a workable day, which makes discovery, reviews and launch support straightforward.',
+      marketPoints: [
+        'Booking and enquiry flows for service and tourism businesses',
+        'Dashboards that replace recurring spreadsheet reporting',
+        'E-commerce and payment integrations scoped around your market'
+      ]
+    },
+    botswana: {
+      title: 'Software Developer for Botswana Businesses',
+      subtitle: 'Websites and systems for regional growth',
+      description:
+        'Remote software development for Botswana businesses that want a stronger online presence and less manual admin. I build websites, portals, dashboards and automation with practical handover.',
+      location: 'Botswana',
+      remote: true,
+      audience: 'business',
+      highlights: ['Regional time zone', 'B2B lead systems', 'Admin portals', 'Team training'],
+      keywords:
+        'software developer botswana, web developer botswana, business automation botswana, custom software botswana',
+      marketHeading: 'Designed for businesses growing beyond manual tools',
+      marketSummary:
+        'A solid first project should either bring in better enquiries or remove a repeated operational bottleneck. The calculator keeps those two goals easy to compare.',
+      marketPoints: [
+        'B2B websites that explain complex services clearly',
+        'Internal portals for documents, clients and operational status',
+        'Training and documentation included in the delivery plan'
+      ]
+    },
+    namibia: {
+      title: 'Software Developer for Namibia Businesses',
+      subtitle: 'Digital tools for tourism, logistics and professional services',
+      description:
+        'Remote software development for Namibian businesses that need better lead generation, bookings or operational visibility. I build websites, portals, dashboards and connected workflows.',
+      location: 'Namibia',
+      remote: true,
+      audience: 'business',
+      highlights: ['Tourism and bookings', 'Operations tools', 'Fast business websites', 'Regional support'],
+      keywords:
+        'software developer namibia, web developer namibia, booking system developer namibia, business automation namibia',
+      marketHeading: 'Make the customer journey and the back office agree',
+      marketSummary:
+        'A polished website is only useful when the enquiry, booking or request reaches a process the team can manage reliably.',
+      marketPoints: [
+        'Booking and enquiry flows designed for mobile visitors',
+        'Operational dashboards for status, volume and follow-up',
+        'Separate choices for hosting, maintenance and growth support'
+      ]
+    },
     'small-business-website': {
       title: 'Websites for Small Businesses',
       subtitle: 'Affordable, sharp and built to bring in work',
@@ -625,6 +785,35 @@ const LocationLanding = () => {
               </div>
             </div>
           </section>
+
+          {currentPageData.marketHeading && (
+            <section className="container mx-auto px-6 py-6 md:px-12 md:py-10">
+              <div className="grid gap-6 rounded-3xl border border-stone-200/70 bg-white/70 p-6 backdrop-blur-xl dark:border-white/10 dark:bg-gray-950/40 md:grid-cols-[1.1fr_1fr] md:p-8">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">
+                    Working in {currentPageData.location}
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
+                    {currentPageData.marketHeading}
+                  </h2>
+                  <p className="mt-3 leading-relaxed text-stone-600 dark:text-dark-muted">
+                    {currentPageData.marketSummary}
+                  </p>
+                </div>
+                <ul className="space-y-3">
+                  {currentPageData.marketPoints?.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-3 rounded-xl border border-stone-200/70 bg-stone-50/80 p-4 text-sm text-stone-700 dark:border-white/10 dark:bg-white/5 dark:text-dark-text"
+                    >
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          )}
 
           {/* Services */}
           <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">

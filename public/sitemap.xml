@@ -1,77 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mutsvedutafara.com/</loc>
+    <loc>https://www.mutsvedutafara.com/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Main sections -->
-  <url>
-    <loc>https://mutsvedutafara.com/#about</loc>
-    <lastmod>2026-07-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mutsvedutafara.com/#projects</loc>
-    <lastmod>2026-07-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mutsvedutafara.com/#skills</loc>
-    <lastmod>2026-07-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mutsvedutafara.com/#contact</loc>
-    <lastmod>2026-07-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mutsvedutafara.com/#education</loc>
-    <lastmod>2026-07-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Core role pages -->
   <url>
-    <loc>https://mutsvedutafara.com/software-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/software-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/data-scientist</loc>
+    <loc>https://www.mutsvedutafara.com/data-scientist</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/react-developer</loc>
+    <loc>https://www.mutsvedutafara.com/react-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/python-developer</loc>
+    <loc>https://www.mutsvedutafara.com/python-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/machine-learning-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/machine-learning-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/data-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/data-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -79,37 +47,37 @@
 
   <!-- AI-focused pages -->
   <url>
-    <loc>https://mutsvedutafara.com/ai-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/ai-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/llm-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/llm-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/ai-consultant</loc>
+    <loc>https://www.mutsvedutafara.com/ai-consultant</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/ai-workflow-automation</loc>
+    <loc>https://www.mutsvedutafara.com/ai-workflow-automation</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/ai-automation-for-business</loc>
+    <loc>https://www.mutsvedutafara.com/ai-automation-for-business</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/ai-chatbot-developer</loc>
+    <loc>https://www.mutsvedutafara.com/ai-chatbot-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -117,25 +85,25 @@
 
   <!-- Client / business pages -->
   <url>
-    <loc>https://mutsvedutafara.com/get-your-business-online</loc>
+    <loc>https://www.mutsvedutafara.com/get-your-business-online</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/website-creation-services</loc>
+    <loc>https://www.mutsvedutafara.com/website-creation-services</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/ecommerce-website-developer</loc>
+    <loc>https://www.mutsvedutafara.com/ecommerce-website-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/small-business-website</loc>
+    <loc>https://www.mutsvedutafara.com/small-business-website</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -143,25 +111,25 @@
 
   <!-- Hire pages -->
   <url>
-    <loc>https://mutsvedutafara.com/hire-ai-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/hire-ai-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/hire-data-engineer</loc>
+    <loc>https://www.mutsvedutafara.com/hire-data-engineer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/hire-remote-fullstack-developer</loc>
+    <loc>https://www.mutsvedutafara.com/hire-remote-fullstack-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/freelance-developer</loc>
+    <loc>https://www.mutsvedutafara.com/freelance-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -169,25 +137,25 @@
 
   <!-- Remote pages -->
   <url>
-    <loc>https://mutsvedutafara.com/remote-software-developer</loc>
+    <loc>https://www.mutsvedutafara.com/remote-software-developer</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/remote-react-developer-usa</loc>
+    <loc>https://www.mutsvedutafara.com/remote-react-developer-usa</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/remote-developer-south-africa</loc>
+    <loc>https://www.mutsvedutafara.com/remote-developer-south-africa</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/remote-data-scientist-south-africa</loc>
+    <loc>https://www.mutsvedutafara.com/remote-data-scientist-south-africa</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -195,19 +163,19 @@
 
   <!-- South Africa role pages -->
   <url>
-    <loc>https://mutsvedutafara.com/react-developer-south-africa</loc>
+    <loc>https://www.mutsvedutafara.com/react-developer-south-africa</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/fullstack-developer-south-africa</loc>
+    <loc>https://www.mutsvedutafara.com/fullstack-developer-south-africa</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/data-scientist-south-africa</loc>
+    <loc>https://www.mutsvedutafara.com/data-scientist-south-africa</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -215,45 +183,107 @@
 
   <!-- Location pages -->
   <url>
-    <loc>https://mutsvedutafara.com/best-software-developer-midrand</loc>
+    <loc>https://www.mutsvedutafara.com/best-software-developer-midrand</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/best-software-developer-johannesburg</loc>
+    <loc>https://www.mutsvedutafara.com/best-software-developer-johannesburg</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/best-software-developer-zimbabwe</loc>
+    <loc>https://www.mutsvedutafara.com/best-software-developer-zimbabwe</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/software-developer-gauteng</loc>
+    <loc>https://www.mutsvedutafara.com/software-developer-gauteng</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/software-developer-pretoria</loc>
+    <loc>https://www.mutsvedutafara.com/software-developer-pretoria</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/software-developer-cape-town</loc>
+    <loc>https://www.mutsvedutafara.com/software-developer-cape-town</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mutsvedutafara.com/software-developer-durban</loc>
+    <loc>https://www.mutsvedutafara.com/software-developer-durban</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-usa</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-europe</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-uae</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-saudi-arabia</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-qatar</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-mauritius</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-botswana</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/software-developer-namibia</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Legal pages -->
+  <url>
+    <loc>https://www.mutsvedutafara.com/privacy-policy</loc>
+    <lastmod>2026-07-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.mutsvedutafara.com/terms</loc>
+    <lastmod>2026-07-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

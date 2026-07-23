@@ -14,4 +14,7 @@ export interface PageDataEntry {
   audience?: 'business' | 'recruiter' | 'both';
   highlights?: string[]; // Hero chips
   faqs?: LandingFaq[]; // Page-specific FAQs (merged with defaults)
+  marketHeading?: string;
+  marketSummary?: string;
+  marketPoints?: string[];
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import AnimatedElement from '../../components/ui/AnimatedElement';
 import OptimizedImage from '../../components/ui/OptimizedImage';
+import { handleAnchorClick } from '../../utils/scroll';
 
 const Hero = () => {
   const [oSymbol, setOSymbol] = useState("O");
@@ -74,7 +75,7 @@ const Hero = () => {
                 {highlights.map(({ value, label }) => (
                   <div key={value} className="flex items-baseline justify-between gap-4 py-3">
                     <span className="text-lg md:text-2xl font-bold tracking-tight dark:text-dark-text">{value}</span>
-                    <span className="text-sm md:text-base text-stone-500 dark:text-dark-muted text-right">{label}</span>
+                    <span className="tagline-shimmer inline-block text-sm md:text-base font-semibold text-right">{label}</span>
                   </div>
                 ))}
               </div>
@@ -83,6 +84,7 @@ const Hero = () => {
               <div className="mb-8 flex flex-col sm:flex-row gap-3">
                 <a
                   href="#projects"
+                  onClick={(e) => handleAnchorClick(e, '#projects')}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-6 py-3 text-stone-50 transition-colors hover:bg-stone-700 dark:bg-dark-text dark:text-dark-bg dark:hover:bg-white"
                 >
                   See the work
@@ -90,6 +92,7 @@ const Hero = () => {
                 </a>
                 <a
                   href="#contact"
+                  onClick={(e) => handleAnchorClick(e, '#contact')}
                   className="inline-flex items-center justify-center rounded-full border border-stone-900/20 px-6 py-3 text-stone-900 transition-colors hover:bg-stone-900 hover:text-stone-50 dark:border-white/20 dark:text-dark-text dark:hover:bg-white/10"
                 >
                   Start a project
@@ -124,6 +127,7 @@ const Hero = () => {
         <AnimatedElement animation="slide-up" delay={1.2} once={false}>
           <a
             href="#about"
+            onClick={(e) => handleAnchorClick(e, '#about')}
             className="flex items-center space-x-2 text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors"
           >
             <ArrowDown size={24} className="animate-bounce" />

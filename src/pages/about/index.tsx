@@ -12,6 +12,7 @@ import {
   Wrench
 } from 'lucide-react';
 import AnimatedElement from '../../components/ui/AnimatedElement';
+import { handleAnchorClick } from '../../utils/scroll';
 
 const services = [
   {
@@ -179,6 +180,7 @@ const About = () => {
               <div className="mt-5 md:mt-7 flex flex-row lg:flex-col xl:flex-row gap-2 md:gap-3">
                 <a
                   href="#projects"
+                  onClick={(e) => handleAnchorClick(e, '#projects')}
                   className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-full bg-primary-50 text-primary-900 px-4 md:px-7 py-2.5 md:py-3.5 text-sm md:text-base font-medium transition-colors hover:bg-white"
                 >
                   See proof
@@ -247,6 +249,7 @@ const About = () => {
 
                 <a
                   href="#contact"
+                  onClick={(e) => handleAnchorClick(e, '#contact')}
                   className="group rounded-lg border border-primary-100/30 bg-primary-50 p-3 md:p-5 text-primary-900 transition-all duration-300 hover:-translate-y-1 hover:bg-white"
                 >
                   <p className="text-xs md:text-sm font-medium uppercase tracking-[0.18em] md:tracking-[0.2em] text-primary-900/70">

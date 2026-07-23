@@ -1,112 +1,236 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Phone, Mail, MapPin, Github, Linkedin, MessageCircle, Check, AlertCircle, Loader, ArrowRight } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  AlertCircle,
+  ArrowRight,
+  Calculator,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  Github,
+  Linkedin,
+  Loader,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone
+} from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import FormInput from '../../components/ui/FormInput';
+import {
+  DEFAULT_PRICING_CONFIG,
+  calculateQuoteFromConfig,
+  formatBudgetOption,
+  formatConvertedMoney,
+  loadPublishedPricing,
+  type PricingConfig
+} from '../../lib/quoteCalculator';
+
+type ContactFormData = {
+  from_name: string;
+  email: string;
+  phone: string;
+  organization: string;
+  projectType: string;
+  scope: string;
+  timeline: string;
+  budgetRange: string;
+  carePlan: string;
+  features: string[];
+  message: string;
+};
+
+const createEmptyForm = (carePlan = 'self-managed'): ContactFormData => ({
+  from_name: '',
+  email: '',
+  phone: '',
+  organization: '',
+  projectType: '',
+  scope: 'focused',
+  timeline: 'standard',
+  budgetRange: '',
+  carePlan,
+  features: [],
+  message: ''
+});
+
+const createSubmissionId = () =>
+  typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+const selectClasses =
+  'w-full appearance-none border-b-2 border-stone-300 bg-transparent px-0 py-4 pr-10 text-stone-900 outline-none transition-colors focus:border-stone-900 dark:border-dark-border dark:bg-transparent dark:text-dark-text dark:focus:border-dark-accent';
 
 const Contact = () => {
-  const form = useRef<HTMLFormElement>(null);
-  const [formData, setFormData] = useState({
-    from_name: '',
-    email: '',
-    message: ''
-  });
-  
+  const [formData, setFormData] = useState<ContactFormData>(createEmptyForm);
+  const [pricingConfig, setPricingConfig] = useState<PricingConfig>(DEFAULT_PRICING_CONFIG);
+  const [displayCurrencyCode, setDisplayCurrencyCode] = useState(DEFAULT_PRICING_CONFIG.currency);
+  const [pricingLoading, setPricingLoading] = useState(true);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const submissionIdRef = useRef(createSubmissionId());
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formValid, setFormValid] = useState(false);
-  
-  // Initialize EmailJS when component mounts
+
+  const quote = useMemo(
+    () =>
+      calculateQuoteFromConfig(
+        pricingConfig,
+        formData.projectType,
+        formData.scope,
+        formData.timeline,
+        formData.features,
+        formData.carePlan
+      ),
+    [pricingConfig, formData.projectType, formData.scope, formData.timeline, formData.features, formData.carePlan]
+  );
+
+  const selectedProject = pricingConfig.projectTypes.find((option) => option.id === formData.projectType);
+  const selectedScope = pricingConfig.scopes.find((option) => option.id === formData.scope);
+  const selectedTimeline = pricingConfig.timelines.find((option) => option.id === formData.timeline);
+  const selectedBudget = pricingConfig.budgetOptions.find((option) => option.id === formData.budgetRange);
+  const selectedCarePlan = pricingConfig.carePlans.find((option) => option.id === formData.carePlan);
+  const selectedFeatures = pricingConfig.features.filter((feature) => formData.features.includes(feature.id));
+  const displayCurrency =
+    pricingConfig.displayCurrencies.find((currency) => currency.code === displayCurrencyCode) ??
+    pricingConfig.displayCurrencies.find((currency) => currency.code === pricingConfig.currency) ??
+    DEFAULT_PRICING_CONFIG.displayCurrencies[0];
+  const displayMoney = (value: number) => formatConvertedMoney(value, displayCurrency);
+  const budgetCeiling = selectedBudget?.ceiling;
+  const budgetMayNeedPhasing = Boolean(quote && budgetCeiling && quote.minimum > budgetCeiling);
+
   useEffect(() => {
-    const userID = import.meta.env.VITE_EMAILJS_USER_ID;
-    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-
-    if (!userID || !serviceID || !templateID) {
-      console.error('EmailJS environment variables are not properly configured');
-      return;
-    }
-
-    emailjs.init(userID);
+    let active = true;
+    loadPublishedPricing().then((config) => {
+      if (!active) return;
+      setPricingConfig(config);
+      setDisplayCurrencyCode((current) =>
+        config.displayCurrencies.some((currency) => currency.code === current) ? current : config.currency
+      );
+      setFormData((previous) => ({
+        ...previous,
+        projectType: config.projectTypes.some((item) => item.id === previous.projectType)
+          ? previous.projectType
+          : '',
+        scope: config.scopes.some((item) => item.id === previous.scope)
+          ? previous.scope
+          : (config.scopes[0]?.id ?? ''),
+        timeline: config.timelines.some((item) => item.id === previous.timeline)
+          ? previous.timeline
+          : (config.timelines[0]?.id ?? ''),
+        budgetRange: config.budgetOptions.some((item) => item.id === previous.budgetRange)
+          ? previous.budgetRange
+          : '',
+        carePlan: config.carePlans.some((item) => item.id === previous.carePlan)
+          ? previous.carePlan
+          : (config.carePlans[0]?.id ?? ''),
+        features: previous.features.filter((id) => config.features.some((item) => item.id === id))
+      }));
+      setPricingLoading(false);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
-  
-  // Validate form whenever formData changes
+
   useEffect(() => {
-    const isValid = 
-      formData.from_name.trim().length > 0 && 
+    const isValid =
+      formData.from_name.trim().length >= 2 &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
-      formData.message.trim().length > 10;
-    
+      Boolean(formData.projectType) &&
+      Boolean(formData.scope) &&
+      Boolean(formData.timeline) &&
+      Boolean(formData.budgetRange) &&
+      Boolean(formData.carePlan) &&
+      formData.message.trim().length >= 20;
+
     setFormValid(isValid);
   }, [formData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
+    setFormData((previous) => ({ ...previous, [name]: value }));
+  };
+
+  const toggleFeature = (featureId: string) => {
+    setFormData((previous) => ({
+      ...previous,
+      features: previous.features.includes(featureId)
+        ? previous.features.filter((id) => id !== featureId)
+        : [...previous.features, featureId]
     }));
+  };
+
+  const chooseProject = (projectType: string) => {
+    setFormData((previous) => ({ ...previous, projectType }));
+    window.setTimeout(() => document.getElementById('project_type')?.focus(), 100);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formValid) {
-      toast.error('Please fix the errors in the form before submitting.');
+      toast.error('Complete the required project details before submitting.');
       return;
     }
 
-    const userID = import.meta.env.VITE_EMAILJS_USER_ID;
-    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-
-    if (!userID || !serviceID || !templateID) {
-      toast.error('Contact form is not properly configured. Please try again later.');
-      return;
-    }
-    
     setFormState('submitting');
-    
-    try {
-      // Add a small delay to prevent rate limiting and show loading state
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const result = await emailjs.sendForm(
-        serviceID,
-        templateID,
-        form.current!,
-        userID
-      );
 
-      if (result.text === 'OK') {
-        setFormState('success');
-        toast.success('Message sent successfully!');
-        setFormData({
-          from_name: '',
-          email: '',
-          message: ''
-        });
-        
-        // Reset form state after 3 seconds
-        setTimeout(() => {
-          setFormState('idle');
-        }, 3000);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requestId: submissionIdRef.current,
+          name: formData.from_name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          organization: formData.organization.trim(),
+          projectType: formData.projectType,
+          scope: formData.scope,
+          timeline: formData.timeline,
+          budgetRange: formData.budgetRange,
+          carePlan: formData.carePlan,
+          pricingVersion: pricingConfig.version,
+          displayCurrency: displayCurrency.code,
+          features: formData.features,
+          message: formData.message.trim(),
+          marketingOptIn,
+          website: honeypotRef.current?.value ?? ''
+        })
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error ?? 'Failed to send your project brief.');
       }
+
+      setFormState('success');
+      toast.success("Project brief received. Check your inbox. I'll reply within one business day.");
+      setFormData(createEmptyForm(pricingConfig.carePlans[0]?.id));
+      setMarketingOptIn(false);
+      submissionIdRef.current = createSubmissionId();
+
+      window.setTimeout(() => setFormState('idle'), 5000);
     } catch (error) {
       setFormState('error');
-      toast.error('Failed to send message. Please try again.');
-      console.error('Error:', error);
-      
-      // Reset form state after 3 seconds
-      setTimeout(() => {
-        setFormState('idle');
-      }, 3000);
+      toast.error(error instanceof Error ? error.message : 'Failed to send your project brief. Please try again.');
+      console.error('Contact form error:', error);
+      window.setTimeout(() => setFormState('idle'), 3500);
     }
   };
 
-  const phoneNumber = '+27606249151';
-  const whatsappMessage = encodeURIComponent('Hi Tafara, I found your portfolio website and would like to connect!');
+  const phoneNumber = '27606249151';
+  const whatsappMessage = encodeURIComponent(
+    'Hi Tafara, I found your portfolio and would like to discuss a project.'
+  );
   const whatsappLink = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
-  const projectTypes = ['Website', 'Dashboard', 'E-commerce', 'AI/Data tool'];
+  const projectShortcuts = pricingConfig.projectTypes
+    .filter((project) => project.basePrice !== null)
+    .slice(0, 4);
 
   return (
     <section id="contact" className="py-20 md:py-32">
@@ -116,100 +240,99 @@ const Contact = () => {
           <p className="text-sm font-medium tracking-[0.25em] text-stone-500 dark:text-dark-muted">
             START HERE
           </p>
-          <h2 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight">
-            Have a website, dashboard, or AI idea that needs to become real?
+          <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-6xl">
+            Turn the idea into a clear, costed project brief.
           </h2>
           <p className="mt-5 text-lg text-stone-600 dark:text-dark-muted">
-            Send a short message with what you want to build, improve, or automate. I will help you shape the next step.
+            Choose what you need, get a realistic planning range, and send enough context for a useful first
+            response, not a vague sales call.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {projectTypes.map((type) => (
-              <a
-                key={type}
-                href="#message"
+            {projectShortcuts.map((project) => (
+              <button
+                key={project.id}
+                type="button"
+                onClick={() => chooseProject(project.id)}
                 className="group inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/70 px-4 py-2 text-sm font-medium text-stone-800 transition-colors hover:border-stone-900 hover:bg-stone-900 hover:text-white dark:border-white/10 dark:bg-white/5 dark:text-dark-text dark:hover:bg-white/10"
               >
-                {type}
+                {project.label}
                 <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-              </a>
+              </button>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="md:col-span-1">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tighter">CONTACT</h2>
-            
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+          <div
+            data-testid="contact-details"
+            className="md:sticky md:top-28 md:col-span-1 md:self-start"
+          >
+            <h2 className="mb-8 text-4xl font-bold tracking-tighter md:text-5xl">CONTACT</h2>
+
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-medium mb-2 flex items-center gap-2">
+                <h3 className="mb-2 flex items-center gap-2 text-xl font-medium">
                   <Mail size={20} aria-hidden="true" />
                   Email
                 </h3>
                 <a
                   href="mailto:tafara@mutsvedutafara.com"
-                  className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                  aria-label="Email me at tafara@mutsvedutafara.com"
+                  className="text-stone-600 transition-colors hover:text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:text-dark-muted dark:hover:text-white dark:focus:ring-dark-accent"
                 >
                   tafara@mutsvedutafara.com
                 </a>
               </div>
-              
+
               <div>
-                <h3 className="text-xl font-medium mb-2 flex items-center gap-2">
+                <h3 className="mb-2 flex items-center gap-2 text-xl font-medium">
                   <Phone size={20} aria-hidden="true" />
                   Phone
                 </h3>
                 <div className="flex items-center gap-4">
-                  <a 
-                    href="tel:+27606249151" 
-                    className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                    aria-label="Call me at +27 60 624 9151"
+                  <a
+                    href="tel:+27606249151"
+                    className="text-stone-600 transition-colors hover:text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:text-dark-muted dark:hover:text-white dark:focus:ring-dark-accent"
                   >
                     +27 60 624 9151
                   </a>
-                  <a 
+                  <a
                     href={whatsappLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-green-600 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
-                    aria-label="Contact me on WhatsApp"
+                    className="text-green-600 transition-colors hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
+                    aria-label="Contact Tafara on WhatsApp"
                   >
                     <MessageCircle size={20} aria-hidden="true" />
                   </a>
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="text-xl font-medium mb-2 flex items-center gap-2">
+                <h3 className="mb-2 flex items-center gap-2 text-xl font-medium">
                   <MapPin size={20} aria-hidden="true" />
                   Location
                 </h3>
-                <p className="text-stone-600">
-                  Midrand, South Africa
-                </p>
+                <p className="text-stone-600 dark:text-dark-muted">Midrand, South Africa</p>
               </div>
-              
+
               <div>
-                <h3 className="text-xl font-medium mb-2">Connect</h3>
+                <h3 className="mb-2 text-xl font-medium">Connect</h3>
                 <div className="flex space-x-4">
-                  <a 
-                    href="https://github.com/Tafaraa" 
-                    target="_blank" 
+                  <a
+                    href="https://github.com/Tafaraa"
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                    title="GitHub"
-                    aria-label="Visit my GitHub profile"
+                    className="text-stone-600 transition-colors hover:text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:text-dark-muted dark:hover:text-white dark:focus:ring-dark-accent"
+                    aria-label="Visit Tafara's GitHub profile"
                   >
                     <Github size={20} aria-hidden="true" />
                   </a>
-                  <a 
-                    href="https://www.linkedin.com/in/tafara-mutsvedu-93825621b" 
-                    target="_blank" 
+                  <a
+                    href="https://www.linkedin.com/in/tafara-mutsvedu-93825621b"
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="text-stone-600 hover:text-stone-900 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                    title="LinkedIn"
-                    aria-label="Visit my LinkedIn profile"
+                    className="text-stone-600 transition-colors hover:text-stone-900 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:text-dark-muted dark:hover:text-white dark:focus:ring-dark-accent"
+                    aria-label="Visit Tafara's LinkedIn profile"
                   >
                     <Linkedin size={20} aria-hidden="true" />
                   </a>
@@ -217,82 +340,533 @@ const Contact = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="md:col-span-2">
-            <form ref={form} onSubmit={handleSubmit} className="space-y-12 relative">
-              <div className="space-y-8">
-                <FormInput
-                  id="from_name"
-                  name="from_name"
-                  type="text"
-                  label="Your Name"
-                  value={formData.from_name}
-                  onChange={handleChange}
-                  required
-                  autoComplete="name"
-                  minLength={2}
-                  errorMessage="Please enter your name"
-                />
-                
-                <FormInput
-                  id="email"
-                  name="email"
-                  type="email"
-                  label="Your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  autoComplete="email"
-                  pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
-                  errorMessage="Please enter a valid email address"
-                />
-                
+            <form onSubmit={handleSubmit} className="relative space-y-12">
+              <fieldset className="space-y-8">
+                <legend className="flex items-center gap-3 text-2xl font-semibold">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm text-white dark:bg-white dark:text-stone-900">
+                    1
+                  </span>
+                  Your details
+                </legend>
+
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <FormInput
+                    id="from_name"
+                    name="from_name"
+                    type="text"
+                    label="Your name"
+                    value={formData.from_name}
+                    onChange={handleChange}
+                    required
+                    autoComplete="name"
+                    minLength={2}
+                    errorMessage="Please enter your name"
+                  />
+                  <FormInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Work email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    autoComplete="email"
+                    pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                    errorMessage="Please enter a valid email address"
+                  />
+                  <FormInput
+                    id="organization"
+                    name="organization"
+                    type="text"
+                    label="Business / organisation"
+                    value={formData.organization}
+                    onChange={handleChange}
+                    autoComplete="organization"
+                    maxLength={120}
+                  />
+                  <FormInput
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    label="Phone / WhatsApp"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    autoComplete="tel"
+                    maxLength={50}
+                  />
+                </div>
+              </fieldset>
+
+              <fieldset className="space-y-8">
+                <legend className="flex items-center gap-3 text-2xl font-semibold">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm text-white dark:bg-white dark:text-stone-900">
+                    2
+                  </span>
+                  Shape the project
+                  {pricingLoading && (
+                    <span className="text-xs font-normal text-stone-500 dark:text-dark-muted">Loading live pricing…</span>
+                  )}
+                </legend>
+
+                <div className="rounded-xl border border-stone-200 bg-stone-50/80 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <label htmlFor="display_currency" className="font-medium text-stone-900 dark:text-white">
+                        Display currency
+                      </label>
+                      <p className="mt-1 text-sm text-stone-500 dark:text-dark-muted">
+                        USD is the pricing base. Conversions are indicative planning values.
+                      </p>
+                    </div>
+                    <div className="relative min-w-56">
+                      <select
+                        id="display_currency"
+                        value={displayCurrency.code}
+                        onChange={(event) => setDisplayCurrencyCode(event.target.value)}
+                        className={`${selectClasses} py-2`}
+                      >
+                        {pricingConfig.displayCurrencies.map((currency) => (
+                          <option key={currency.code} value={currency.code}>
+                            {currency.code} · {currency.label}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={18}
+                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-8 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="project_type" className="mb-2 block text-xl font-medium dark:text-dark-text">
+                      What do you want to build? <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="project_type"
+                        name="projectType"
+                        value={formData.projectType}
+                        onChange={handleChange}
+                        required
+                        className={selectClasses}
+                      >
+                        <option value="">Choose a project type</option>
+                        {pricingConfig.projectTypes.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.label}
+                            {option.basePrice ? `, from ${displayMoney(option.basePrice)}` : ''}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={18}
+                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    {selectedProject && (
+                      <>
+                        <p className="mt-2 text-sm text-stone-500 dark:text-dark-muted">
+                          {selectedProject.description}
+                        </p>
+                        {selectedProject.included.length > 0 && (
+                          <div className="mt-3 rounded-xl border border-stone-200 bg-white/60 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-white/70">
+                              Base package includes
+                            </p>
+                            <ul className="mt-2 space-y-1.5 text-sm text-stone-600 dark:text-dark-muted">
+                              {selectedProject.included.map((item) => (
+                                <li key={item} className="flex gap-2">
+                                  <Check size={15} className="mt-0.5 shrink-0 text-emerald-700 dark:text-emerald-300" />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="scope" className="mb-2 block text-xl font-medium dark:text-dark-text">
+                      Scope level <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="scope"
+                        name="scope"
+                        value={formData.scope}
+                        onChange={handleChange}
+                        required
+                        className={selectClasses}
+                      >
+                        {pricingConfig.scopes.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={18}
+                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    {selectedScope && (
+                      <p className="mt-2 text-sm text-stone-500 dark:text-dark-muted">{selectedScope.description}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="timeline" className="mb-2 block text-xl font-medium dark:text-dark-text">
+                      Target timeline <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="timeline"
+                        name="timeline"
+                        value={formData.timeline}
+                        onChange={handleChange}
+                        required
+                        className={selectClasses}
+                      >
+                        {pricingConfig.timelines.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={18}
+                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    {selectedTimeline && (
+                      <p className="mt-2 text-sm text-stone-500 dark:text-dark-muted">
+                        {selectedTimeline.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="budget_range" className="mb-2 block text-xl font-medium dark:text-dark-text">
+                      Working budget <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="budget_range"
+                        name="budgetRange"
+                        value={formData.budgetRange}
+                        onChange={handleChange}
+                        required
+                        className={selectClasses}
+                      >
+                        <option value="">Choose a budget range</option>
+                        {pricingConfig.budgetOptions.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {formatBudgetOption(option, displayCurrency)}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={18}
+                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    {selectedBudget && (
+                      <p className="mt-2 text-sm text-stone-500 dark:text-dark-muted">
+                        {selectedBudget.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label htmlFor="care_plan" className="mb-2 block text-xl font-medium dark:text-dark-text">
+                      Hosting and ongoing care <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="care_plan"
+                        name="carePlan"
+                        value={formData.carePlan}
+                        onChange={handleChange}
+                        required
+                        className={selectClasses}
+                      >
+                        {pricingConfig.carePlans.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.label}
+                            {option.monthlyPrice > 0 ? `, ${displayMoney(option.monthlyPrice)}/month` : ''}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={18}
+                        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-stone-500"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    {selectedCarePlan && (
+                      <div className="mt-3 rounded-xl border border-stone-200 bg-white/60 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <p className="text-sm font-medium text-stone-900 dark:text-white">
+                            {selectedCarePlan.description}
+                          </p>
+                          <span
+                            className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                              selectedCarePlan.hostingIncluded
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-200'
+                                : 'bg-stone-200 text-stone-700 dark:bg-white/10 dark:text-white/60'
+                            }`}
+                          >
+                            {selectedCarePlan.hostingIncluded ? 'Hosting included' : 'Hosting excluded'}
+                          </span>
+                        </div>
+                        <ul className="mt-3 grid gap-1.5 text-sm text-stone-600 dark:text-dark-muted sm:grid-cols-2">
+                          {selectedCarePlan.included.map((item) => (
+                            <li key={item} className="flex gap-2">
+                              <Check size={15} className="mt-0.5 shrink-0 text-emerald-700 dark:text-emerald-300" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xl font-medium dark:text-dark-text">Useful extras</p>
+                  <p className="mt-1 text-sm text-stone-500 dark:text-dark-muted">
+                    Select only what matters now. The estimate updates instantly.
+                  </p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {pricingConfig.features.map((feature) => {
+                      const selected = formData.features.includes(feature.id);
+                      return (
+                        <label
+                          key={feature.id}
+                          className={`cursor-pointer rounded-xl border p-4 transition-colors ${
+                            selected
+                              ? 'border-emerald-700 bg-emerald-50 dark:border-emerald-400/50 dark:bg-emerald-400/10'
+                              : 'border-stone-200 bg-white/60 hover:border-stone-400 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/25'
+                          }`}
+                        >
+                          <span className="flex items-start gap-3">
+                            <input
+                              type="checkbox"
+                              checked={selected}
+                              onChange={() => toggleFeature(feature.id)}
+                              className="mt-1 h-4 w-4 shrink-0 accent-emerald-700"
+                            />
+                            <span>
+                              <span className="flex flex-wrap items-center gap-2 font-medium">
+                                {feature.label}
+                                <span className="text-xs font-normal text-stone-500 dark:text-dark-muted">
+                                  +{displayMoney(feature.price)}
+                                </span>
+                              </span>
+                              <span className="mt-1 block text-sm text-stone-500 dark:text-dark-muted">
+                                {feature.description}
+                              </span>
+                            </span>
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div
+                  className="overflow-hidden rounded-2xl border border-stone-900 bg-stone-950 text-white shadow-xl dark:border-white/10"
+                  aria-live="polite"
+                >
+                  <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+                    <Calculator size={20} className="text-emerald-300" aria-hidden="true" />
+                    <div>
+                      <p className="font-semibold">Planning estimate</p>
+                      <p className="text-xs text-white/55">A transparent starting range, not a final quote.</p>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    {quote ? (
+                      <>
+                        <p className="text-3xl font-bold tracking-tight text-white">
+                          {displayMoney(quote.minimum)} to {displayMoney(quote.maximum)}
+                        </p>
+                        <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/40">
+                          Once-off project estimate
+                        </p>
+                        <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="text-sm text-white/65">Hosting and ongoing care</p>
+                            <p className="font-semibold text-emerald-200">
+                              {quote.monthly > 0 ? `${displayMoney(quote.monthly)}/month` : 'Not included'}
+                            </p>
+                          </div>
+                          <p className="mt-1 text-xs text-white/45">
+                            {quote.hostingIncluded
+                              ? `${selectedCarePlan?.label ?? 'Selected plan'} includes hosting.`
+                              : 'You arrange and pay for hosting separately; future updates are quoted as needed.'}
+                          </p>
+                        </div>
+                        <p className="mt-2 text-sm leading-relaxed text-white/60">
+                          Based on a {selectedScope?.label.toLowerCase()} {selectedProject?.label.toLowerCase()}
+                          {selectedFeatures.length > 0
+                            ? ` with ${selectedFeatures.length} selected ${selectedFeatures.length === 1 ? 'extra' : 'extras'}`
+                            : ''}{' '}
+                          and a {selectedTimeline?.label.toLowerCase()} timeline.
+                        </p>
+                        {budgetMayNeedPhasing && (
+                          <div className="mt-4 flex gap-2 rounded-lg border border-amber-300/20 bg-amber-300/10 p-3 text-sm text-amber-100">
+                            <AlertCircle size={17} className="mt-0.5 shrink-0" aria-hidden="true" />
+                            <p>
+                              Your budget is below this planning range. Send the brief anyway. I can suggest a
+                              focused first phase instead of forcing the full scope.
+                            </p>
+                          </div>
+                        )}
+                        <p className="mt-4 text-xs leading-relaxed text-white/40">
+                          {pricingConfig.quoteDisclaimer}
+                        </p>
+                        {displayCurrency.code !== pricingConfig.currency && (
+                          <p className="mt-2 text-xs leading-relaxed text-white/40">
+                            Displayed in {displayCurrency.code} at 1 USD = {displayCurrency.rate}{' '}
+                            {displayCurrency.code}. Final proposals remain in USD.
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <div className="space-y-3">
+                        <p className="text-sm leading-relaxed text-white/65">
+                          {formData.projectType === 'not-sure'
+                            ? 'No guesswork: describe the result you need and I will recommend the right scope and budget.'
+                            : 'Choose a project type to see a realistic base-price range.'}
+                        </p>
+                        {selectedCarePlan && (
+                          <p className="text-xs text-white/45">
+                            Ongoing choice: {selectedCarePlan.label}
+                            {selectedCarePlan.monthlyPrice > 0
+                              ? ` at ${displayMoney(selectedCarePlan.monthlyPrice)}/month`
+                              : ', no monthly fee'}
+                            .
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset className="space-y-8">
+                <legend className="flex items-center gap-3 text-2xl font-semibold">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-sm text-white dark:bg-white dark:text-stone-900">
+                    3
+                  </span>
+                  The result you need
+                </legend>
                 <FormInput
                   id="message"
                   name="message"
                   type="textarea"
-                  label="Message"
+                  label="What should this project achieve?"
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  minLength={10}
-                  rows={5}
-                  errorMessage="Message must be at least 10 characters"
+                  minLength={20}
+                  maxLength={5000}
+                  rows={6}
+                  errorMessage="Please give at least 20 characters of useful context"
                 />
+                <p className="-mt-6 text-sm text-stone-500 dark:text-dark-muted">
+                  Include the problem, who will use it, must-have features, and what success looks like.
+                </p>
+              </fieldset>
+
+              <input
+                ref={honeypotRef}
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+              />
+
+              <div className="space-y-4">
+                <label className="flex cursor-pointer items-start gap-3 text-sm text-stone-600 dark:text-dark-muted">
+                  <input
+                    type="checkbox"
+                    checked={marketingOptIn}
+                    onChange={(e) => setMarketingOptIn(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-stone-400 accent-stone-900 dark:accent-white"
+                  />
+                  <span>
+                    Keep me in the loop with occasional updates about new work, services, and availability. You
+                    can unsubscribe at any time.
+                  </span>
+                </label>
+
+                <p className="text-xs leading-relaxed text-stone-500 dark:text-dark-muted">
+                  By sending this brief you agree to the processing of your details so I can respond to your
+                  enquiry, as described in the{' '}
+                  <Link
+                    to="/privacy-policy"
+                    className="underline underline-offset-2 hover:text-stone-900 dark:hover:text-white"
+                  >
+                    Privacy Policy
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/terms" className="underline underline-offset-2 hover:text-stone-900 dark:hover:text-white">
+                    Terms of Use
+                  </Link>
+                  . Your information is handled in line with POPIA and is never sold.
+                </p>
               </div>
-              
-              <div className="flex items-center justify-between">
-                <button 
+
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <button
                   type="submit"
                   disabled={!formValid || formState === 'submitting'}
-                  className={`relative inline-flex items-center justify-center border px-8 py-4 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent ${formValid ? 'border-stone-900 dark:border-dark-text text-stone-900 dark:text-dark-text hover:bg-stone-900 dark:hover:bg-dark-border hover:text-stone-100 dark:hover:text-dark-text' : 'border-stone-400 dark:border-dark-border text-stone-400 dark:text-dark-muted cursor-not-allowed'}`}
-                  aria-label="Send your message"
+                  className={`relative inline-flex items-center justify-center border px-8 py-4 transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent ${
+                    formValid
+                      ? 'border-stone-900 text-stone-900 hover:bg-stone-900 hover:text-stone-100 dark:border-dark-text dark:text-dark-text dark:hover:bg-dark-border dark:hover:text-dark-text'
+                      : 'cursor-not-allowed border-stone-400 text-stone-400 dark:border-dark-border dark:text-dark-muted'
+                  }`}
                 >
                   {formState === 'submitting' ? (
                     <>
                       <Loader size={18} className="mr-2 animate-spin" aria-hidden="true" />
-                      Sending...
+                      Sending brief...
                     </>
                   ) : formState === 'success' ? (
                     <>
                       <Check size={18} className="mr-2 text-green-500" aria-hidden="true" />
-                      Sent Successfully
+                      Brief received
                     </>
                   ) : formState === 'error' ? (
                     <>
                       <AlertCircle size={18} className="mr-2 text-red-500" aria-hidden="true" />
-                      Failed to Send
+                      Please try again
                     </>
                   ) : (
-                    'Send Message'
+                    'Send Project Brief'
                   )}
                 </button>
-                
-                {/* Form validation status */}
+
                 {formValid && formState === 'idle' && (
-                  <span className="text-green-600 dark:text-green-400 text-sm flex items-center">
-                    <Check size={16} className="mr-1" aria-hidden="true" />
-                    Ready to submit
+                  <span className="flex items-center text-sm text-green-700 dark:text-green-400">
+                    <CheckCircle2 size={16} className="mr-1.5" aria-hidden="true" />
+                    Ready for a useful first response
                   </span>
                 )}
               </div>

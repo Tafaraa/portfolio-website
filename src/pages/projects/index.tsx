@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeftRight, ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, ChevronsDown, ChevronsUp, ChevronUp, ExternalLink, Github } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import OptimizedImage from '../../components/ui/OptimizedImage';
+import { smoothScrollTo } from '../../utils/scroll';
 
 type Project = {
   title: string;
@@ -20,7 +21,7 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    title: 'Dr Metuse – Plastic Surgeon Website',
+    title: 'Dr Metuse: Plastic Surgeon Website',
     summary: 'Marketing website plus a full clinic management system. Bookings, blogs, inventory and payments all run from one admin dashboard.',
     description: 'A full management system + marketing website with an admin dashboard to control key site operations: bookings, appointments, blogs, inventory, and more. Includes payment gateway integration and tooling to manage the full workflow end-to-end.',
     image: '/images/drmetuse.webp',
@@ -82,7 +83,7 @@ const PROJECTS: Project[] = [
     result: 'Artist showcase, services, bookings, events, and merchandise in one place.'
   },
   {
-    title: 'SkillLens – AI Developer Skill Analyzer',
+    title: 'SkillLens: AI Developer Skill Analyzer',
     summary: 'AI that reads GitHub repositories and maps developer skill. Real-time analysis, benchmarks and growth suggestions.',
     description: 'A smart web application designed to evaluate GitHub repositories and identify developer skill levels, tech stack diversity, and growth trends. Provides real-time analysis, skill benchmarking, and personalized improvement suggestions.',
     image: '/images/SkillLens.webp',
@@ -104,33 +105,20 @@ const PROJECTS: Project[] = [
     color: 'from-blue-500/20 to-purple-500/20',
     status: 'ML app',
     result: 'Real-time article analysis with authentication and collaborative voting.'
+  },
+  {
+    title: 'This Portfolio: mutsvedutafara.com',
+    summary: 'The site you are on right now. Scroll-driven project showcase, serverless email pipeline with automated replies, and an SEO engine built to rank.',
+    description: 'A full product, not just a portfolio: custom scroll-driven horizontal showcase, a serverless contact pipeline (Netlify Functions + Resend + Supabase) with professional auto-replies and POPIA-compliant consent handling, PWA support, structured data, programmatic landing pages, and performance tuning that keeps it fast on any connection.',
+    image: '/images/portfolio-website.webp',
+    tags: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Netlify Functions', 'Resend', 'Supabase', 'SEO', 'PWA'],
+    github: 'https://github.com/Tafaraa',
+    demo: 'https://www.mutsvedutafara.com/',
+    color: 'from-emerald-500/20 to-blue-500/20',
+    status: 'This site',
+    result: 'Scroll experiences, automated email replies, POPIA-ready policies, and SEO built to rank, all in one build.'
   }
 ];
-
-// Eased scroll with a distance-scaled duration: long skips glide instead of teleporting.
-// Native smooth scrolling is UA-controlled and rushes long distances.
-const smoothScrollTo = (targetY: number) => {
-  const startY = window.scrollY;
-  const distance = targetY - startY;
-  if (Math.abs(distance) < 2) return;
-  const duration = Math.min(1600, Math.max(650, Math.abs(distance) * 0.35));
-  const html = document.documentElement;
-  const prevBehavior = html.style.scrollBehavior;
-  // Neutralise the global CSS scroll-behavior so per-frame jumps aren't re-smoothed
-  html.style.scrollBehavior = 'auto';
-  const start = performance.now();
-  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  const step = (now: number) => {
-    const t = Math.min(1, (now - start) / duration);
-    window.scrollTo(0, startY + distance * ease(t));
-    if (t < 1) {
-      requestAnimationFrame(step);
-    } else {
-      html.style.scrollBehavior = prevBehavior;
-    }
-  };
-  requestAnimationFrame(step);
-};
 
 const ProjectLinks = ({ project }: { project: Project }) => (
   <div className="flex flex-row gap-2 md:gap-3">
@@ -341,12 +329,14 @@ const Projects = () => {
                     className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.45)]"
                   >
                     <div className="aspect-video">
+                      {/* Eager on purpose: panels live inside a translated track where
+                          lazy-load observers are unreliable; all images are preloaded anyway */}
                       <OptimizedImage
                         src={project.image}
                         alt={project.title}
                         className="h-full w-full"
                         objectFit="cover"
-                        priority={index === 0}
+                        priority
                       />
                     </div>
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />

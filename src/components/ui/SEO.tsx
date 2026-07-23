@@ -14,9 +14,10 @@ interface SEOProps {
   section?: string;
   tags?: string[];
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  noIndex?: boolean;
 }
 
-const siteUrl = 'https://mutsvedutafara.com';
+const siteUrl = 'https://www.mutsvedutafara.com';
 
 /**
  * Imperatively manages the document head.
@@ -57,7 +58,8 @@ const SEO = ({
   twitterCard = 'summary_large_image',
   author = 'Tafara Mutsvedu',
   tags = [],
-  structuredData
+  structuredData,
+  noIndex = false
 }: SEOProps) => {
   const defaultImage = `${siteUrl}/og.webp`;
   const fullCanonical = canonical
@@ -85,7 +87,9 @@ const SEO = ({
       'meta[name="robots"]',
       'name',
       'robots',
-      'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+      noIndex
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
     );
 
     upsertLink('canonical', fullCanonical);
@@ -121,7 +125,19 @@ const SEO = ({
       added.forEach((node) => node.remove());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, description, keywords, author, fullCanonical, ogType, fullOgImage, twitterCard, serializedLd, tagsKey]);
+  }, [
+    title,
+    description,
+    keywords,
+    author,
+    fullCanonical,
+    ogType,
+    fullOgImage,
+    twitterCard,
+    serializedLd,
+    tagsKey,
+    noIndex
+  ]);
 
   return null;
 };

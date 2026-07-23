@@ -15,6 +15,10 @@ const Projects = lazy(() => import('./pages/projects'));
 const Contact = lazy(() => import('./pages/contact'));
 const LocationLanding = lazy(() => import('./pages/locationLanding'));
 const Hero = lazy(() => import('./pages/home'));
+const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy'));
+const Terms = lazy(() => import('./pages/legal/Terms'));
+const AdminApp = lazy(() => import('./pages/admin'));
+const NotFound = lazy(() => import('./pages/notFound'));
 
 const MainLayout = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -93,13 +97,13 @@ const MainLayout = () => {
           {
             '@context': 'https://schema.org',
             '@type': 'Person',
-            '@id': 'https://mutsvedutafara.com/#person',
+            '@id': 'https://www.mutsvedutafara.com/#person',
             name: 'Tafara Mutsvedu',
             alternateName: ['Mutsvedu Tafara', 'Tafara'],
             givenName: 'Tafara',
             familyName: 'Mutsvedu',
-            url: 'https://mutsvedutafara.com',
-            image: 'https://mutsvedutafara.com/images/profile.webp',
+            url: 'https://www.mutsvedutafara.com',
+            image: 'https://www.mutsvedutafara.com/images/profile.webp',
             jobTitle: ['Software Engineer', 'Data Scientist', 'AI Engineer'],
             address: {
               '@type': 'PostalAddress',
@@ -127,7 +131,7 @@ const MainLayout = () => {
             '@context': 'https://schema.org',
             '@type': 'ProfessionalService',
             name: 'Tafara Mutsvedu Software Development',
-            url: 'https://mutsvedutafara.com',
+            url: 'https://www.mutsvedutafara.com',
             areaServed: ['South Africa', 'Zimbabwe', 'Remote'],
             serviceType: [
               'Website and online store development',
@@ -185,10 +189,10 @@ const MainLayout = () => {
             '@type': 'WebSite',
             name: 'Tafara Mutsvedu',
             alternateName: ['Tafara Mutsvedu Portfolio', 'Mutsvedu Tafara', 'Tafara Mutsvedu Developer'],
-            url: 'https://mutsvedutafara.com',
+            url: 'https://www.mutsvedutafara.com',
             description: 'Official site of Tafara Mutsvedu, software engineer and data scientist specialising in AI engineering.',
-            author: { '@id': 'https://mutsvedutafara.com/#person' },
-            publisher: { '@id': 'https://mutsvedutafara.com/#person' }
+            author: { '@id': 'https://www.mutsvedutafara.com/#person' },
+            publisher: { '@id': 'https://www.mutsvedutafara.com/#person' }
           }
         ]}
       />
@@ -245,40 +249,52 @@ const LazyRoute = ({ children }: { children: ReactNode }) => (
   </Suspense>
 );
 
-function App() {
-  // Landing page routes
-  const landingRoutes = [
-    "/best-software-developer-:location",
-    "/software-developer-:location",
-    "/remote-software-developer",
-    "/hire-remote-fullstack-developer",
-    "/remote-react-developer-usa",
-    "/remote-developer-south-africa",
-    "/remote-data-scientist-south-africa",
-    "/react-developer-south-africa",
-    "/fullstack-developer-south-africa",
-    "/data-scientist-south-africa",
-    "/ai-engineer",
-    "/data-engineer",
-    "/website-creation-services",
-    "/freelance-developer",
-    "/hire-ai-engineer",
-    "/hire-data-engineer",
-    "/react-developer",
-    "/python-developer",
-    "/machine-learning-engineer",
-    "/software-engineer",
-    "/data-scientist",
-    "/ai-consultant",
-    "/ai-workflow-automation",
-    "/ai-automation-for-business",
-    "/ai-chatbot-developer",
-    "/llm-engineer",
-    "/get-your-business-online",
-    "/ecommerce-website-developer",
-    "/small-business-website"
-  ];
+const LANDING_ROUTES = [
+  '/best-software-developer-midrand',
+  '/best-software-developer-johannesburg',
+  '/best-software-developer-zimbabwe',
+  '/software-developer-gauteng',
+  '/software-developer-pretoria',
+  '/software-developer-cape-town',
+  '/software-developer-durban',
+  '/software-developer-usa',
+  '/software-developer-europe',
+  '/software-developer-uae',
+  '/software-developer-saudi-arabia',
+  '/software-developer-qatar',
+  '/software-developer-mauritius',
+  '/software-developer-botswana',
+  '/software-developer-namibia',
+  '/remote-software-developer',
+  '/hire-remote-fullstack-developer',
+  '/remote-react-developer-usa',
+  '/remote-developer-south-africa',
+  '/remote-data-scientist-south-africa',
+  '/react-developer-south-africa',
+  '/fullstack-developer-south-africa',
+  '/data-scientist-south-africa',
+  '/ai-engineer',
+  '/data-engineer',
+  '/website-creation-services',
+  '/freelance-developer',
+  '/hire-ai-engineer',
+  '/hire-data-engineer',
+  '/react-developer',
+  '/python-developer',
+  '/machine-learning-engineer',
+  '/software-engineer',
+  '/data-scientist',
+  '/ai-consultant',
+  '/ai-workflow-automation',
+  '/ai-automation-for-business',
+  '/ai-chatbot-developer',
+  '/llm-engineer',
+  '/get-your-business-online',
+  '/ecommerce-website-developer',
+  '/small-business-website'
+] as const;
 
+function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
@@ -287,7 +303,7 @@ function App() {
               <Route path="/" element={<MainLayout />} />
               
               {/* Generate landing page routes dynamically */}
-              {landingRoutes.map(path => (
+              {LANDING_ROUTES.map(path => (
                 <Route 
                   key={path}
                   path={path} 
@@ -299,7 +315,11 @@ function App() {
                 />
               ))}
               
-              <Route path="*" element={<MainLayout />} />
+              <Route path="/privacy-policy" element={<LazyRoute><PrivacyPolicy /></LazyRoute>} />
+              <Route path="/terms" element={<LazyRoute><Terms /></LazyRoute>} />
+              <Route path="/admin" element={<LazyRoute><AdminApp /></LazyRoute>} />
+
+              <Route path="*" element={<LazyRoute><NotFound /></LazyRoute>} />
             </Routes>
           </Router>
       </ThemeProvider>

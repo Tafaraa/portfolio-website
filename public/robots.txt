@@ -3,12 +3,12 @@ User-agent: *
 Allow: /
 
 # Sitemap locations
-Sitemap: https://mutsvedutafara.com/sitemap.xml
-Sitemap: https://mutsvedutafara.com/sitemap-index.xml
+Sitemap: https://www.mutsvedutafara.com/sitemap.xml
+Sitemap: https://www.mutsvedutafara.com/sitemap-index.xml
 
 # Disallow private areas
 Disallow: /private/
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # Allow all search engines

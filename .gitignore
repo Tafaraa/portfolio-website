@@ -22,7 +22,7 @@ stats.html
 # Environment variables - IMPORTANT to keep these private
 .env
 .env.*
-!.env.example
+.env.example
 
 # Editor directories and files
 .vscode/*

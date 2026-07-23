@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedElement from '../ui/AnimatedElement';
 import { Menu, X } from 'lucide-react';
+import { handleAnchorClick } from '../../utils/scroll';
 import ThemeToggle from '../ui/ThemeToggle';
 import Education from '../../pages/education';
 
@@ -95,7 +96,7 @@ const Header = () => {
       <header className={`py-4 sticky top-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-white dark:bg-dark-surface shadow-md' : 'bg-transparent'}`}>
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <AnimatedElement animation="fade" delay={0.1}>
-            <a href="#home" className="flex items-center text-xl font-medium focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" aria-label="Go to home section">
+            <a href="#home" onClick={(e) => handleAnchorClick(e, '#home')} className="flex items-center text-xl font-medium focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent" aria-label="Go to home section">
               <span className="dark:text-dark-text">{displayText}</span>
               <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity ml-1 dark:text-dark-text`} aria-hidden="true">|</span>
             </a>
@@ -106,8 +107,9 @@ const Header = () => {
               {navLinks.map((link, index) => (
                 <AnimatedElement key={link.name} animation="fade" delay={0.4 + index * 0.1}>
                   {link.href ? (
-                    <a 
+                    <a
                       href={link.href}
+                      onClick={(e) => handleAnchorClick(e, link.href)}
                       className="text-stone-900 dark:text-dark-text hover:text-stone-600 dark:hover:text-dark-accent transition-colors focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
                     >
                       {link.name}
@@ -175,7 +177,10 @@ const Header = () => {
                       <a
                         href={link.href}
                         className="block text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                        onClick={() => setIsMenuOpen(false)}
+                        onClick={(e) => {
+                          handleAnchorClick(e, link.href);
+                          setIsMenuOpen(false);
+                        }}
                       >
                         {link.name}
                       </a>
