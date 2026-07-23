@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedElement from '../ui/AnimatedElement';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from '../ui/ThemeToggle';
@@ -141,47 +142,61 @@ const Header = () => {
       </header>
       
       {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-white dark:bg-dark-surface">
-          <div className="container mx-auto px-6 py-8">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold dark:text-dark-text">Menu</h2>
-              <button 
-                className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                onClick={toggleMenu}
-                aria-label="Close menu"
-              >
-                <X size={24} aria-hidden="true" />
-              </button>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="md:hidden fixed inset-0 z-50 bg-white dark:bg-dark-surface"
+          >
+            <div className="container mx-auto px-6 py-8">
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold dark:text-dark-text">Menu</h2>
+                <button
+                  className="text-stone-900 dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
+                  onClick={toggleMenu}
+                  aria-label="Close menu"
+                >
+                  <X size={24} aria-hidden="true" />
+                </button>
+              </div>
+              <nav className="flex flex-col space-y-6">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.3, delay: 0.05 + index * 0.06, ease: 'easeOut' }}
+                  >
+                    {link.href ? (
+                      <a
+                        href={link.href}
+                        className="block text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          link.onClick?.();
+                          setIsMenuOpen(false);
+                        }}
+                        className="w-full text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
+                      >
+                        {link.name}
+                      </button>
+                    )}
+                  </motion.div>
+                ))}
+              </nav>
             </div>
-            <nav className="flex flex-col space-y-6">
-              {navLinks.map((link) => 
-                link.href ? (
-                  <a 
-                    key={link.name}
-                    href={link.href}
-                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                ) : (
-                  <button
-                    key={link.name}
-                    onClick={() => {
-                      link.onClick?.();
-                      setIsMenuOpen(false);
-                    }}
-                    className="text-xl font-medium text-center py-3 text-stone-900 dark:text-white hover:text-stone-600 dark:hover:text-dark-accent transition-colors border-b border-stone-100 dark:border-dark-border/30 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-dark-accent"
-                  >
-                    {link.name}
-                  </button>
-                )
-              )}
-            </nav>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Education isOpen={isEducationOpen} onClose={() => setIsEducationOpen(false)} />
     </>

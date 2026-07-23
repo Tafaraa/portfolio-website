@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, ChevronsDown, ChevronUp, ExternalLink, Github } from 'lucide-react';
+import { ArrowLeftRight, ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, ChevronsDown, ChevronsUp, ChevronUp, ExternalLink, Github } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import OptimizedImage from '../../components/ui/OptimizedImage';
 
@@ -107,6 +107,31 @@ const PROJECTS: Project[] = [
   }
 ];
 
+// Eased scroll with a distance-scaled duration: long skips glide instead of teleporting.
+// Native smooth scrolling is UA-controlled and rushes long distances.
+const smoothScrollTo = (targetY: number) => {
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+  if (Math.abs(distance) < 2) return;
+  const duration = Math.min(1600, Math.max(650, Math.abs(distance) * 0.35));
+  const html = document.documentElement;
+  const prevBehavior = html.style.scrollBehavior;
+  // Neutralise the global CSS scroll-behavior so per-frame jumps aren't re-smoothed
+  html.style.scrollBehavior = 'auto';
+  const start = performance.now();
+  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const step = (now: number) => {
+    const t = Math.min(1, (now - start) / duration);
+    window.scrollTo(0, startY + distance * ease(t));
+    if (t < 1) {
+      requestAnimationFrame(step);
+    } else {
+      html.style.scrollBehavior = prevBehavior;
+    }
+  };
+  requestAnimationFrame(step);
+};
+
 const ProjectLinks = ({ project }: { project: Project }) => (
   <div className="flex flex-row gap-2 md:gap-3">
     {project.live === false ? (
@@ -152,6 +177,10 @@ const Projects = () => {
   const currentRef = useRef(0);
   const [current, setCurrent] = useState(0);
   const [showAll, setShowAll] = useState(false);
+  const lastYRef = useRef(0);
+  const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
+  const hintStateRef = useRef<'pending' | 'shown' | 'done'>('pending');
+  const [showHint, setShowHint] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress: allProjectsScrollProgress } = useScroll({
     target: allProjectsRef,
@@ -209,6 +238,26 @@ const Projects = () => {
         currentRef.current = index;
         setCurrent(index);
       }
+
+      // Which way is the visitor heading? Drives where the Skip button goes.
+      const y = window.scrollY;
+      if (Math.abs(y - lastYRef.current) > 6) {
+        setScrollDir(y > lastYRef.current ? 'down' : 'up');
+        lastYRef.current = y;
+      }
+
+      // First time the section takes over, explain the sideways scroll once
+      if (hintStateRef.current === 'pending' && progress > 0.005 && progress < 0.6) {
+        hintStateRef.current = 'shown';
+        setShowHint(true);
+        window.setTimeout(() => {
+          hintStateRef.current = 'done';
+          setShowHint(false);
+        }, 4500);
+      } else if (hintStateRef.current === 'shown' && progress > 0.18) {
+        hintStateRef.current = 'done';
+        setShowHint(false);
+      }
     };
 
     update();
@@ -226,18 +275,27 @@ const Projects = () => {
   };
 
   const scrollToProject = (i: number) => {
-    window.scrollTo({ top: wrapperTop() + i * window.innerHeight, behavior: 'smooth' });
+    smoothScrollTo(wrapperTop() + i * window.innerHeight);
   };
 
+  const smoothScrollToElement = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) smoothScrollTo(window.scrollY + el.getBoundingClientRect().top);
+  };
+
+  // Skip follows the visitor's direction: heading up exits to the section above,
+  // heading down exits to the all-projects section below.
   const skipSection = () => {
-    document.getElementById('all-projects')?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollDir === 'up') {
+      smoothScrollToElement('about');
+    } else {
+      smoothScrollToElement('all-projects');
+    }
   };
 
   const openAllProjects = () => {
     setShowAll(true);
-    requestAnimationFrame(() => {
-      document.getElementById('all-projects')?.scrollIntoView({ behavior: 'smooth' });
-    });
+    requestAnimationFrame(() => smoothScrollToElement('all-projects'));
   };
 
   return (
@@ -337,9 +395,48 @@ const Projects = () => {
             ))}
           </div>
 
+          {/* Mobile one-time heads-up: this section scrolls sideways, not down */}
+          <AnimatePresence>
+            {showHint && (
+              <motion.div
+                key="sideways-hint"
+                initial={{ opacity: 0, scale: 0.92, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -8 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="pointer-events-none absolute inset-x-0 top-1/2 z-30 flex -translate-y-1/2 justify-center px-8 md:hidden"
+                aria-hidden="true"
+              >
+                <div className="flex flex-col items-center gap-2 rounded-2xl border border-white/15 bg-stone-950/85 px-5 py-4 text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+                  <motion.span
+                    animate={{ x: [-5, 5, -5] }}
+                    transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-emerald-300"
+                  >
+                    <ArrowLeftRight size={18} />
+                  </motion.span>
+                  <p className="text-sm font-semibold text-white">Plot twist: this section moves sideways</p>
+                  <p className="text-xs text-white/60">Keep scrolling like normal to browse the projects</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Bottom controls: one centered pill, clear of the chat launcher (bottom-left)
               and the scroll-to-top button (bottom-right) */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-center pb-20 md:pb-6">
+          <div className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center gap-2 pb-20 md:pb-6">
+            {/* Always-on disclaimer so the scroll effect never confuses anyone */}
+            <div className="flex items-center gap-1.5 rounded-full bg-stone-950/50 px-3 py-1 text-[10px] font-medium text-white/50 backdrop-blur md:text-xs">
+              <motion.span
+                animate={{ x: [-3, 3, -3] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                className="inline-flex text-emerald-300/80"
+              >
+                <ArrowLeftRight size={12} />
+              </motion.span>
+              <span>This section scrolls sideways, just keep scrolling</span>
+            </div>
+
             <div className="flex items-center gap-2.5 rounded-full border border-white/15 bg-stone-950/60 px-3.5 py-2 backdrop-blur-xl md:gap-4 md:px-5 md:py-2.5">
               <div className="text-xs font-medium text-white/60 md:text-sm">
                 {String(current + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
@@ -383,10 +480,22 @@ const Projects = () => {
                 type="button"
                 onClick={skipSection}
                 className="group inline-flex animate-pulse items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur transition-all hover:animate-none hover:bg-white/20 hover:text-white md:px-4 md:py-2 md:text-sm"
-                aria-label="Skip to the all projects section"
+                aria-label={scrollDir === 'up' ? 'Skip up to the previous section' : 'Skip down to the all projects section'}
               >
                 Skip
-                <ChevronsDown size={15} className="transition-transform group-hover:translate-y-0.5" />
+                <motion.span
+                  key={scrollDir}
+                  initial={{ y: scrollDir === 'up' ? 6 : -6, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-flex"
+                >
+                  {scrollDir === 'up' ? (
+                    <ChevronsUp size={15} className="transition-transform group-hover:-translate-y-0.5" />
+                  ) : (
+                    <ChevronsDown size={15} className="transition-transform group-hover:translate-y-0.5" />
+                  )}
+                </motion.span>
               </button>
             </div>
           </div>
