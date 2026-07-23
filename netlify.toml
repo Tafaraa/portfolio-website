@@ -8,6 +8,9 @@
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--legacy-peer-deps"
+  # These variables contain intentionally public email addresses used in
+  # contact details and mail routing. Keep scanning enabled for real secrets.
+  SECRETS_SCAN_OMIT_KEYS = "ADMIN_EMAIL,VITE_ADMIN_EMAIL,CONTACT_TO_EMAIL,CONTACT_FROM_EMAIL"
 
 [[headers]]
   for = "/*"
