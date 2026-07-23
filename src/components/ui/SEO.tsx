@@ -61,7 +61,7 @@ const SEO = ({
   structuredData,
   noIndex = false
 }: SEOProps) => {
-  const defaultImage = `${siteUrl}/og-v2.jpg`;
+  const defaultImage = `${siteUrl}/og-v3.png`;
   const fullCanonical = canonical
     ? canonical.startsWith('http')
       ? canonical
@@ -101,9 +101,9 @@ const SEO = ({
     upsertMeta('meta[property="og:description"]', 'property', 'og:description', description);
     upsertMeta('meta[property="og:image"]', 'property', 'og:image', fullOgImage);
     upsertMeta('meta[property="og:image:secure_url"]', 'property', 'og:image:secure_url', fullOgImage);
-    upsertMeta('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/jpeg');
-    upsertMeta('meta[property="og:image:width"]', 'property', 'og:image:width', '1200');
-    upsertMeta('meta[property="og:image:height"]', 'property', 'og:image:height', '630');
+    upsertMeta('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/png');
+    upsertMeta('meta[property="og:image:width"]', 'property', 'og:image:width', '1729');
+    upsertMeta('meta[property="og:image:height"]', 'property', 'og:image:height', '910');
     upsertMeta('meta[property="og:image:alt"]', 'property', 'og:image:alt', 'Tafara Mutsvedu, Software Engineer and Data Scientist');
     upsertMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'Tafara Mutsvedu');
 
