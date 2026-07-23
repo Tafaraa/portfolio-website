@@ -88,9 +88,9 @@ const MainLayout = () => {
   return (
     <div className={`min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 dark:from-dark-bg dark:to-dark-surface text-stone-900 dark:text-dark-text font-sans section-${currentSection} main-portfolio`}>
       <SEO
-        title="Tafara Mutsvedu | Web Developer, AI Workflows & Data Scientist in South Africa"
-        description="I build the digital side of businesses, websites, online stores, dashboards, and AI workflows that cut the admin. I set it up, train your team to run it, and I'm open to full-time and contract roles too. Based in South Africa, working worldwide."
-        keywords="Tafara Mutsvedu, web developer south africa, AI workflow automation, business automation south africa, get my business online, digital transformation, chatbot development, software developer south africa, data scientist midrand, AI engineer, react developer johannesburg, python developer south africa, machine learning expert, full stack developer gauteng, hire developer south africa, e-commerce website south africa, small business website, team training automation, website creation services, AI-powered applications, freelance developer, permanent developer jobs, Tafara, Mutsvedu, developer portfolio, South African developer, remote developer, React developer, Python developer, data scientist, machine learning engineer, SkillLens, dollarnation.co.za, fakenewsdetectorx.netlify.app"
+        title="Tafara Mutsvedu | Software Engineer, AI and Data Systems"
+        description="South African software engineer building production software, intelligent automation and decision ready data systems for businesses that need reliable execution."
+        keywords="Tafara Mutsvedu, software engineer South Africa, production software engineer, AI systems engineer, data systems engineer, intelligent automation, business process automation, custom business software, operational software, AI workflow automation, data engineering South Africa, React developer Johannesburg, Python developer South Africa, machine learning engineer, full stack developer Gauteng, software consultant, contract software engineer, remote software engineer, dashboard development, web application development, ecommerce systems, team training, Tafara, Mutsvedu"
         canonical="/"
         tags={["software development", "data science", "machine learning", "AI engineering", "data engineering", "website creation services", "React", "Python", "South Africa", "Midrand", "Johannesburg", "freelance", "permanent jobs", "AI applications", "e-commerce development"]}
         structuredData={[
@@ -190,7 +190,7 @@ const MainLayout = () => {
             name: 'Tafara Mutsvedu',
             alternateName: ['Tafara Mutsvedu Portfolio', 'Mutsvedu Tafara', 'Tafara Mutsvedu Developer'],
             url: 'https://www.mutsvedutafara.com',
-            description: 'Official site of Tafara Mutsvedu, software engineer and data scientist specialising in AI engineering.',
+            description: 'Official site of Tafara Mutsvedu, software engineer specialising in production software, intelligent automation and decision ready data systems.',
             author: { '@id': 'https://www.mutsvedutafara.com/#person' },
             publisher: { '@id': 'https://www.mutsvedutafara.com/#person' }
           }
