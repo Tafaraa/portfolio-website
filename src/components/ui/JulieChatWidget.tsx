@@ -89,13 +89,15 @@ const projectSuggestions: ProjectSuggestion[] = [
   }
 ];
 
-const quickPrompts = [
-  'What can Tafara do?',
-  'Get my business online',
-  'Set up AI workflows for me',
-  'How much does this cost?',
-  'Recommend a project',
-  'Talk to Tafara'
+// `label` is the short text on the chip/button, `value` is the full question sent
+// to Julie. Keeping them separate avoids mangled labels from string replacement.
+const quickPrompts: { label: string; value: string }[] = [
+  { label: 'What can he do?', value: 'What can Tafara do?' },
+  { label: 'Get my business online', value: 'Get my business online' },
+  { label: 'Set up AI workflows', value: 'Set up AI workflows for me' },
+  { label: 'How much does it cost?', value: 'How much does this cost?' },
+  { label: 'Recommend a project', value: 'Recommend a project for my idea' },
+  { label: 'Talk to Tafara', value: 'Talk to Tafara' }
 ];
 
 const briefQuestions: BriefQuestion[] = [
@@ -517,8 +519,8 @@ const JulieChatWidget = () => {
           "Hey! Quick version, ask me what Tafara can do, get a project recommendation, sort out pricing or timelines, or I'll set up a WhatsApp intro. What are you working on?",
         actions: quickPrompts.slice(0, 4).map((prompt) => ({
           type: 'prompt',
-          label: prompt.replace('Tafara ', ''),
-          value: prompt
+          label: prompt.label,
+          value: prompt.value
         }))
       };
     }
@@ -530,8 +532,8 @@ const JulieChatWidget = () => {
         "I can help with services, project examples, pricing guidance, timelines, or contacting Tafara. Try one of these quick options:",
       actions: quickPrompts.slice(0, 4).map((prompt) => ({
         type: 'prompt',
-        label: prompt,
-        value: prompt
+        label: prompt.label,
+        value: prompt.value
       }))
     };
   };
@@ -591,8 +593,8 @@ const JulieChatWidget = () => {
   return (
     <div className="julie-chat fixed bottom-5 left-4 z-50 sm:bottom-6 sm:left-6">
       {isOpen && (
-        <div className="mb-3 w-[calc(100vw-2rem)] max-w-[400px] overflow-hidden rounded-2xl border border-stone-200 bg-white/95 backdrop-blur-md shadow-2xl dark:border-dark-border dark:bg-dark-surface/95">
-          <div className="relative flex items-center justify-between border-b border-stone-200 bg-gradient-to-br from-sky-500/[0.08] to-transparent px-4 py-3 dark:border-dark-border dark:from-sky-400/[0.06]">
+        <div className="mb-3 flex h-[min(32rem,calc(100vh-7.5rem))] w-[calc(100vw-2rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white/95 shadow-2xl backdrop-blur-md supports-[height:100dvh]:h-[min(32rem,calc(100dvh-7.5rem))] dark:border-dark-border dark:bg-dark-surface/95">
+          <div className="relative flex shrink-0 items-center justify-between border-b border-stone-200 bg-gradient-to-br from-sky-500/[0.08] to-transparent px-4 py-3 dark:border-dark-border dark:from-sky-400/[0.06]">
             <div className="flex min-w-0 items-center gap-3">
               <div className="relative shrink-0">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-sky-600 font-bold text-white shadow-[0_6px_18px_rgba(14,165,233,0.35)]">
@@ -618,7 +620,7 @@ const JulieChatWidget = () => {
             </button>
           </div>
 
-          <div className="border-b border-stone-200 bg-stone-50/80 px-4 py-3 dark:border-dark-border dark:bg-dark-bg/60">
+          <div className="shrink-0 border-b border-stone-200 bg-stone-50/80 px-4 py-2.5 dark:border-dark-border dark:bg-dark-bg/60">
             <div className="flex items-center gap-2 text-xs font-medium text-stone-700 dark:text-dark-text">
               <Sparkles size={14} className="text-primary-600" aria-hidden="true" />
               {briefFlow
@@ -627,7 +629,7 @@ const JulieChatWidget = () => {
             </div>
           </div>
 
-          <div ref={listRef} className="max-h-[52vh] overflow-y-auto px-4 py-3">
+          <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-3">
             <div className="space-y-3">
               {messages.map((message) => (
                 <div
@@ -711,12 +713,12 @@ const JulieChatWidget = () => {
               <div className="mt-4 grid grid-cols-2 gap-2">
                 {quickPrompts.slice(0, 4).map((prompt) => (
                   <button
-                    key={prompt}
+                    key={prompt.value}
                     type="button"
-                    onClick={() => sendMessage(prompt)}
+                    onClick={() => sendMessage(prompt.value)}
                     className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-left text-xs font-medium text-stone-800 hover:bg-stone-50 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:border-dark-border dark:bg-dark-surface dark:text-dark-text dark:hover:bg-dark-border/40 dark:focus:ring-dark-accent"
                   >
-                    {prompt}
+                    {prompt.label}
                   </button>
                 ))}
               </div>
@@ -724,7 +726,7 @@ const JulieChatWidget = () => {
           </div>
 
           <form
-            className="flex items-center gap-2 border-t border-stone-200 px-3 py-3 dark:border-dark-border"
+            className="flex shrink-0 items-center gap-2 border-t border-stone-200 px-3 py-3 dark:border-dark-border"
             onSubmit={(e) => {
               e.preventDefault();
               sendMessage(input);
@@ -734,13 +736,14 @@ const JulieChatWidget = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={briefFlow ? 'Type your answer...' : 'Ask Julie about projects...'}
-              className="h-11 flex-1 rounded-xl border border-stone-200 bg-white px-3 text-sm text-stone-900 shadow-sm outline-none focus:ring-2 focus:ring-stone-500 dark:border-dark-border dark:bg-dark-bg dark:text-dark-text dark:focus:ring-dark-accent"
+              /* 16px text stops iOS Safari from zooming the page in on focus. */
+              className="h-11 w-full min-w-0 flex-1 rounded-xl border border-stone-200 bg-white px-3 text-base text-stone-900 shadow-sm outline-none focus:ring-2 focus:ring-stone-500 dark:border-dark-border dark:bg-dark-bg dark:text-dark-text dark:focus:ring-dark-accent"
               aria-label="Message input"
             />
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-stone-900 text-stone-50 shadow-sm hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-400"
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-stone-900 text-stone-50 shadow-sm hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-400"
               aria-label="Send message"
             >
               <Send size={18} aria-hidden="true" />

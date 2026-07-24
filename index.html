@@ -834,16 +834,32 @@
         .intro-ring--sweep { opacity: 0.6; }
       }
     </style>
-  </head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JG6PLJ9J21"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) with Consent Mode v2. Non-essential storage is
+         denied by default and only granted once the visitor accepts in the
+         cookie banner, matching what the Privacy Policy promises. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JG6PLJ9J21"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
 
-  gtag('config', 'G-JG6PLJ9J21');
-</script>
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied'
+      });
+
+      // Re-apply a previously saved choice before the first hit is sent.
+      try {
+        if (localStorage.getItem('cookie-consent') === 'accepted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
+
+      gtag('js', new Date());
+      gtag('config', 'G-JG6PLJ9J21');
+    </script>
+  </head>
   <body>
     <!-- Branded intro loader. Lives in the HTML so it paints on the very first
          frame, before the JS bundle loads, and covers whatever route is mounting. -->

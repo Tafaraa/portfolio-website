@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import SectionSkeleton from './components/ui/SectionSkeleton';
+import CookieConsent from './components/ui/CookieConsent';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import SEO from './components/ui/SEO';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -322,6 +323,7 @@ function App() {
 
               <Route path="*" element={<LazyRoute><NotFound /></LazyRoute>} />
             </Routes>
+            <CookieConsent />
           </Router>
       </ThemeProvider>
     </ErrorBoundary>
