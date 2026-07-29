@@ -1,0 +1,133 @@
+<!--
+  Supabase → Authentication → Emails → Magic Link → Message body.
+
+  Paste this whole file into the template editor. It must keep {{ .Token }} —
+  that is the 6-digit code the dashboard sign-in screen accepts when the link
+  itself fails (expired, or opened once already by an email scanner).
+
+  Design notes:
+  - Tables and inline styles only. Gmail and Outlook strip <style> blocks and
+    have no flexbox, so layout has to be old-fashioned to survive.
+  - Palette matches the dashboard: stone #0c0a09 / #1c1917 with emerald accents.
+  - The code is the hero, not the button, because the code is the path that
+    always works.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="supported-color-schemes" content="dark" />
+    <title>Your sign-in code</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#0c0a09; -webkit-font-smoothing:antialiased;">
+    <!-- Inbox preview line. Hidden in the body itself. -->
+    <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent; height:0; width:0;">
+      Your one-time code for the command center. Expires shortly, single use.
+    </div>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#0c0a09;">
+      <tr>
+        <td align="center" style="padding:40px 16px;">
+
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:520px; width:100%;">
+
+            <!-- Accent rule: the emerald→teal gradient the dashboard uses -->
+            <tr>
+              <td style="height:3px; line-height:3px; font-size:0; background-color:#10b981; background-image:linear-gradient(to right,#10b981,#2dd4bf); border-radius:3px 3px 0 0;">&nbsp;</td>
+            </tr>
+
+            <tr>
+              <td style="background-color:#141210; border:1px solid rgba(255,255,255,0.08); border-top:0; border-radius:0 0 16px 16px; padding:36px 32px;">
+
+                <!-- Brand mark -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="40" style="vertical-align:middle;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="40" style="width:40px; height:40px; background-color:rgba(16,185,129,0.10); border:1px solid rgba(16,185,129,0.25); border-radius:11px;">
+                        <tr>
+                          <td align="center" style="font-size:18px; line-height:38px; color:#6ee7b7;">&#128274;</td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td style="padding-left:12px; vertical-align:middle; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                      <div style="font-size:10px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:rgba(110,231,183,0.75);">Private area</div>
+                      <div style="font-size:14px; font-weight:600; color:#ffffff; padding-top:3px;">Command center</div>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Heading -->
+                <h1 style="margin:28px 0 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:22px; line-height:1.3; font-weight:700; color:#ffffff;">
+                  Welcome back, Tafara.
+                </h1>
+                <p style="margin:10px 0 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; line-height:1.65; color:rgba(255,255,255,0.58);">
+                  Here is your one-time sign-in code. Type it into the sign-in screen you already have open.
+                </p>
+
+                <!-- The code: the hero of this email -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:26px;">
+                  <tr>
+                    <td align="center" style="background-color:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.22); border-radius:12px; padding:22px 16px;">
+                      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:rgba(110,231,183,0.7);">
+                        Sign-in code
+                      </div>
+                      <div style="font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace; font-size:34px; font-weight:700; letter-spacing:9px; color:#ffffff; padding-top:10px; padding-left:9px;">
+                        {{ .Token }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Divider -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:26px 0;">
+                  <tr>
+                    <td style="height:1px; line-height:1px; font-size:0; background-color:rgba(255,255,255,0.08);">&nbsp;</td>
+                  </tr>
+                </table>
+
+                <p style="margin:0 0 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; line-height:1.6; color:rgba(255,255,255,0.45);">
+                  Or open the dashboard directly:
+                </p>
+
+                <!-- Button -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center" style="background-color:#10b981; border-radius:10px;">
+                      <a href="{{ .ConfirmationURL }}"
+                         style="display:inline-block; padding:12px 26px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; font-weight:600; color:#0c0a09; text-decoration:none; border-radius:10px;">
+                        Open the command center &rarr;
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <p style="margin:22px 0 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:1.65; color:rgba(255,255,255,0.35);">
+                  Single use, and it expires shortly. If the link says it is invalid, that usually means it was already opened once &mdash; use the code above instead.
+                </p>
+                <p style="margin:12px 0 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:12px; line-height:1.65; color:rgba(255,255,255,0.35);">
+                  If you did not ask to sign in, ignore this email. Nothing happens until the code is used.
+                </p>
+
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td align="center" style="padding:22px 16px 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:11px; line-height:1.7; color:rgba(255,255,255,0.28);">
+                <div style="font-weight:600; color:rgba(255,255,255,0.42);">Tafara Mutsvedu</div>
+                <div>Software Engineer &amp; Data Scientist</div>
+                <div style="padding-top:6px;">
+                  <a href="https://www.mutsvedutafara.com" style="color:#34d399; text-decoration:none;">mutsvedutafara.com</a>
+                </div>
+              </td>
+            </tr>
+
+          </table>
+
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

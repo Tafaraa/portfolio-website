@@ -35,7 +35,17 @@ alter table public.contact_submissions
   add column if not exists care_plan text,
   add column if not exists monthly_price integer,
   add column if not exists pricing_version integer,
-  add column if not exists pricing_snapshot jsonb;
+  add column if not exists pricing_snapshot jsonb,
+  -- Salted SHA-256 of the submitting IP, written by the contact function. Used
+  -- only to rate-limit repeat submissions; the raw address is never stored.
+  add column if not exists ip_hash text;
+
+-- Backs the rate-limit lookup: "how many rows from this hash in the last hour".
+create index if not exists contact_submissions_ip_hash_recent_idx
+  on public.contact_submissions (ip_hash, created_at desc);
+
+create index if not exists contact_submissions_email_recent_idx
+  on public.contact_submissions (email, created_at desc);
 
 create index if not exists contact_submissions_created_at_idx
   on public.contact_submissions (created_at desc);

@@ -16,6 +16,7 @@ import {
   calculateQuoteFromConfig,
   validatePricingConfig
 } from '../../shared/pricing-config.mjs';
+import { checkRateLimit, clientIp, hashIp, hasTrustedOrigin } from './_shared/guard.mjs';
 
 const SITE_URL = 'https://www.mutsvedutafara.com';
 const WHATSAPP_NUMBER = '27606249151';
@@ -367,6 +368,12 @@ export default async (request) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
+  // The form only ever posts from our own pages, so anything else is either a
+  // bot or a form someone re-hosted. Rejected before any work is done.
+  if (!hasTrustedOrigin(request)) {
+    return Response.json({ error: 'Request rejected.' }, { status: 403 });
+  }
+
   let body;
   try {
     body = await request.json();
@@ -446,6 +453,20 @@ export default async (request) => {
     );
   }
 
+  // Runs on a validated brief but before anything is stored or emailed, so a
+  // flood costs one indexed count query rather than two Resend sends.
+  const ipHash = await hashIp(clientIp(request));
+  const { limited, retryAfterSeconds } = await checkRateLimit({ ipHash, email });
+  if (limited) {
+    return Response.json(
+      {
+        error:
+          "You've sent a few briefs already. Give it an hour, or email tafara@mutsvedutafara.com directly and I'll pick it up straight away."
+      },
+      { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+    );
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL;
   const fromEmail = process.env.CONTACT_FROM_EMAIL;
@@ -502,6 +523,7 @@ export default async (request) => {
 
   await storeSubmission({
     request_id: requestId,
+    ip_hash: ipHash,
     name,
     email,
     phone: phone || null,

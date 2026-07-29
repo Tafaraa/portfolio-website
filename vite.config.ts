@@ -5,7 +5,8 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { resolve } from 'path';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+// `mode` drives the bundle-analysis opt-in: `npm run build:analyze`.
+export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -62,11 +63,15 @@ export default defineConfig({
         ],
       },
     }),
-    visualizer({
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    // Writes an ~870 KB stats.html next to the source. Useful when you are
+    // actually hunting bundle weight, pure noise on every deploy, so it is
+    // opt-in: `npm run build:analyze`.
+    mode === 'analyze' &&
+      visualizer({
+        open: false,
+        gzipSize: true,
+        brotliSize: true,
+      }),
   ],
   build: {
     minify: 'terser',
@@ -133,4 +138,4 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-router-dom'],
     exclude: ['lucide-react'],
   },
-});
+}));

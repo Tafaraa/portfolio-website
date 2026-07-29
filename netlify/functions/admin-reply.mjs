@@ -4,6 +4,8 @@
 //   RESEND_API_KEY, CONTACT_FROM_EMAIL, CONTACT_TO_EMAIL
 //   SUPABASE_URL, SUPABASE_ANON_KEY, ADMIN_EMAIL
 
+import { hasTrustedOrigin } from './_shared/guard.mjs';
+
 const SITE_URL = 'https://www.mutsvedutafara.com';
 
 const escapeHtml = (value = '') =>
@@ -57,6 +59,12 @@ const verifyAdmin = async (token) => {
 export default async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
+  }
+
+  // Belt and braces: the bearer check below is the real gate, but there is no
+  // reason for this endpoint to accept a call from anywhere but the dashboard.
+  if (!hasTrustedOrigin(req)) {
+    return Response.json({ error: 'Request rejected.' }, { status: 403 });
   }
 
   const token = (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
