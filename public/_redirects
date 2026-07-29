@@ -1,1 +1,6 @@
+# The dashboard is a separate document and must be matched before the SPA
+# catch-all. Kept in sync with the redirects in netlify.toml.
+/admin    /admin.html  200
+/admin/*  /admin.html  200
+
 /*  /index.html  200

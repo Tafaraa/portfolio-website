@@ -4,6 +4,7 @@ import AnimatedElement from '../ui/AnimatedElement';
 import { Menu, X } from 'lucide-react';
 import { handleAnchorClick } from '../../utils/scroll';
 import ThemeToggle from '../ui/ThemeToggle';
+import OwnerLink from '../ui/OwnerLink';
 import Education from '../../pages/education';
 
 const Header = () => {
@@ -80,9 +81,11 @@ const Header = () => {
                 </AnimatedElement>
               ))}
             </nav>
+            {/* Renders for the signed-in owner only; null for every visitor. */}
+            <OwnerLink />
             <AnimatedElement animation="fade" delay={0.8}>
               <ThemeToggle />
-            </AnimatedElement>  
+            </AnimatedElement>
           </nav>
           <div className="md:hidden flex items-center space-x-4">
             <ThemeToggle />
@@ -152,6 +155,7 @@ const Header = () => {
                     )}
                   </motion.div>
                 ))}
+                <OwnerLink variant="stacked" onNavigate={() => setIsMenuOpen(false)} />
               </nav>
             </div>
           </motion.div>

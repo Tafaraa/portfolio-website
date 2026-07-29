@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Private tool: never indexed, never previewed, never referrer-leaked. -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Command center</title>
+    <style>
+      /* Match the dashboard backdrop so there is no white flash before React
+         mounts. Kept inline: the dashboard must not wait on a stylesheet. */
+      html,
+      body {
+        margin: 0;
+        background-color: #0c0a09;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/admin-entry.tsx"></script>
+  </body>
+</html>

@@ -15,12 +15,26 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Registered by hand in src/main.tsx so the dashboard entry never ships a
+      // service worker registration at all.
+      injectRegister: false,
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       workbox: {
         // Opening a static file (certificate image, resume, sitemap) in a new
         // tab is a navigation request. Without this denylist the service
         // worker's SPA fallback serves index.html instead of the file.
-        navigateFallbackDenylist: [/^\/images\//, /\.(?:webp|png|jpe?g|svg|gif|ico|pdf|xml|txt|webmanifest)$/i],
+        // /admin is its own document, not an SPA route, so it must not be
+        // answered with the marketing shell either.
+        navigateFallbackDenylist: [
+          /^\/admin(?:\/|$)/,
+          /^\/images\//,
+          /\.(?:webp|png|jpe?g|svg|gif|ico|pdf|xml|txt|webmanifest)$/i,
+        ],
+        // Keep every byte of the dashboard out of the precache manifest.
+        // Otherwise the service worker downloads it on a visitor's very first
+        // page view, which is exactly what showed up in the network tab.
+        globIgnores: ['**/admin.html', '**/assets/js/admin-*.js', '**/assets/css/admin-*.css'],
+        cleanupOutdatedCaches: true,
       },
       manifest: {
         name: 'Tafara Mutsvedu - Software Developer & Data Scientist',
@@ -69,6 +83,12 @@ export default defineConfig({
       }
     },
     rollupOptions: {
+      // Two independent documents. The dashboard is not a route inside the
+      // marketing SPA, so none of its code is reachable from the public bundle.
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        admin: resolve(__dirname, 'admin.html'),
+      },
       output: {
         manualChunks: (id) => {
           // Core libraries

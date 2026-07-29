@@ -1,21 +1,21 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { ADMIN_EMAIL, isSupabaseConfigured, SUPABASE_ANON_KEY, SUPABASE_URL } from './site';
 
 // Public, browser-safe values. The anon key is designed to be exposed; every
 // table is protected by row-level security, so it only grants what the RLS
 // policies allow (here: the signed-in admin reading their own submissions).
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-// The one email allowed into the dashboard. Anyone else is signed straight out.
-export const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL as string | undefined)?.toLowerCase();
-
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+// The config itself lives in ./site so that modules which only need to *read*
+// it don't drag the auth SDK into the public bundle.
+export { ADMIN_EMAIL, isSupabaseConfigured };
 
 export const supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(supabaseUrl as string, supabaseAnonKey as string, {
+  ? createClient(SUPABASE_URL as string, SUPABASE_ANON_KEY as string, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
+        // Auth callbacks are only ever parsed on the dashboard entry point.
+        // The marketing site forwards them there before this client is even
+        // constructed (see src/lib/authCallback.ts).
         detectSessionInUrl: true
       }
     })

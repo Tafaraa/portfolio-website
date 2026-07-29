@@ -18,8 +18,8 @@ const LocationLanding = lazy(() => import('./pages/locationLanding'));
 const Hero = lazy(() => import('./pages/home'));
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy'));
 const Terms = lazy(() => import('./pages/legal/Terms'));
-const AdminApp = lazy(() => import('./pages/admin'));
 const NotFound = lazy(() => import('./pages/notFound'));
+const DashboardHandoff = lazy(() => import('./components/ui/DashboardHandoff'));
 
 const MainLayout = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -319,7 +319,10 @@ function App() {
               
               <Route path="/privacy-policy" element={<LazyRoute><PrivacyPolicy /></LazyRoute>} />
               <Route path="/terms" element={<LazyRoute><Terms /></LazyRoute>} />
-              <Route path="/admin" element={<LazyRoute><AdminApp /></LazyRoute>} />
+              {/* The dashboard is its own document (admin.html), not a route
+                  in this bundle. This entry only ever runs for a browser still
+                  held by a pre-split service worker. */}
+              <Route path="/admin" element={<LazyRoute><DashboardHandoff /></LazyRoute>} />
 
               <Route path="*" element={<LazyRoute><NotFound /></LazyRoute>} />
             </Routes>

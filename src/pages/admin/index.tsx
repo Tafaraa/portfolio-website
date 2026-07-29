@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import type { Session } from '@supabase/supabase-js';
 import {
+  ArrowLeft,
   ArrowRight,
   BadgeDollarSign,
   Inbox as InboxIcon,
+  KeyRound,
   LineChart,
   Lock,
   LogOut,
@@ -15,6 +17,8 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured, ADMIN_EMAIL, type ContactSubmission } from '../../lib/supabase';
+import { authRedirectOrigin, DASHBOARD_PATH } from '../../lib/site';
+import { consumeAuthCallbackError } from '../../lib/authCallback';
 import Inbox from './Inbox';
 import Marketing from './Marketing';
 import Insights from './Insights';
@@ -44,10 +48,43 @@ const ConfigNotice = () => (
   </div>
 );
 
+// The public site is a different document, so this is a real navigation rather
+// than a router link.
+const BackToSite = ({ className = '' }: { className?: string }) => (
+  <a
+    href="/"
+    className={`inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 ${className}`}
+  >
+    <ArrowLeft size={15} aria-hidden="true" /> Back to site
+  </a>
+);
+
+// Supabase reports a consumed, mistyped or timed-out link the same way. The
+// raw wording ("Email link is invalid or has expired") reads like a bug, so say
+// what actually happened and what to do about it.
+const describeCallbackError = (code: string, message: string) => {
+  if (code === 'otp_expired' || /expired|invalid/i.test(message)) {
+    return 'That sign-in link is no longer valid. Links are single-use and time out, and some email clients open them once while scanning. Send a fresh one — the same email carries a code you can type in instead.';
+  }
+  if (code === 'access_denied') return 'That sign-in attempt was rejected. Send a fresh link and try again.';
+  return message;
+};
+
 const SignIn = () => {
   const [email, setEmail] = useState('');
-  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [code, setCode] = useState('');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'verifying' | 'error'>('idle');
   const [error, setError] = useState('');
+
+  // A link that failed carries its reason in the URL. Read it once, then wipe
+  // it from the address bar so refreshing doesn't replay a stale message.
+  useEffect(() => {
+    const failure = consumeAuthCallbackError();
+    if (failure) {
+      setState('error');
+      setError(describeCallbackError(failure.code, failure.message));
+    }
+  }, []);
 
   const sendLink = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +93,10 @@ const SignIn = () => {
     setError('');
     const { error: err } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { emailRedirectTo: `${window.location.origin}/admin` }
+      // Never window.location.origin: the apex domain 301s to www, which
+      // breaks the round trip. authRedirectOrigin() pins production to the
+      // canonical host while leaving localhost and deploy previews alone.
+      options: { emailRedirectTo: `${authRedirectOrigin()}${DASHBOARD_PATH}` }
     });
     if (err) {
       setState('error');
@@ -64,6 +104,26 @@ const SignIn = () => {
     } else {
       setState('sent');
     }
+  };
+
+  // Same email, no link to click. Immune to scanners that follow links and to
+  // any redirect misconfiguration, which makes it the reliable way in when the
+  // link round trip misbehaves.
+  const verifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!supabase) return;
+    setState('verifying');
+    setError('');
+    const { error: err } = await supabase.auth.verifyOtp({
+      email: email.trim(),
+      token: code.trim(),
+      type: 'email'
+    });
+    if (err) {
+      setState('sent');
+      setError(err.message);
+    }
+    // On success onAuthStateChange swaps this screen for the dashboard.
   };
 
   return (
@@ -94,18 +154,79 @@ const SignIn = () => {
           </p>
 
           <AnimatePresence mode="wait">
-            {state === 'sent' ? (
+            {state === 'sent' || state === 'verifying' ? (
               <motion.div
                 key="sent"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-6 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-5 text-center"
+                className="mt-6 space-y-4"
               >
-                <Mail className="mx-auto mb-3 h-7 w-7 text-emerald-300" aria-hidden="true" />
-                <p className="text-sm font-semibold text-white">Check your inbox</p>
-                <p className="mt-1 text-xs leading-relaxed text-white/60">
-                  Tap the link in the email to sign in. You can close this tab.
-                </p>
+                <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-5 text-center">
+                  <Mail className="mx-auto mb-3 h-7 w-7 text-emerald-300" aria-hidden="true" />
+                  <p className="text-sm font-semibold text-white">Check your inbox</p>
+                  <p className="mt-1 text-xs leading-relaxed text-white/60">
+                    Tap the link to sign in, or enter the code from the same email below.
+                  </p>
+                </div>
+
+                {/* The code path needs no redirect and no link for a scanner to
+                    consume, so it works even when the link round trip fails. */}
+                <form onSubmit={verifyCode} className="space-y-3">
+                  <label htmlFor="admin-code" className="block text-xs font-medium text-white/60">
+                    Sign-in code
+                  </label>
+                  <div className="relative">
+                    <KeyRound
+                      size={16}
+                      className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35"
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="admin-code"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                      placeholder="123456"
+                      className="w-full rounded-xl border border-white/10 bg-white/5 py-2.5 pl-10 pr-3 text-sm tracking-[0.3em] text-white placeholder-white/25 outline-none transition-colors focus:border-emerald-400/60 focus:bg-white/[0.07]"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={state === 'verifying' || code.length < 6}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-stone-950 transition-colors hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    {state === 'verifying' ? (
+                      <>
+                        <RefreshCw size={15} className="animate-spin" aria-hidden="true" />
+                        Checking…
+                      </>
+                    ) : (
+                      <>
+                        Sign in with code
+                        <ArrowRight size={15} aria-hidden="true" />
+                      </>
+                    )}
+                  </button>
+                  {error && (
+                    <p className="flex items-start gap-1.5 text-xs text-rose-300">
+                      <ShieldAlert size={14} className="mt-px shrink-0" aria-hidden="true" />
+                      <span>{error}</span>
+                    </p>
+                  )}
+                </form>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setState('idle');
+                    setCode('');
+                    setError('');
+                  }}
+                  className="w-full text-center text-xs text-white/45 underline underline-offset-4 transition-colors hover:text-white/70"
+                >
+                  Use a different email or send another link
+                </button>
               </motion.div>
             ) : (
               <motion.form key="form" onSubmit={sendLink} className="mt-6 space-y-4">
@@ -160,9 +281,10 @@ const SignIn = () => {
           </AnimatePresence>
         </div>
 
-        <p className="mt-5 text-center text-xs text-white/35">
-          Protected area · authorised access only
-        </p>
+        <div className="mt-5 flex flex-col items-center gap-3">
+          <BackToSite />
+          <p className="text-center text-xs text-white/35">Protected area · authorised access only</p>
+        </div>
       </motion.div>
     </div>
   );
@@ -233,12 +355,15 @@ const AdminApp = () => {
           <ShieldAlert className="mx-auto mb-4 h-10 w-10 text-rose-400" />
           <h1 className="text-lg font-bold text-white">Not authorised</h1>
           <p className="mt-2 text-sm text-white/60">This account can't access the dashboard.</p>
-          <button
-            onClick={() => supabase?.auth.signOut()}
-            className="mt-5 rounded-full border border-white/15 bg-white/10 px-5 py-2 text-sm text-white hover:bg-white/20"
-          >
-            Sign out
-          </button>
+          <div className="mt-5 flex items-center justify-center gap-2">
+            <BackToSite />
+            <button
+              onClick={() => supabase?.auth.signOut()}
+              className="rounded-full border border-white/15 bg-white/10 px-5 py-2 text-sm text-white hover:bg-white/20"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -261,7 +386,8 @@ const AdminApp = () => {
             <p className="text-xs font-medium uppercase tracking-[0.25em] text-emerald-300/70">{greeting()}</p>
             <h1 className="mt-1 text-2xl font-bold md:text-3xl">Tafara's command center</h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <BackToSite />
             <button
               onClick={fetchSubmissions}
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10"
