@@ -17,8 +17,8 @@ import {
   validatePricingConfig
 } from '../../shared/pricing-config.mjs';
 import { checkRateLimit, clientIp, hashIp, hasTrustedOrigin } from './_shared/guard.mjs';
+import { SITE_URL, signatureHtml, signatureText } from './_shared/signature.mjs';
 
-const SITE_URL = 'https://www.mutsvedutafara.com';
 const WHATSAPP_NUMBER = '27606249151';
 
 const escapeHtml = (value = '') =>
@@ -55,21 +55,6 @@ const detailRows = (rows) =>
         </tr>`
     )
     .join('');
-
-const signatureHtml = `
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;border-top:1px solid #d6d3d1;">
-    <tr><td style="padding-top:18px;font-family:Arial,Helvetica,sans-serif;">
-      <p style="margin:0;font-size:15px;font-weight:700;color:#1c1917;">Tafara Mutsvedu</p>
-      <p style="margin:3px 0 0;font-size:13px;color:#57534e;">Software Engineer &amp; Data Scientist</p>
-      <p style="margin:10px 0 0;font-size:13px;line-height:1.7;">
-        <a href="${SITE_URL}" style="color:#047857;text-decoration:none;">mutsvedutafara.com</a>
-        &nbsp;&middot;&nbsp;
-        <a href="mailto:tafara@mutsvedutafara.com" style="color:#047857;text-decoration:none;">tafara@mutsvedutafara.com</a>
-        &nbsp;&middot;&nbsp;
-        <span style="color:#57534e;">+27 60 624 9151</span>
-      </p>
-    </td></tr>
-  </table>`;
 
 const emailShell = ({ preview, eyebrow, title, body }) => `
   <!doctype html>
@@ -203,10 +188,7 @@ Ongoing cost: ${monthlyLabel}
 
 I will reply within one business day with the clearest next step. ${lead.quoteDisclaimer}
 
-Tafara Mutsvedu
-Software Engineer & Data Scientist
-${SITE_URL}
-+27 60 624 9151`;
+${signatureText}`;
 };
 
 const notificationHtml = (lead) => {

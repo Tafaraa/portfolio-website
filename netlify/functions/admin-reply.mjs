@@ -5,8 +5,7 @@
 //   SUPABASE_URL, SUPABASE_ANON_KEY, ADMIN_EMAIL
 
 import { hasTrustedOrigin } from './_shared/guard.mjs';
-
-const SITE_URL = 'https://www.mutsvedutafara.com';
+import { signatureHtml } from './_shared/signature.mjs';
 
 const escapeHtml = (value = '') =>
   String(value)
@@ -14,26 +13,6 @@ const escapeHtml = (value = '') =>
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
-
-const signatureHtml = `
-  <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;border-top:2px solid #1c1917;padding-top:4px;">
-    <tr><td style="padding-top:14px;font-family:Arial,Helvetica,sans-serif;">
-      <p style="margin:0;font-size:15px;font-weight:bold;color:#1c1917;">Tafara Mutsvedu</p>
-      <p style="margin:2px 0 0;font-size:13px;color:#57534e;">Software Engineer &amp; Data Scientist</p>
-      <p style="margin:10px 0 0;font-size:13px;color:#57534e;">
-        <a href="${SITE_URL}" style="color:#047857;text-decoration:none;">mutsvedutafara.com</a>
-        &nbsp;&middot;&nbsp;
-        <a href="mailto:tafara@mutsvedutafara.com" style="color:#047857;text-decoration:none;">tafara@mutsvedutafara.com</a>
-        &nbsp;&middot;&nbsp;
-        <span style="color:#57534e;">+27 60 624 9151</span>
-      </p>
-      <p style="margin:6px 0 0;font-size:13px;">
-        <a href="https://www.linkedin.com/in/tafara-mutsvedu-93825621b" style="color:#047857;text-decoration:none;">LinkedIn</a>
-        &nbsp;&middot;&nbsp;
-        <a href="https://github.com/Tafaraa" style="color:#047857;text-decoration:none;">GitHub</a>
-      </p>
-    </td></tr>
-  </table>`;
 
 const replyHtml = (name, body) => `
   <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1c1917;line-height:1.6;">

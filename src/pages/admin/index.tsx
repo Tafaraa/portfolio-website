@@ -411,25 +411,26 @@ const AdminApp = () => {
           <StatTile label="Marketing opt-ins" value={stats.optedIn} accent="blue" />
         </div>
 
-        {/* Tabs */}
-        <div className="mt-8 flex gap-1 rounded-full border border-white/10 bg-white/5 p-1">
+        {/* Tabs. Four labelled tabs in one row need ~430px, so on a phone they
+            wrap to 2x2 and the pill container squares off to match. */}
+        <div className="mt-8 grid grid-cols-2 gap-1 rounded-2xl border border-white/10 bg-white/5 p-1 sm:flex sm:rounded-full">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`relative flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
+              className={`relative flex min-w-0 items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors sm:flex-1 sm:rounded-full sm:px-4 ${
                 tab === t.id ? 'text-stone-950' : 'text-white/70 hover:text-white'
               }`}
             >
               {tab === t.id && (
                 <motion.span
                   layoutId="admin-tab"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400"
+                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 sm:rounded-full"
                   transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                 />
               )}
-              <t.icon size={16} className="relative" />
-              <span className="relative">{t.label}</span>
+              <t.icon size={16} className="relative shrink-0" />
+              <span className="relative truncate">{t.label}</span>
             </button>
           ))}
         </div>
