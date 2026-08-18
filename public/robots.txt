@@ -1,31 +1,16 @@
 # https://www.robotstxt.org/robotstxt.html
+
+# One group, applying to every crawler. Named-agent groups were removed on
+# purpose: a crawler obeys only the most specific group that matches it, so the
+# old "User-agent: Googlebot / Allow: /" block overrode the Disallow rules below
+# and invited Google straight into /admin and /api/. A single wildcard group
+# cannot drift that way.
 User-agent: *
 Allow: /
-
-# Sitemap locations
-Sitemap: https://www.mutsvedutafara.com/sitemap.xml
-Sitemap: https://www.mutsvedutafara.com/sitemap-index.xml
-
-# Disallow private areas
 Disallow: /private/
 Disallow: /admin
 Disallow: /api/
 
-# Allow all search engines
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
+# Sitemap locations
+Sitemap: https://www.mutsvedutafara.com/sitemap.xml
+Sitemap: https://www.mutsvedutafara.com/sitemap-index.xml

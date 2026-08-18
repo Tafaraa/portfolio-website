@@ -8,7 +8,7 @@ const PrivacyPolicy = () => (
       description="How personal information is collected, used, and protected on mutsvedutafara.com, in line with POPIA, the GDPR and UK GDPR, the CCPA/CPRA, PIPEDA, the LGPD, the Australian Privacy Act and other applicable data protection laws worldwide."
       canonical="/privacy-policy"
     />
-    <LegalLayout title="Privacy Policy" lastUpdated="23 July 2026">
+    <LegalLayout title="Privacy Policy" lastUpdated="18 August 2026">
       <LegalSection heading="1. Who is responsible for your information">
         <p>
           This website, mutsvedutafara.com, is operated by Tafara Mutsvedu, a software engineer and data
@@ -24,6 +24,11 @@ const PrivacyPolicy = () => (
           Principles (Australia), and other applicable data protection laws in the regions I serve. For anything
           related to your personal information, contact tafara@mutsvedutafara.com.
         </p>
+        <p>
+          I am the Information Officer for this site as contemplated by POPIA, and can be reached at
+          tafara@mutsvedutafara.com. Under POPIA the head of a private body is its Information Officer by
+          default, and the role may only be taken up once registered with the Information Regulator.
+        </p>
       </LegalSection>
 
       <LegalSection heading="2. What information is collected">
@@ -38,6 +43,10 @@ const PrivacyPolicy = () => (
           </li>
           <li>The project context you include in your brief</li>
           <li>Whether you opted in to receiving occasional updates (marketing)</li>
+          <li>
+            A salted, one-way hash of your IP address, used only to limit repeat submissions from the same
+            source. The address itself is never stored, and the hash cannot be reversed to recover it.
+          </li>
         </ul>
         <p>
           When you browse the site, limited technical information (such as pages visited, approximate
@@ -60,8 +69,14 @@ const PrivacyPolicy = () => (
           </li>
           <li>
             <strong>To send occasional updates.</strong> Only if you explicitly ticked the opt-in box (consent).
-            You can withdraw this consent at any time by clicking unsubscribe in any update email or by emailing
-            tafara@mutsvedutafara.com.
+            Every update email carries a one-click unsubscribe link that works without signing in and never
+            expires. You can also withdraw consent at any time by emailing tafara@mutsvedutafara.com.
+            Withdrawing marketing consent does not affect an enquiry you have open; I will still reply to it.
+          </li>
+          <li>
+            <strong>To prevent abuse of the contact form.</strong> A hashed IP address and your email address
+            are used to limit how many briefs can be submitted in an hour, on the basis of my legitimate
+            interest in keeping the form usable and protecting it from automated abuse.
           </li>
           <li>
             <strong>To improve the website and keep it secure.</strong> Aggregated analytics and basic security
@@ -110,10 +125,25 @@ const PrivacyPolicy = () => (
 
       <LegalSection heading="6. How long it is kept">
         <p>
-          Enquiry details are kept for as long as needed to handle your request and for a reasonable period
-          afterwards for record-keeping and to comply with legal obligations. If you opted in to updates, your
-          email address is kept until you unsubscribe or ask for it to be removed. When information is no longer
-          needed, it is deleted or de-identified.
+          Enquiry details are kept for <strong>24 months</strong> from the date you submit them.
+        </p>
+        <p>
+          After 24 months the record is automatically anonymised by a scheduled job that runs daily. Your name,
+          email address, phone number, organisation, the content of your brief, my private notes and the hashed
+          IP address are all irreversibly removed. What remains is the non-identifying shape of the enquiry:
+          project type, scope, timeline, budget band and planning estimate, which I keep to understand what
+          people ask for and to improve how the site and its estimates work. That remaining record cannot be
+          linked back to you.
+        </p>
+        <p>
+          If you opted in to updates, your email address is kept for as long as that consent stands, because the
+          purpose is ongoing. Unsubscribing ends the consent, and the 24-month period then applies from your
+          original submission, so an unsubscribe from an older enquiry will usually lead to anonymisation on the
+          next daily run.
+        </p>
+        <p>
+          You do not have to wait for either. You can ask me to delete your information at any time and I will
+          action it directly.
         </p>
       </LegalSection>
 
@@ -137,6 +167,14 @@ const PrivacyPolicy = () => (
             sensitive information (note: I do not collect it)
           </li>
         </ul>
+
+        <p className="pt-2">
+          <strong>How these work in practice.</strong> For access or portability, I export everything held about
+          you as a structured, machine-readable file and send it to you. For deletion, I remove the record
+          outright rather than just flagging it. For direct marketing, use the unsubscribe link in any update
+          email: it takes effect immediately, needs no sign-in, and never expires. For correction, email me the
+          change and I will make it and confirm back to you.
+        </p>
 
         <p className="pt-2">
           <strong>EEA &amp; UK (GDPR / UK GDPR).</strong> You may lodge a complaint with your local supervisory
@@ -165,6 +203,8 @@ const PrivacyPolicy = () => (
           restricted with credentials that are never exposed in the browser, and access to stored submissions
           is limited to me. No method of transmission or storage is perfectly secure, but I work to protect your
           information and to notify you and the relevant authority of any breach where the law requires it.
+          Personal information is also removed on a schedule rather than kept indefinitely; see "How long it is
+          kept" above.
         </p>
       </LegalSection>
 

@@ -7,6 +7,23 @@
 import { hasTrustedOrigin } from './_shared/guard.mjs';
 import { signatureHtml } from './_shared/signature.mjs';
 
+// `name` and `subject` are interpolated into Resend's subject/body payload, so a
+// CR/LF surviving in either is a mail-header-injection route. Strip control
+// characters before anything else touches them. The admin is the only caller
+// here, but the endpoint should not depend on that for its safety.
+const cleanHeader = (value, maxLength) =>
+  String(value ?? '')
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .trim()
+    .slice(0, maxLength);
+
+// The reply body renders with white-space:pre-wrap, so line breaks are kept.
+const cleanBody = (value, maxLength) =>
+  String(value ?? '')
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
+    .trim()
+    .slice(0, maxLength);
+
 const escapeHtml = (value = '') =>
   String(value)
     .replace(/&/g, '&amp;')
@@ -59,10 +76,10 @@ export default async (req) => {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const to = String(body.to ?? '').trim();
-  const name = String(body.name ?? 'there').trim().slice(0, 120);
-  const subject = String(body.subject ?? '').trim().slice(0, 200) || 'Re: your message';
-  const message = String(body.message ?? '').trim().slice(0, 8000);
+  const to = cleanHeader(body.to, 200);
+  const name = cleanHeader(body.name, 120) || 'there';
+  const subject = cleanHeader(body.subject, 200) || 'Re: your message';
+  const message = cleanBody(body.message, 8000);
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to) || message.length < 1) {
     return Response.json({ error: 'A valid recipient and message are required.' }, { status: 400 });

@@ -145,3 +145,56 @@ create or replace view public.marketing_audience as
   from public.contact_submissions
   where marketing_opt_in = true and unsubscribed_at is null
   order by email, created_at desc;
+
+-- A view runs with its OWNER's privileges unless told otherwise, which means it
+-- reads through RLS on contact_submissions rather than being filtered by it.
+-- Without the line below, anyone holding the anon key -- which ships in the
+-- public JS bundle -- can read every opted-in contact's name and email straight
+-- off this view. security_invoker makes the view evaluate the caller's policies
+-- instead, so the admin sees rows and nobody else does.
+alter view public.marketing_audience set (security_invoker = on);
+
+-- Belt and braces: nothing public reads this view, so take it off the anon API
+-- surface entirely rather than relying on RLS alone.
+revoke all on public.marketing_audience from anon;
+
+-- ---------------------------------------------------------------------------
+-- 2026-08-18 fixes
+-- ---------------------------------------------------------------------------
+-- The index above was created PARTIAL (`where request_id is not null`), and
+-- Postgres will not infer a partial index for a bare `ON CONFLICT (request_id)`
+-- -- inference only matches when the statement repeats the same predicate,
+-- which PostgREST's `on_conflict=` parameter never does. Every insert from the
+-- contact function therefore failed with 42P10 and was silently swallowed.
+-- A plain unique index infers correctly, and request_id can stay nullable:
+-- Postgres treats NULLs as distinct, so multiple null rows are still allowed.
+drop index if exists public.contact_submissions_request_id_idx;
+create unique index if not exists contact_submissions_request_id_idx
+  on public.contact_submissions (request_id);
+
+-- Set when the retention sweep strips the personal fields from a row. Its
+-- presence is what stops the sweep processing the same row twice, and it makes
+-- an anonymised record obviously anonymised rather than badly filled in.
+alter table public.contact_submissions
+  add column if not exists anonymized_at timestamptz;
+
+-- Backs the retention sweep's "old, not yet anonymised" scan.
+create index if not exists contact_submissions_retention_idx
+  on public.contact_submissions (created_at)
+  where anonymized_at is null;
+
+-- Supabase's linter flags any function in an exposed schema that is created
+-- without a fixed search_path (`function_search_path_mutable`). is_admin() is
+-- called from every RLS policy in this project, so it is the last place that
+-- should resolve its names against whatever search_path the caller happens to
+-- bring. Pinning it to empty forces fully-qualified resolution; auth.jwt() is
+-- already qualified, so nothing else has to change.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select coalesce(auth.jwt() ->> 'email', '') = 'tafara@mutsvedutafara.com'
+$$;

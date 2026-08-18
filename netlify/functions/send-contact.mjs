@@ -18,6 +18,7 @@ import {
 } from '../../shared/pricing-config.mjs';
 import { checkRateLimit, clientIp, hashIp, hasTrustedOrigin } from './_shared/guard.mjs';
 import { SITE_URL, signatureHtml, signatureText } from './_shared/signature.mjs';
+import { createUnsubscribeToken } from './_shared/unsubscribe-token.mjs';
 
 const WHATSAPP_NUMBER = '27606249151';
 
@@ -29,7 +30,26 @@ const escapeHtml = (value = '') =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 
-const cleanText = (value, maxLength) => String(value ?? '').trim().slice(0, maxLength);
+// Strips control characters as well as trimming. Newlines are the reason: the
+// visitor's `name` is interpolated into the Resend subject line below, and a
+// CR/LF that survives into a mail header is the classic header-injection route
+// (a smuggled Bcc, say). Resend almost certainly sanitises this itself; not
+// relying on that is cheaper than finding out it doesn't.
+const cleanText = (value, maxLength) =>
+  String(value ?? '')
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .trim()
+    .slice(0, maxLength);
+
+// The enquiry body is the one field where line breaks carry meaning (the email
+// renders it with white-space:pre-wrap), so keep \n and \t and drop the rest.
+// It never reaches a header, so newlines are safe here.
+const cleanMultiline = (value, maxLength) =>
+  String(value ?? '')
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
+    .trim()
+    .slice(0, maxLength);
+
 const formatMoney = (value, currency = 'USD', locale = 'en-US') =>
   new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -93,7 +113,7 @@ const emailShell = ({ preview, eyebrow, title, body }) => `
     </body>
   </html>`;
 
-const autoReplyHtml = (lead) => {
+const autoReplyHtml = (lead, unsubscribeUrl) => {
   const quoteLabel = lead.quote
     ? `${formatUsd(lead.quote.minimum)} to ${formatUsd(lead.quote.maximum)}`
     : 'To be scoped after review';
@@ -162,11 +182,16 @@ const autoReplyHtml = (lead) => {
         <a href="${whatsAppUrl}" style="display:inline-block;padding:12px 18px;border-radius:999px;background:#047857;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;">Add a detail on WhatsApp</a>
       </div>
       <p style="margin:10px 0 0;font-size:12px;color:#78716c;">If the project is urgent, reply to this email or use the WhatsApp button.</p>
-      ${signatureHtml}`
+      ${signatureHtml}
+      ${
+        unsubscribeUrl
+          ? `<p style="margin:18px 0 0;font-size:11px;color:#a8a29e;">You asked to hear about occasional updates. <a href="${unsubscribeUrl}" style="color:#78716c;">Unsubscribe</a> at any time; it will not affect this enquiry.</p>`
+          : ''
+      }`
   });
 };
 
-const autoReplyText = (lead) => {
+const autoReplyText = (lead, unsubscribeUrl) => {
   const quoteLabel = lead.quote
     ? `${formatUsd(lead.quote.minimum)} to ${formatUsd(lead.quote.maximum)}`
     : 'To be scoped after review';
@@ -188,10 +213,21 @@ Ongoing cost: ${monthlyLabel}
 
 I will reply within one business day with the clearest next step. ${lead.quoteDisclaimer}
 
-${signatureText}`;
+${signatureText}${unsubscribeUrl ? `
+
+You asked to hear about occasional updates. Unsubscribe at any time: ${unsubscribeUrl}` : ''}`;
 };
 
-const notificationHtml = (lead) => {
+// A failed insert used to be a console line nobody would ever read, which is
+// exactly how the ON CONFLICT bug survived to production. Put it where it
+// cannot be missed: at the top of the email that gets read anyway.
+const storageWarning = (detail) => `
+  <div style="margin:0 0 22px;padding:14px 18px;background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:6px;">
+    <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#991b1b;">This enquiry was NOT saved to the database</p>
+    <p style="margin:0;font-size:12px;color:#7f1d1d;">This email is the only copy. ${escapeHtml(detail)}</p>
+  </div>`;
+
+const notificationHtml = (lead, stored) => {
   const quoteLabel = lead.quote
     ? `${formatUsd(lead.quote.minimum)} to ${formatUsd(lead.quote.maximum)}`
     : 'Needs scoping';
@@ -208,6 +244,7 @@ const notificationHtml = (lead) => {
     eyebrow: 'New qualified lead',
     title: `${lead.projectLabel} enquiry from ${lead.name}`,
     body: `
+      ${stored?.ok === false ? storageWarning(stored.detail) : ''}
       <div style="margin:0 0 22px;padding:4px 20px 16px;background:#fafaf9;border:1px solid #e7e5e4;border-radius:10px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
           ${detailRows([
@@ -238,7 +275,7 @@ const notificationHtml = (lead) => {
   });
 };
 
-const notificationText = (lead) => {
+const notificationText = (lead, stored) => {
   const quoteLabel = lead.quote
     ? `${formatUsd(lead.quote.minimum)} to ${formatUsd(lead.quote.maximum)}`
     : 'Needs scoping';
@@ -246,7 +283,10 @@ const notificationText = (lead) => {
   const monthlyLabel = lead.monthlyPrice > 0
     ? `${formatUsd(lead.monthlyPrice)} / month`
     : 'Not included';
-  return `New qualified website lead
+  return `${stored?.ok === false ? `!! NOT SAVED TO THE DATABASE: ${stored.detail}
+!! This email is the only copy. Fix the store, then re-enter it by hand.
+
+` : ''}New qualified website lead
 
 Name: ${lead.name}
 Organisation: ${lead.organization || 'Not provided'}
@@ -324,7 +364,10 @@ const loadPublishedPricing = async () => {
 const storeSubmission = async (submission) => {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return;
+  if (!url || !key) {
+    console.error('Submission not stored: SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY missing');
+    return { ok: false, detail: 'Supabase environment variables are not configured.' };
+  }
 
   const response = await fetch(
     `${url}/rest/v1/contact_submissions?on_conflict=request_id`,
@@ -341,8 +384,12 @@ const storeSubmission = async (submission) => {
   );
 
   if (!response.ok) {
-    console.error('Supabase insert failed:', response.status, await response.text());
+    const detail = await response.text();
+    console.error('Supabase insert failed:', response.status, detail);
+    return { ok: false, detail: `${response.status} ${detail}`.slice(0, 300) };
   }
+
+  return { ok: true };
 };
 
 export default async (request) => {
@@ -372,7 +419,7 @@ export default async (request) => {
   const email = cleanText(body.email, 200).toLowerCase();
   const phone = cleanText(body.phone, 50);
   const organization = cleanText(body.organization, 120);
-  const message = cleanText(body.message, 5000);
+  const message = cleanMultiline(body.message, 5000);
   const projectTypeId = cleanText(body.projectType, 60);
   const scopeId = cleanText(body.scope, 40);
   const timelineId = cleanText(body.timeline, 40);
@@ -503,7 +550,7 @@ export default async (request) => {
     marketingOptIn
   };
 
-  await storeSubmission({
+  const stored = await storeSubmission({
     request_id: requestId,
     ip_hash: ipHash,
     name,
@@ -562,6 +609,13 @@ export default async (request) => {
     source: 'project-brief-calculator'
   });
 
+  // Only offered to people who actually opted in; a transactional
+  // acknowledgement does not need, and should not carry, an opt-out.
+  const unsubscribeToken = marketingOptIn ? await createUnsubscribeToken(email) : null;
+  const unsubscribeUrl = unsubscribeToken
+    ? `${SITE_URL}/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}`
+    : null;
+
   try {
     await sendEmail(
       apiKey,
@@ -570,8 +624,8 @@ export default async (request) => {
         to: [toEmail],
         reply_to: email,
         subject: `New ${lead.projectLabel} enquiry from ${name}`,
-        html: notificationHtml(lead),
-        text: notificationText(lead),
+        html: notificationHtml(lead, stored),
+        text: notificationText(lead, stored),
         tags: [
           { name: 'email_type', value: 'lead_notification' },
           { name: 'project_type', value: projectTypeId.replace(/[^a-zA-Z0-9_-]/g, '_') }
@@ -587,8 +641,8 @@ export default async (request) => {
         to: [email],
         reply_to: toEmail,
         subject: 'Your project enquiry is in. Here is what happens next',
-        html: autoReplyHtml(lead),
-        text: autoReplyText(lead),
+        html: autoReplyHtml(lead, unsubscribeUrl),
+        text: autoReplyText(lead, unsubscribeUrl),
         tags: [{ name: 'email_type', value: 'lead_acknowledgement' }]
       },
       `${requestId}-lead-acknowledgement`

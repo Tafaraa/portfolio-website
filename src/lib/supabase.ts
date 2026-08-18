@@ -65,4 +65,5 @@ export type ContactSubmission = {
   notes: string | null;
   replied_at: string | null;
   unsubscribed_at: string | null;
+  anonymized_at: string | null;
 };

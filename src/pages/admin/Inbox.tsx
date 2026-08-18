@@ -6,6 +6,7 @@ import {
   Check,
   Loader,
   MessageCircle,
+  Download,
   Search,
   Send,
   Trash2
@@ -75,6 +76,29 @@ const Inbox = ({ submissions, loading, accessToken, onChanged }: Props) => {
   const setStatus = (status: ContactStatus) => selected && patch(selected.id, { status });
 
   const saveNotes = () => selected && patch(selected.id, { notes: notesDraft }).then(() => toast.success('Notes saved'));
+
+  // POPIA data-subject access request. Everything held about one person, in a
+  // machine-readable file, which is what both POPIA and GDPR portability ask
+  // for. Built from the row already in memory so it cannot drift from what the
+  // dashboard shows, and it works without another round trip.
+  const exportRecord = () => {
+    if (!selected) return;
+    const payload = {
+      exported_at: new Date().toISOString(),
+      exported_from: 'mutsvedutafara.com admin dashboard',
+      subject: { name: selected.name, email: selected.email },
+      record: selected
+    };
+    const url = URL.createObjectURL(
+      new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+    );
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dsar-${selected.email.replace(/[^a-z0-9]+/gi, '-')}-${selected.id.slice(0, 8)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Record exported');
+  };
 
   const remove = async () => {
     if (!selected || !supabase) return;
@@ -417,12 +441,21 @@ const Inbox = ({ submissions, loading, accessToken, onChanged }: Props) => {
                       >
                         <Check size={13} /> Save notes
                       </button>
-                      <button
-                        onClick={remove}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-400/20"
-                      >
-                        <Trash2 size={13} /> Delete
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={exportRecord}
+                          title="Export everything held about this person (POPIA access request)"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/80 hover:bg-white/10"
+                        >
+                          <Download size={13} /> Export
+                        </button>
+                        <button
+                          onClick={remove}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-400/20"
+                        >
+                          <Trash2 size={13} /> Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

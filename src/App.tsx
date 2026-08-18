@@ -18,6 +18,7 @@ const LocationLanding = lazy(() => import('./pages/locationLanding'));
 const Hero = lazy(() => import('./pages/home'));
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy'));
 const Terms = lazy(() => import('./pages/legal/Terms'));
+const Unsubscribe = lazy(() => import('./pages/legal/Unsubscribe'));
 const NotFound = lazy(() => import('./pages/notFound'));
 const DashboardHandoff = lazy(() => import('./components/ui/DashboardHandoff'));
 
@@ -319,6 +320,7 @@ function App() {
               
               <Route path="/privacy-policy" element={<LazyRoute><PrivacyPolicy /></LazyRoute>} />
               <Route path="/terms" element={<LazyRoute><Terms /></LazyRoute>} />
+              <Route path="/unsubscribe" element={<LazyRoute><Unsubscribe /></LazyRoute>} />
               {/* The dashboard is its own document (admin.html), not a route
                   in this bundle. This entry only ever runs for a browser still
                   held by a pre-split service worker. */}
