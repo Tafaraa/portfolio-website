@@ -694,7 +694,6 @@
     <!-- Performance optimizations -->
     <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2" crossorigin>
-    <link rel="preload" as="image" href="/images/profile.webp" importance="high">
     <!-- Kept byte-for-byte in step with the Content-Security-Policy header in
          netlify.toml, which carries the same policy plus frame-ancestors (meta
          cannot set that one). Both are enforced, so the browser applies the
@@ -755,11 +754,30 @@
       })();
     </script>
 
+    <!-- Decide before first paint whether the intro animation runs. It is a
+         first-impression hook, so it plays once per visitor and is then
+         remembered; returning visitors get content immediately instead of
+         waiting out the 2.6s hold, which is what was capping LCP. -->
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('tm_intro_seen')) {
+            document.documentElement.classList.add('intro-seen');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Intro loader styles: a branded "arc reactor" boot animation that greets
-         every visitor for ~2.6s (a deliberate hook, even on fast networks) and
-         covers the page while the app mounts. Pure CSS, theme-aware, works in
-         every browser. -->
+         a first-time visitor for ~2.6s (a deliberate hook) and covers the page
+         while the app mounts. Shown once per visitor, then remembered, so it
+         never sits between a returning visitor and the content. Pure CSS,
+         theme-aware, works in every browser. -->
     <style>
+      /* Returning visitor: the intro is skipped entirely and must not paint
+         even for one frame. Set before first paint by the script above. */
+      html.intro-seen #intro-loader { display: none !important; }
+
       #intro-loader {
         position: fixed;
         inset: 0;
@@ -999,6 +1017,17 @@
       (function () {
         var loader = document.getElementById('intro-loader');
         if (!loader) return;
+
+        // Returning visitor: drop the element and leave the page alone. No
+        // scroll lock, no minimum hold, nothing between them and the content.
+        if (document.documentElement.classList.contains('intro-seen')) {
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+          window.__appReady = function () {};
+          return;
+        }
+
+        // First visit: play it, and remember that we have.
+        try { localStorage.setItem('tm_intro_seen', '1'); } catch (e) {}
 
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var MIN_MS = reduce ? 500 : 2600;   // minimum on-screen time (the hook)

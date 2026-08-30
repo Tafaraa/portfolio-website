@@ -8,7 +8,7 @@ import ErrorBoundary from './components/ui/ErrorBoundary';
 import SEO from './components/ui/SEO';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ArrowUp } from 'lucide-react';
-import JulieChatWidget from './components/ui/JulieChatWidget';
+import { LANDING_ROUTES } from './pages/locationLanding/routes';
 
 // Lazy load non-critical components
 const About = lazy(() => import('./pages/about'));
@@ -21,6 +21,9 @@ const Terms = lazy(() => import('./pages/legal/Terms'));
 const Unsubscribe = lazy(() => import('./pages/legal/Unsubscribe'));
 const NotFound = lazy(() => import('./pages/notFound'));
 const DashboardHandoff = lazy(() => import('./components/ui/DashboardHandoff'));
+// The floating chat widget is not part of the first view and pulled the quote
+// calculator into the entry chunk. Lazy so it lands after the page paints.
+const JulieChatWidget = lazy(() => import('./components/ui/JulieChatWidget'));
 
 const MainLayout = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -262,7 +265,9 @@ const MainLayout = () => {
         <ArrowUp size={24} aria-hidden="true" />
       </button>
 
-      <JulieChatWidget />
+      <Suspense fallback={null}>
+        <JulieChatWidget />
+      </Suspense>
     </div>
   );
 };
@@ -276,66 +281,6 @@ const LazyRoute = ({ children }: { children: ReactNode }) => (
     {children}
   </Suspense>
 );
-
-const LANDING_ROUTES = [
-  '/best-software-developer-midrand',
-  '/best-software-developer-johannesburg',
-  '/best-software-developer-zimbabwe',
-  '/software-developer-gauteng',
-  '/software-developer-pretoria',
-  '/software-developer-cape-town',
-  '/software-developer-durban',
-  '/software-developer-usa',
-  '/software-developer-europe',
-  '/software-developer-uae',
-  '/software-developer-saudi-arabia',
-  '/software-developer-qatar',
-  '/software-developer-mauritius',
-  '/software-developer-botswana',
-  '/software-developer-namibia',
-  '/remote-software-developer',
-  '/hire-remote-fullstack-developer',
-  '/remote-react-developer-usa',
-  '/remote-developer-south-africa',
-  '/remote-data-scientist-south-africa',
-  '/react-developer-south-africa',
-  '/fullstack-developer-south-africa',
-  '/data-scientist-south-africa',
-  '/ai-engineer',
-  '/data-engineer',
-  '/website-creation-services',
-  '/freelance-developer',
-  '/hire-ai-engineer',
-  '/hire-data-engineer',
-  '/react-developer',
-  '/python-developer',
-  '/machine-learning-engineer',
-  '/software-engineer',
-  '/data-scientist',
-  '/ai-consultant',
-  '/ai-workflow-automation',
-  '/ai-automation-for-business',
-  '/ai-chatbot-developer',
-  '/llm-engineer',
-  '/get-your-business-online',
-  '/ecommerce-website-developer',
-  '/small-business-website',
-  // Plain-English IT help. These target how non-technical people actually
-  // search ("my email is not working", "best IT specialist", "fix my
-  // spreadsheet") rather than job titles.
-  '/it-support-for-small-business',
-  '/best-it-specialist',
-  '/it-specialist-johannesburg',
-  '/it-support-midrand',
-  '/computer-help-for-small-business',
-  '/fix-email-problems',
-  '/business-email-setup',
-  '/emails-going-to-spam',
-  '/excel-spreadsheet-help',
-  '/google-sheets-automation',
-  '/move-from-spreadsheets-to-a-system',
-  '/replace-spreadsheets-with-software'
-] as const;
 
 function App() {
   useEffect(() => {

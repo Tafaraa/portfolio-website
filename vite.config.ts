@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { resolve } from 'path';
+import { prerenderLandingPages } from './scripts/prerender';
 
 // https://vitejs.dev/config/
 // `mode` drives the bundle-analysis opt-in: `npm run build:analyze`.
@@ -14,6 +15,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    prerenderLandingPages(),
     VitePWA({
       registerType: 'autoUpdate',
       // Registered by hand in src/main.tsx so the dashboard entry never ships a
@@ -34,7 +36,17 @@ export default defineConfig(({ mode }) => ({
         // Keep every byte of the dashboard out of the precache manifest.
         // Otherwise the service worker downloads it on a visitor's very first
         // page view, which is exactly what showed up in the network tab.
-        globIgnores: ['**/admin.html', '**/assets/js/admin-*.js', '**/assets/css/admin-*.css'],
+        // The prerendered route documents (dist/<route>/index.html) exist for
+        // crawlers and link-preview scrapers, which never run a service
+        // worker. Precaching all 54 of them would make a visitor's first page
+        // view download ~1.5MB of duplicate shells; navigations are already
+        // served by navigateFallback from the root index.html.
+        globIgnores: [
+          '**/admin.html',
+          '**/assets/js/admin-*.js',
+          '**/assets/css/admin-*.css',
+          '*/index.html'
+        ],
         cleanupOutdatedCaches: true,
       },
       manifest: {
@@ -111,10 +123,16 @@ export default defineConfig(({ mode }) => ({
               id.includes('node_modules/framer-motion')) {
             return 'ui';
           }
-          // Other dependencies
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+          // Everything else is deliberately left to the bundler.
+          //
+          // A catch-all `vendor` rule used to sweep every remaining dependency
+          // into one chunk. That made the ~210KB Supabase client a static
+          // import of the marketing entry, so every visitor downloaded it to
+          // render a page that never calls it. Naming a chunk per library did
+          // not help either: the shared module-preload helper landed in the
+          // same chunk, which kept it on the critical path. Left alone, the
+          // bundler follows the real import graph and keeps code that is only
+          // reached through a dynamic import in its own lazy chunk.
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
