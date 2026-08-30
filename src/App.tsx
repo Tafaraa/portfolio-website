@@ -92,7 +92,7 @@ const MainLayout = () => {
       <SEO
         title="Tafara Mutsvedu | Software Engineer, AI and Data Systems"
         description="South African software engineer building production software, intelligent automation and decision ready data systems for businesses that need reliable execution."
-        keywords="Tafara Mutsvedu, software engineer South Africa, production software engineer, AI systems engineer, data systems engineer, intelligent automation, business process automation, custom business software, operational software, AI workflow automation, data engineering South Africa, React developer Johannesburg, Python developer South Africa, machine learning engineer, full stack developer Gauteng, software consultant, contract software engineer, remote software engineer, dashboard development, web application development, ecommerce systems, team training, Tafara, Mutsvedu"
+        keywords="Tafara Mutsvedu, software engineer South Africa, production software engineer, AI systems engineer, data systems engineer, intelligent automation, business process automation, custom business software, operational software, AI workflow automation, data engineering South Africa, React developer Johannesburg, Python developer South Africa, machine learning engineer, full stack developer Gauteng, software consultant, contract software engineer, remote software engineer, dashboard development, web application development, ecommerce systems, team training, IT support for small business, IT specialist South Africa, business email setup, fix email problems, emails going to spam, Excel and spreadsheet help, Google Sheets automation, move from spreadsheets to a system, replace spreadsheets with software, computer help for small business, Tafara, Mutsvedu"
         canonical="/"
         tags={["software development", "data science", "machine learning", "AI engineering", "data engineering", "website creation services", "React", "Python", "South Africa", "Midrand", "Johannesburg", "freelance", "permanent jobs", "AI applications", "e-commerce development"]}
         structuredData={[
@@ -126,7 +126,15 @@ const MainLayout = () => {
               'AI Workflow Automation',
               'Business Process Automation',
               'E-commerce Development',
-              'Dashboard Development'
+              'Dashboard Development',
+              'IT Support',
+              'Business Email Setup',
+              'Email Deliverability',
+              'Microsoft 365',
+              'Google Workspace',
+              'Microsoft Excel',
+              'Google Sheets',
+              'Spreadsheet Automation'
             ]
           },
           {
@@ -141,7 +149,12 @@ const MainLayout = () => {
               'Team training and system handover',
               'Dashboard and data analytics development',
               'E-commerce and payment integration',
-              'SEO, performance and UX improvement'
+              'SEO, performance and UX improvement',
+              'IT support for small business',
+              'Business email setup and email troubleshooting',
+              'Email deliverability and spam problems',
+              'Excel and Google Sheets help',
+              'Spreadsheet to system migration'
             ],
             hasOfferCatalog: {
               '@type': 'OfferCatalog',
@@ -181,6 +194,24 @@ const MainLayout = () => {
                     name: 'Dashboards and data',
                     description:
                       'Dashboards and reporting that make business decisions based on numbers instead of gut feel.'
+                  }
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'IT support and email problems',
+                    description:
+                      'Business email set up on your own domain, email that will not send or receive, mail landing in spam, staff accounts and backups.'
+                  }
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'Spreadsheet help and migration',
+                    description:
+                      'Excel and Google Sheets fixed, cleaned up and automated, or moved onto a proper system when the spreadsheet has been outgrown.'
                   }
                 }
               ]
@@ -288,7 +319,22 @@ const LANDING_ROUTES = [
   '/llm-engineer',
   '/get-your-business-online',
   '/ecommerce-website-developer',
-  '/small-business-website'
+  '/small-business-website',
+  // Plain-English IT help. These target how non-technical people actually
+  // search ("my email is not working", "best IT specialist", "fix my
+  // spreadsheet") rather than job titles.
+  '/it-support-for-small-business',
+  '/best-it-specialist',
+  '/it-specialist-johannesburg',
+  '/it-support-midrand',
+  '/computer-help-for-small-business',
+  '/fix-email-problems',
+  '/business-email-setup',
+  '/emails-going-to-spam',
+  '/excel-spreadsheet-help',
+  '/google-sheets-automation',
+  '/move-from-spreadsheets-to-a-system',
+  '/replace-spreadsheets-with-software'
 ] as const;
 
 function App() {
