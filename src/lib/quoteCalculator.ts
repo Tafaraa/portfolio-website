@@ -13,7 +13,7 @@ import {
   type ScopeOption,
   type TimelineOption
 } from '../../shared/pricing-config.mjs';
-import { supabase } from './supabase';
+
 
 export type {
   BudgetOption,
@@ -75,6 +75,10 @@ export const getOptionLabel = (options: QuoteOption[], id?: string | null) =>
 let publishedPricingPromise: Promise<PricingConfig> | null = null;
 
 export const loadPublishedPricing = async (force = false): Promise<PricingConfig> => {
+  // Imported on demand: a static import made the ~210KB Supabase client a
+  // dependency of every page that can reach a quote, including the homepage,
+  // which only needed it if a visitor actually opened the chat widget.
+  const { supabase } = await import('./supabase');
   if (!supabase) return DEFAULT_PRICING_CONFIG;
   if (force || !publishedPricingPromise) {
     publishedPricingPromise = supabase
