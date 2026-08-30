@@ -4,9 +4,12 @@ import {
   BarChart3,
   CheckCircle2,
   FileDown,
+  FileSpreadsheet,
   Gauge,
   Globe,
   GraduationCap,
+  LifeBuoy,
+  Mail,
   ShoppingCart,
   Workflow,
   Wrench
@@ -50,6 +53,24 @@ const services = [
     description: 'Already have a site? I make it faster, rank it higher, and stop it leaking customers.',
     icon: Gauge,
     tags: ['SEO', 'Speed', 'UX']
+  },
+  {
+    title: 'Fix your email',
+    description: 'Email not sending, landing in spam, or still on a Gmail address? Sorted properly.',
+    icon: Mail,
+    tags: ['Business email', 'Spam fixes', 'Setup']
+  },
+  {
+    title: 'Spreadsheets sorted',
+    description: 'Broken formulas, messy files, and the monthly copy-and-paste that eats your day.',
+    icon: FileSpreadsheet,
+    tags: ['Excel', 'Google Sheets', 'Automation']
+  },
+  {
+    title: 'Everyday IT support',
+    description: 'Accounts, backups, files and passwords, explained in plain English by one person.',
+    icon: LifeBuoy,
+    tags: ['IT support', 'Accounts', 'Backups']
   }
 ];
 
@@ -82,7 +103,10 @@ const SECTION_STEPS = [
   'Sell online',
   'Dashboards & data',
   'Train your team',
-  'Fix & level up'
+  'Fix & level up',
+  'Fix your email',
+  'Spreadsheets sorted',
+  'Everyday IT support'
 ];
 
 const About = () => {

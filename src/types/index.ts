@@ -17,4 +17,13 @@ export interface PageDataEntry {
   marketHeading?: string;
   marketSummary?: string;
   marketPoints?: string[];
+  // Opt in to the full page (market block, service cards, FAQ section + FAQPage
+  // schema, CTA band). Left off, a page renders the short hero-and-proof layout.
+  longForm?: boolean;
+  // Which set of service cards to show. 'it' swaps the engineering language for
+  // the plain-English framing non-technical visitors actually search with.
+  serviceSet?: 'engineering' | 'it';
+  // Overrides the "Questions people usually ask" defaults, which are written for
+  // developer/recruiter traffic and read wrong on an IT-support page.
+  faqsReplaceDefaults?: boolean;
 }

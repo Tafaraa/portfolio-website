@@ -8,9 +8,12 @@ import {
   Code2,
   Database,
   Download,
+  FileSpreadsheet,
+  Mail,
   MapPin,
   MessageCircle,
   Phone,
+  ShieldCheck,
   Workflow
 } from 'lucide-react';
 import OptimizedImage from '../../components/ui/OptimizedImage';
@@ -69,6 +72,47 @@ const services = [
   }
 ];
 
+// The same work, described the way a non-technical owner searches for it:
+// "my email isn't working", "someone to fix my spreadsheet", "an IT guy".
+const itServices = [
+  {
+    icon: Mail,
+    title: 'Email that just works',
+    points: [
+      'Business email on your own domain',
+      'Fix email not sending or receiving',
+      'Stop your mail landing in spam'
+    ]
+  },
+  {
+    icon: FileSpreadsheet,
+    title: 'Spreadsheets sorted',
+    points: [
+      'Fix broken Excel and Google Sheets',
+      'Formulas, reports and clean-ups',
+      'Automate the copy-and-paste work'
+    ]
+  },
+  {
+    icon: Database,
+    title: 'Off spreadsheets, onto a system',
+    points: [
+      'Move your sheets into a real system',
+      'Nothing lost, nothing retyped',
+      'Everyone works off one version'
+    ]
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Everyday IT support',
+    points: [
+      'Accounts, backups and passwords',
+      'New staff set up properly',
+      'A person who answers when you call'
+    ]
+  }
+];
+
 const proofProjects = [
   {
     title: 'Dr Metuse',
@@ -103,6 +147,27 @@ const defaultFaqs: LandingFaq[] = [
   {
     q: 'Are you open to full-time or contract roles?',
     a: "Yes, I'm open to full-time and contract work alongside client projects. Download the CV or send a message and let's talk."
+  }
+];
+
+// Shown at the bottom of the IT-support pages instead of the developer/recruiter
+// defaults above. These are the questions people actually ask on the first call.
+const itSupportFaqs: LandingFaq[] = [
+  {
+    q: 'I am not technical at all. Is that a problem?',
+    a: "Not even slightly. Most people I help are not technical, and that is the point of hiring someone. You describe the problem in your own words, I ask a few plain questions, and I explain what I am doing without the jargon."
+  },
+  {
+    q: 'Do you have to come to my office?',
+    a: 'Usually no. Email, spreadsheet and account problems are almost always fixed remotely, and I can do it while you carry on working. If something genuinely needs hands on a machine, I will say so, and I can come out around Gauteng.'
+  },
+  {
+    q: 'How much does it cost?',
+    a: "Small fixes are usually a quick once-off. Bigger jobs, like moving a business off spreadsheets, get a fixed quote before anything starts, so there is no surprise invoice. If the job is small enough that you do not need me, I will tell you that too."
+  },
+  {
+    q: 'How quickly can you look at it?',
+    a: 'Send a WhatsApp or give me a call. Anything that is stopping you working, like email being down, I look at the same day wherever I can.'
   }
 ];
 
@@ -618,6 +683,386 @@ const LocationLanding = () => {
       audience: 'both',
       keywords:
         'freelance developer, freelance software engineer, freelance data scientist, freelance ai engineer, contract developer, project-based developer'
+    },
+
+    // ---- IT support / everyday tech help --------------------------------
+    // Written for people who do not search "software engineer". They search
+    // "my email is not working", "someone to fix my spreadsheet", "IT guy near
+    // me". Same person, same skills, language they actually use.
+    'it-support-for-small-business': {
+      title: 'IT Support for Small Businesses',
+      subtitle: 'One person who sorts out the tech, in plain English',
+      description:
+        'IT support for small businesses that do not have an IT department. Email that will not work, spreadsheets that keep breaking, new staff to set up, files nobody can find. I fix the day-to-day tech and explain it without the jargon.',
+      location: 'South Africa',
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Email problems', 'Spreadsheet help', 'Accounts & backups', 'No jargon'],
+      keywords:
+        'it support for small business, small business it support south africa, it support near me, it help for small business, outsourced it support, it services small business, computer help small business',
+      marketHeading: 'The stuff that quietly costs you a whole morning',
+      marketSummary:
+        'Most small businesses do not need an IT department. They need one reliable person to call when something stops working, and someone who will explain what happened afterwards.',
+      marketPoints: [
+        'Email, accounts and file access sorted properly the first time',
+        'Fixes explained in normal words, so you know what changed',
+        'A standing person to call instead of asking a friend of a friend'
+      ],
+      faqs: [
+        {
+          q: 'What sort of problems do you actually help with?',
+          a: "Email not sending or receiving, mail going to spam, setting up a business email address on your own domain, spreadsheets that have grown out of control, moving your files somewhere everyone can reach them, setting up a new employee's accounts, and getting off paper or WhatsApp and into something organised."
+        },
+        {
+          q: 'We are only four people. Are we too small for you?',
+          a: 'No. Small businesses are most of my work. A two-person operation with a broken inbox loses just as much time as a fifty-person one, and the fix is usually quicker and cheaper.'
+        }
+      ]
+    },
+    'best-it-specialist': {
+      title: 'Looking for the Best IT Specialist?',
+      subtitle: 'Someone who fixes it, explains it, and answers the phone',
+      description:
+        'Looking for a good IT specialist? I help businesses and individuals with email problems, spreadsheets, accounts, backups and getting organised systems in place, then explain it in plain English so it does not happen again.',
+      location: 'South Africa',
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Email fixed', 'Spreadsheets sorted', 'Straight answers', 'Same-day where possible'],
+      keywords:
+        'best it specialist, it specialist near me, it specialist south africa, good it person, it technician, it expert for small business, it consultant south africa, computer specialist',
+      marketHeading: 'What makes an IT person worth keeping',
+      marketSummary:
+        'Not the acronyms. It is whether they pick up, whether the problem stays fixed, and whether you understand what happened well enough to avoid it next time.',
+      marketPoints: [
+        'You get a straight answer, including when the answer is "you do not need me for this"',
+        'The fix is written down, so you are not dependent on my memory',
+        'The same person handles the small fixes and the bigger systems later'
+      ],
+      faqs: [
+        {
+          q: 'Are you an IT specialist or a software developer?',
+          a: "Both, and that combination is usually the useful part. I fix the everyday things (email, accounts, spreadsheets, backups), and when a problem keeps coming back because a process is being held together by hand, I can build the system that actually solves it."
+        },
+        {
+          q: 'Someone told me I need a whole IT company. Do I?',
+          a: 'Usually not, at least not yet. Under about twenty people, one dependable person is normally faster, cheaper and easier to reach than a support desk with a ticket queue. I will tell you honestly if you have outgrown that.'
+        }
+      ]
+    },
+    'it-specialist-johannesburg': {
+      title: 'IT Specialist in Johannesburg',
+      subtitle: 'Email, spreadsheets and business systems, sorted',
+      description:
+        'IT specialist working with Johannesburg businesses on the everyday tech: email problems, spreadsheets, accounts, backups, and moving off manual admin onto a proper system. Remote for most things, in person around Gauteng when it needs hands.',
+      location: 'Johannesburg, Gauteng',
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Joburg & Gauteng', 'Email problems', 'Spreadsheet help', 'Systems that stick'],
+      keywords:
+        'it specialist johannesburg, it support johannesburg, it services johannesburg, it company johannesburg small business, email support johannesburg, it technician johannesburg, computer support johannesburg',
+      marketHeading: 'Local when it matters, remote when it is faster',
+      marketSummary:
+        'Most email and spreadsheet problems are solved faster over a screen share than by waiting half a day for someone to drive out. I work whichever way gets you back to work soonest.',
+      marketPoints: [
+        'Same-day remote help for anything stopping you from working',
+        'On-site around Johannesburg and Gauteng when the job needs it',
+        'Fixed quotes for the bigger jobs, before anything starts'
+      ]
+    },
+    'it-support-midrand': {
+      title: 'IT Support in Midrand',
+      subtitle: 'A local person for the everyday tech problems',
+      description:
+        'IT support in Midrand and the surrounding Gauteng area. Business email setup and email problems, spreadsheet help, staff accounts, backups, and building the systems that replace all the manual admin.',
+      location: 'Midrand, Gauteng',
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Based in Midrand', 'Email & accounts', 'Spreadsheet help', 'On-site available'],
+      keywords:
+        'it support midrand, it specialist midrand, it services midrand, computer support midrand, email setup midrand, it company midrand, tech support midrand gauteng',
+      marketHeading: 'Based in Midrand, working across Gauteng',
+      marketSummary:
+        'Being nearby means a real conversation about how your business actually runs, not a ticket number and a script.',
+      marketPoints: [
+        'On-site visits around Midrand, Centurion, Sandton and Pretoria',
+        'Remote support for anything that does not need hands on a machine',
+        'Documented handover, so your team is not stuck waiting on me'
+      ]
+    },
+    'computer-help-for-small-business': {
+      title: 'Computer and Tech Help for Small Businesses',
+      subtitle: 'Ask the question however it comes out. I will translate.',
+      description:
+        'Practical computer and tech help for small businesses and people who would rather not deal with any of it. Email, printers, files, spreadsheets, accounts, backups and passwords, sorted by someone who explains things without making you feel silly.',
+      location: 'South Africa',
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['No silly questions', 'Plain English', 'Remote or on-site', 'Fixed properly'],
+      keywords:
+        'computer help for small business, tech help small business, computer support near me, help with computers, technology help for business owners, tech support for non technical people, someone to help with computer problems',
+      marketHeading: 'You do not have to know what it is called',
+      marketSummary:
+        '"The thing where the emails come in has stopped" is a perfectly good description of the problem. Working out what it is called is my job, not yours.',
+      marketPoints: [
+        'Describe it in your own words, on the phone or over WhatsApp',
+        'I tell you what is wrong and what it costs before doing anything',
+        'You get a short written note afterwards, in normal language'
+      ],
+      faqs: [
+        {
+          q: 'I feel silly asking. Is this too basic?',
+          a: "There is no such thing as too basic here. Half of what I get asked is something that takes five minutes once you know where to look, and nobody is born knowing where to look."
+        },
+        {
+          q: 'Can you help me personally, not just my business?',
+          a: 'Yes. Email, backups, passwords, a laptop that has become unusable, photos you are worried about losing. Same help, smaller scale.'
+        }
+      ]
+    },
+
+    // ---- Email ----------------------------------------------------------
+    'fix-email-problems': {
+      title: 'Email Not Working? Get It Fixed',
+      subtitle: 'Not sending, not receiving, or going to the wrong place',
+      description:
+        'Email problems fixed properly: mail not sending or not arriving, messages landing in spam, a mailbox that has stopped syncing, or email that broke after a domain or provider change. I find the actual cause instead of guessing.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Not sending', 'Not receiving', 'Going to spam', 'Fixed remotely'],
+      keywords:
+        'fix email problems, email not working, email not sending, email not receiving, business email problems, email support south africa, someone to fix my email, email troubleshooting, email stopped working',
+      marketHeading: 'Email breaks for a handful of boring reasons',
+      marketSummary:
+        'Almost every case comes down to DNS records, a mailbox that is full, a password or app change, or a domain that was moved without the mail settings following it. The trick is checking in the right order rather than changing things at random.',
+      marketPoints: [
+        'I check the records and the mailbox before touching any settings',
+        'You get told what actually broke it, not just that it is working again',
+        'Nothing gets changed on your domain without you knowing what and why'
+      ],
+      faqs: [
+        {
+          q: 'My email just stopped one day. Nobody changed anything.',
+          a: "Something almost always changed, just not by you: a hosting or domain renewal lapsed, a provider tightened its rules, a password reset elsewhere, or a mailbox quietly filled up. That is normal, and it is usually quick to find once someone knows where to look."
+        },
+        {
+          q: 'Do you need my password?',
+          a: "Often not. A lot of it is checked from the outside using your domain's public records. Where access is genuinely needed, we do it with you present or on a temporary account, and you change the password afterwards."
+        },
+        {
+          q: 'Can you fix it without moving me to a new provider?',
+          a: 'Yes. Moving providers is a decision, not a fix. I will get the current setup working first, and only mention moving if the current one is genuinely the cause.'
+        }
+      ]
+    },
+    'business-email-setup': {
+      title: 'Business Email Setup on Your Own Domain',
+      subtitle: 'From yourname@gmail.com to yourname@yourbusiness.co.za',
+      description:
+        'Professional business email set up on your own domain, so you stop sending quotes from a Gmail or Hotmail address. Mailboxes for your team, working on phones and laptops, with the records in place so your mail actually arrives.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Your own domain', 'Works on phones', 'Nothing lost', 'Set up properly'],
+      keywords:
+        'business email setup, professional email address, company email setup, email on my own domain, set up business email south africa, custom domain email, google workspace setup, microsoft 365 email setup',
+      marketHeading: 'A proper email address is the cheapest credibility you can buy',
+      marketSummary:
+        'Clients notice. A quote from info@yourbusiness.co.za reads differently to the same quote from a free address, and it costs very little to change.',
+      marketPoints: [
+        'Domain, mailboxes and the SPF, DKIM and DMARC records done together',
+        'Your existing mail and contacts brought across, not abandoned',
+        'Everyone set up on their phone and laptop before I call it done'
+      ],
+      faqs: [
+        {
+          q: 'Will I lose my old emails?',
+          a: 'No. Existing mail and contacts get copied across before anything is switched over, and the old mailbox stays reachable until you are happy the new one is working.'
+        },
+        {
+          q: 'Google Workspace or Microsoft 365, which one?',
+          a: 'Whichever fits how you already work. If your team lives in Gmail and Google Sheets, Workspace is less disruption. If everything is Outlook, Word and Excel, go 365. Both are fine, and I will not push you to the more expensive one for its own sake.'
+        },
+        {
+          q: 'I already have a domain from my website person. Does that work?',
+          a: 'Yes, that is the normal situation. I just need access to where the domain is managed, and your website keeps working exactly as it does now.'
+        }
+      ]
+    },
+    'emails-going-to-spam': {
+      title: 'Emails Going to Spam? Here Is the Fix',
+      subtitle: 'Get your mail into the inbox, not the junk folder',
+      description:
+        'If your business email keeps landing in customers\u2019 spam folders, the cause is nearly always missing or wrong SPF, DKIM and DMARC records. I set them up correctly, check what your domain is sending, and get your mail delivering again.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['SPF, DKIM, DMARC', 'Delivery checked', 'Quotes that arrive', 'Fixed remotely'],
+      keywords:
+        'emails going to spam, email going to junk folder, business email in spam, email deliverability, spf dkim dmarc setup, why do my emails go to spam, fix email spam problem, email not reaching customers',
+      marketHeading: 'You are losing work you never hear about',
+      marketSummary:
+        'When a quote lands in spam, the customer does not tell you it went to spam. They just go quiet, and you assume they went elsewhere.',
+      marketPoints: [
+        'Your domain checked against what the big providers actually test for',
+        'SPF, DKIM and DMARC set up so your mail is trusted',
+        'A simple explanation of what was wrong and what changed'
+      ],
+      faqs: [
+        {
+          q: 'It only happens with some customers. Why?',
+          a: 'Different mail providers apply different rules. Gmail, Outlook and corporate filters all score mail slightly differently, so a domain with missing records often gets through in some places and gets binned in others. Fixing the records fixes it across the board.'
+        },
+        {
+          q: 'What is SPF, DKIM and DMARC in plain English?',
+          a: 'Three small entries on your domain that tell the world "these are the systems allowed to send email as us". Without them, a filter has no way to tell your quote apart from someone pretending to be you, so it plays it safe and hides it.'
+        }
+      ]
+    },
+
+    // ---- Spreadsheets and getting off them ------------------------------
+    'excel-spreadsheet-help': {
+      title: 'Excel and Spreadsheet Help',
+      subtitle: 'Fix it, clean it up, and stop it breaking every month',
+      description:
+        'Help with Excel and Google Sheets: formulas that stopped working, files that have grown unmanageable, reports that take a whole day, and the monthly copy-and-paste routine nobody wants to do. Fixed, tidied and automated where it makes sense.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Broken formulas', 'Messy data cleaned', 'Reports automated', 'Excel & Sheets'],
+      keywords:
+        'excel help, excel spreadsheet help, google sheets help, spreadsheet expert, fix my spreadsheet, excel formula help, someone to help with excel, spreadsheet consultant south africa, excel automation',
+      marketHeading: 'The spreadsheet is not the problem. The routine around it is.',
+      marketSummary:
+        'Most spreadsheet pain is not one broken formula. It is the two hours every month of exporting, pasting, checking and re-checking, which is exactly the part that can be automated.',
+      marketPoints: [
+        'Broken formulas and #REF errors traced and fixed, not patched over',
+        'Messy data cleaned up so the numbers can be trusted',
+        'The monthly routine automated so the report builds itself'
+      ],
+      faqs: [
+        {
+          q: 'My spreadsheet is a mess. Will you judge it?',
+          a: "No. Every spreadsheet that has been useful for a few years looks like that. It grew because the business grew, which is a good sign, not a bad one."
+        },
+        {
+          q: 'Can you work with Google Sheets as well as Excel?',
+          a: 'Yes, both, and moving between them. Sheets is often the better home for anything more than one person touches, because you stop emailing versions around.'
+        },
+        {
+          q: 'How do I send it to you safely?',
+          a: 'Share the file or a copy with sensitive columns removed, whichever you prefer. If the data is confidential, I am happy to work on a copy with names stripped out.'
+        }
+      ]
+    },
+    'google-sheets-automation': {
+      title: 'Google Sheets Automation',
+      subtitle: 'Stop doing the same spreadsheet job every week',
+      description:
+        'Google Sheets automation for the reports and admin you rebuild by hand: pulling data in automatically, updating dashboards, sending the weekly summary, and connecting Sheets to the other tools you already use.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Reports that build themselves', 'Connected to your tools', 'Fewer manual errors', 'Hours back'],
+      keywords:
+        'google sheets automation, automate google sheets, google sheets expert, sheets apps script developer, automate spreadsheet reports, connect google sheets to, spreadsheet automation south africa',
+      marketHeading: 'If you do it the same way every time, it can be automated',
+      marketSummary:
+        'The test is simple. If you could write down the steps for a new employee, the steps can be handed to a script instead, and the script does not forget a row.',
+      marketPoints: [
+        'Data pulled in automatically instead of exported and pasted',
+        'Summaries and reports sent on a schedule, without anyone remembering',
+        'Fewer copy-and-paste mistakes in the numbers people decide on'
+      ]
+    },
+    'move-from-spreadsheets-to-a-system': {
+      title: 'Move From Spreadsheets to a Proper System',
+      subtitle: 'When the spreadsheet has quietly become the whole business',
+      description:
+        'Outgrown your spreadsheets? I move businesses off Excel and Google Sheets onto a proper system, keeping your data, your process and your language, so your team can work at the same time without breaking each other\u2019s work.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Nothing retyped', 'One version, everyone', 'Built around your process', 'Team trained'],
+      keywords:
+        'move from spreadsheets to a system, replace spreadsheets with software, spreadsheet to database, outgrown excel, excel to web application, spreadsheet to system migration, custom business system south africa, stop using spreadsheets',
+      marketHeading: 'You will know when it is time',
+      marketSummary:
+        'Two people cannot edit it at once. Somebody keeps a private copy. Nobody is certain which file is current. The person who built it is the only one who understands it. That is the point where a spreadsheet has become a risk rather than a tool.',
+      marketPoints: [
+        'Your existing data comes across, nothing gets retyped by hand',
+        'Built around how you already work, so it does not need re-learning',
+        'Your team trained and given documentation, not left dependent on me'
+      ],
+      faqs: [
+        {
+          q: 'Do we have to change how we work?',
+          a: "As little as possible. The aim is to keep your process and your wording, and take away the version confusion, the retyping and the fear of one wrong click. If I do suggest a change, it is because the current step exists only to work around the spreadsheet."
+        },
+        {
+          q: 'What happens to years of history in the old files?',
+          a: 'It comes with you. Historical data is imported and checked against the originals, and the old files stay exactly as they are as a backup.'
+        },
+        {
+          q: 'Can we do it in stages?',
+          a: 'Usually the best way. Start with the one sheet causing the most pain, run it alongside the old process until everyone trusts it, then move the next piece. Nothing has to happen in a single weekend.'
+        },
+        {
+          q: 'What if you disappear afterwards?',
+          a: "Then you must still be able to run it, which is why handover is part of the job rather than an extra. Your team gets training and written documentation, and you own the system and the data outright."
+        }
+      ]
+    },
+    'replace-spreadsheets-with-software': {
+      title: 'Replace Spreadsheets With Software That Fits',
+      subtitle: 'Custom, not off-the-shelf that almost works',
+      description:
+        'Replace the spreadsheets holding your business together with software built around your actual process. Shared access, no version confusion, proper records, and reporting that does not need a morning of copy-and-paste first.',
+      location: 'South Africa',
+      remote: true,
+      audience: 'business',
+      longForm: true,
+      serviceSet: 'it',
+      faqsReplaceDefaults: true,
+      highlights: ['Built for your process', 'Shared, not emailed', 'Real reporting', 'You own it'],
+      keywords:
+        'replace spreadsheets with software, custom business software south africa, spreadsheet replacement system, internal business system, custom database application, small business management system, alternative to excel for business',
+      marketHeading: 'Off-the-shelf or built for you',
+      marketSummary:
+        'If a standard package covers what you need, buy it, and I will say so. Custom earns its cost when your process is the thing that makes you competitive and every package would have you work around it.',
+      marketPoints: [
+        'An honest answer first on whether existing software already covers you',
+        'Fixed quote and staged delivery, so you see it working as it is built',
+        'You own the system and the data, with no lock-in to me'
+      ]
     }
   };
 
@@ -646,7 +1091,7 @@ const LocationLanding = () => {
   const canonicalUrl = pathname;
   const pageUrl = `${SITE_URL}${pathname}`;
   const audience = currentPageData.audience ?? 'both';
-  const showLongFormSections = false;
+  const showLongFormSections = currentPageData.longForm === true;
   const eyebrow =
     currentPageData.eyebrow ||
     (currentPageData.location
@@ -662,7 +1107,10 @@ const LocationLanding = () => {
     currentPageData.marketPoints && currentPageData.marketPoints.length > 0
       ? currentPageData.marketPoints.slice(0, 3)
       : highlights.slice(0, 3);
-  const faqs = [...(currentPageData.faqs ?? []), ...defaultFaqs].slice(0, 5);
+  const faqFallbacks = currentPageData.faqsReplaceDefaults ? itSupportFaqs : defaultFaqs;
+  const faqs = [...(currentPageData.faqs ?? []), ...faqFallbacks].slice(0, 5);
+  const isItPage = currentPageData.serviceSet === 'it';
+  const serviceCards = isItPage ? itServices : services;
 
   const whatsappLink = buildWhatsAppLink(
     `Hi Tafara, I came from your "${currentPageData.title}" page. I'd like to talk about a project.`
@@ -888,12 +1336,16 @@ const LocationLanding = () => {
 
           {/* Services */}
           {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
-            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">What I can build for you</h2>
+            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+              {isItPage ? 'What I can help you with' : 'What I can build for you'}
+            </h2>
             <p className="mt-2 max-w-2xl text-sm text-stone-600 dark:text-dark-muted md:text-base">
-              One developer handles the public site and the tools behind it.
+              {isItPage
+                ? 'One person for the everyday fixes and the bigger system behind them.'
+                : 'One developer handles the public site and the tools behind it.'}
             </p>
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-8 md:gap-4 lg:grid-cols-4">
-              {services.map(({ icon: Icon, title, points }) => (
+              {serviceCards.map(({ icon: Icon, title, points }) => (
                 <div
                   key={title}
                   className="rounded-2xl border border-stone-200/70 bg-white/70 p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary-300/50 hover:shadow-[0_18px_50px_rgba(0,0,0,0.10)] dark:border-white/10 dark:bg-dark-surface/60"
@@ -917,7 +1369,7 @@ const LocationLanding = () => {
 
           {/* Who this is for */}
           {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-14">
-            <div className="grid grid-cols-1 gap-3 md:gap-4 lg:grid-cols-2">
+            <div className={`grid grid-cols-1 gap-3 md:gap-4 ${isItPage ? '' : 'lg:grid-cols-2'}`}>
               <div
                 className={`rounded-2xl border p-6 backdrop-blur-xl md:p-8 ${
                   audience === 'recruiter'
@@ -926,10 +1378,15 @@ const LocationLanding = () => {
                 }`}
               >
                 <p className="text-xs font-medium uppercase tracking-[0.18em] opacity-70">For businesses</p>
-                <h3 className="mt-2 text-xl font-bold md:text-2xl">Get online, sell, and automate the busywork.</h3>
+                <h3 className="mt-2 text-xl font-bold md:text-2xl">
+                  {isItPage
+                    ? 'Tell me what is broken. I will tell you what it takes.'
+                    : 'Get online, sell, and automate the busywork.'}
+                </h3>
                 <p className={`mt-3 text-sm leading-relaxed md:text-base ${audience === 'recruiter' ? 'text-stone-600 dark:text-dark-muted' : 'text-white/85'}`}>
-                  Whether you're starting from nothing or fixing something that isn't working, I'll build it, automate it,
-                  and train your team to run it, so you're not stuck depending on me forever.
+                  {isItPage
+                    ? "You do not need the right words for it. Describe the problem however it comes out, and I will work out what it is, what it costs, and whether you even need me for it."
+                    : "Whether you're starting from nothing or fixing something that isn't working, I'll build it, automate it, and train your team to run it, so you're not stuck depending on me forever."}
                 </p>
                 <a
                   href="/#contact"
@@ -942,7 +1399,7 @@ const LocationLanding = () => {
                 </a>
               </div>
 
-              <div
+              {!isItPage && <div
                 className={`rounded-2xl border p-6 backdrop-blur-xl md:p-8 ${
                   audience === 'recruiter'
                     ? 'order-1 border-stone-900/10 bg-stone-900 text-white dark:border-white/10 dark:bg-white/5'
@@ -965,7 +1422,7 @@ const LocationLanding = () => {
                   Download CV
                   <Download size={16} />
                 </a>
-              </div>
+              </div>}
             </div>
           </section>}
 
@@ -1025,10 +1482,13 @@ const LocationLanding = () => {
           {showLongFormSections && <section className="container mx-auto px-6 py-10 md:px-12 md:py-16">
             <div className="overflow-hidden rounded-3xl border border-stone-900/10 bg-stone-900 p-8 text-white dark:border-white/10 dark:bg-white/5 md:p-12">
               <div className="max-w-2xl">
-                <h2 className="text-2xl font-bold tracking-tight md:text-4xl">Let's build the next one.</h2>
+                <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
+                  {isItPage ? 'Send me the problem.' : "Let's build the next one."}
+                </h2>
                 <p className="mt-3 text-sm text-white/80 md:text-lg">
-                  Tell me what you're trying to do, get online, sell, automate, or hire. I'll tell you straight if I'm
-                  the right fit.
+                  {isItPage
+                    ? "A WhatsApp or a call is enough to start. Describe it however it comes out, and I'll tell you straight what it takes, what it costs, or that you don't need me for it."
+                    : "Tell me what you're trying to do, get online, sell, automate, or hire. I'll tell you straight if I'm the right fit."}
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <a
